@@ -6,45 +6,50 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
 
-    <h:body>
-        <ui:composition>
-            <!-- Main Sidebar Container -->
-            <aside class="main-sidebar sidebar-dark-primary elevation-4">
-                <a href="index3.html" class="brand-link">
-                    <h:graphicImage library="img" name="AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
-                                    style="opacity: .8"/>
-                    <span class="brand-text font-weight-light">AdminLTE 3</span>
-                </a>
-                <div class="sidebar">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <li class="nav-item">
-                            <a href="https://adminlte.io/docs/3.0" class="nav-link">
-                                <i class="nav-icon fas fa-file"></i>
-                                <p>Documentation</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="https://adminlte.io/docs/3.0" class="nav-link">
-                                <i class="nav-icon fas fa-file"></i>
-                                <p>Documentation</p>
-                            </a>
-                        </li>  
-                        
-                        <!--
-                        <c:forEach var="iterador" items="">
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">
-                                    <i class="pageHereYouclass"></i>    
-                                    <p>ItemName</p>
-                                </a>
-                            </li>
-                        </c:forEach>
-                        -->
-                    </ul>                    
-                </div>
+    <!-- Main Sidebar Container -->
+    <aside class="main-sidebar sidebar-dark-primary elevation-4 bg-custom1">
+        <a href="index3.html" class="brand-link bg-cumtom2">
+            <h:graphicImage library="img" name="AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+                            style="opacity: .8"/>
+            <span class="brand-text font-weight-light">Transporte</span>
+        </a>
+        <div class="sidebar">
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <li class="nav-item">
+                        <a href="https://adminlte.io/docs/3.0" class="nav-link active">
+                            <i class="nav-icon fas fa-file"></i>
+                            <p>Actividad Diaria</p>
+                        </a>
+                    </li>                        
+                    <li class="nav-item">
+                        <a href="https://adminlte.io/docs/3.0" class="nav-link">
+                            <i class="nav-icon fas fa-file"></i>
+                            <p>Unidades</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <h:link outcome="employees" styleClass="nav-link">
+                            <i class="nav-icon fas fa-file"></i>
+                            <p>Empleados</p>
+                        </h:link>
+                    </li>  
+                    <li class="nav-item">
+                        <a href="https://adminlte.io/docs/3.0" class="nav-link">
+                            <i class="nav-icon fas fa-file"></i>
+                            <p>Asignaciones</p>
+                        </a>
+                    </li> 
+                    <li class="nav-item">
+                        <a href="https://adminlte.io/docs/3.0" class="nav-link">
+                            <i class="nav-icon fas fa-file"></i>
+                            <p>Empleados</p>
+                        </a>
+                    </li>                         
+                </ul>  
+            </nav>
+        </div>
 
-            </aside>
-        </ui:composition>
-    </h:body>
+    </aside>
 </html>
 
