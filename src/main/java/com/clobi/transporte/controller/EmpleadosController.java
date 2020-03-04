@@ -27,17 +27,23 @@ public class EmpleadosController implements Serializable{
     private List<Empleado> lstEmpleados;
     @EJB
     private EmpleadosFacade ejbEmpleado;
+    private Empleado employe;
 
     @PostConstruct
     public void init(){
         this.setLstEmpleados(ejbEmpleado.findAll());
     }
     
-public void saveMessage() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        context.addMessage(null, new FacesMessage("Second Message", "Additional Message Detail"));
+    public void create(){
+        System.out.print("Data:"+this.employe.getNombres()+" , "+this.employe.getApellidos());
     }
-
+    
+    public Empleado prepareCreate(){
+        this.employe = new Empleado();
+        System.out.print("Se instancio para la creacion");
+        return this.employe;
+    }
+        
     public List<Empleado> getLstEmpleados() {
         return lstEmpleados;
     }
@@ -45,7 +51,17 @@ public void saveMessage() {
     public void setLstEmpleados(List<Empleado> lstEmpleados) {
         this.lstEmpleados = lstEmpleados;
     }
-    
-    
+
+    public EmpleadosFacade getFacade() {
+        return ejbEmpleado;
+    }
+
+    public Empleado getEmploye() {
+        return employe;
+    }
+
+    public void setEmploye(Empleado employe) {
+        this.employe = employe;
+    }
     
 }
