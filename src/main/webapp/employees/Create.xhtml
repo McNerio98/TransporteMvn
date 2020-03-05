@@ -5,6 +5,7 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
       xmlns:p="http://primefaces.org/ui">
 
     <ui:composition>
@@ -27,9 +28,44 @@
                                     <h:inputText value = "#{empleadosControl.employe.apellidos}" a:placeholder="Apellidos" styleClass="form-control"/>
                                 </div>
                             </div>
+                            <div class="form-row">
+                                <div class="form-group col-sm-6">
+                                    <label for="inputEmail4">Estado Civil</label>
+                                    <h:selectOneMenu value="#{empleadosControl.employe.estadocivil}" styleClass="form-control">
+                                        <f:selectItem itemValue="sol" itemLabel="Soltero/a"/>
+                                        <f:selectItem itemValue="cas" itemLabel="Casado/a"/>
+                                        <f:selectItem itemValue="aco" itemLabel="Acompañado/a"/>
+                                    </h:selectOneMenu>   
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <label for="inputPassword4">Fecha Nacimiento</label>
+                                    <input jsf:id="date" type="date" jsf:value="#{empleadosControl.employe.edad}" class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-sm-6">
+                                    <label for="inputEmail4">Tipo de Empleado</label>
+                                    <h:selectOneMenu value="#{empleadosControl.employe.tipo}" styleClass="form-control">
+                                        <f:selectItem itemValue="mot" itemLabel="Motorista"/>
+                                        <f:selectItem itemValue="ayu" itemLabel="Ayudante"/>
+                                    </h:selectOneMenu>   
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <label for="inputPassword4">Numero de Telefono</label>
+                                    <h:inputText value="${empleadosControl.employe.telefono}" maxlength="8" styleClass="form-control"/>
+                                </div>
+                            </div>
+                            <hr/>
+                            <p>Documentos Personales</p>
+                            <div class="form-group row">
+                                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Email</label>
+                                <div class="col-sm-10">
+                                    <input type="email" class="form-control form-control-sm" id="colFormLabelSm" placeholder="col-form-label-sm"/>
+                                </div>
+                            </div>                            
                         </div>
                         <div class="modal-footer">                         
-                            <h:commandButton value="Guardar" styleClass="btn btn-primary" actionListener="#{empleadosControl.prepareCreate}" action="#{empleadosControl.create}"/>
+                            <h:commandButton value="Guardar" styleClass="btn btn-primary" action="#{empleadosControl.create}"/>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                         </div>                        
                     </h:form>

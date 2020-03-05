@@ -40,7 +40,6 @@ public class EmpleadosController implements Serializable{
     
     public Empleado prepareCreate(){
         this.employe = new Empleado();
-        System.out.print("Se instancio para la creacion");
         return this.employe;
     }
         
