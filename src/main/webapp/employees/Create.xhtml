@@ -39,7 +39,9 @@
                                 </div>
                                 <div class="form-group col-sm-6">
                                     <label for="inputPassword4">Fecha Nacimiento</label>
-                                    <input jsf:id="date" type="date" jsf:value="#{empleadosControl.employe.edad}" class="form-control"/>
+                                    <h:inputText value="#{empleadosControl.employe.fechaNacimiento}" label="Date">
+                                        <f:convertDateTime pattern = "yyyy-mm-dd" />
+                                    </h:inputText>
                                 </div>
                             </div>
                             <div class="form-row">
@@ -58,15 +60,32 @@
                             <hr/>
                             <p>Documentos Personales</p>
                             <div class="form-group row">
-                                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Email</label>
-                                <div class="col-sm-10">
-                                    <input type="email" class="form-control form-control-sm" id="colFormLabelSm" placeholder="col-form-label-sm"/>
+                                <label for="txtDUI" class="col-md-4 col-form-label col-form-label-sm">DUI</label>
+                                <div class="col-md-8">
+                                    <h:inputText value="#{empleadosControl.employe.dui}" 
+                                                 maxlength="9" 
+                                                 required="true" 
+                                                 styleClass="form-control form-control-sm" 
+                                                 id="txtDUI" 
+                                                 a:placeholder="Digite Numero de DUI"/>
+                                </div>
+                            </div>                            
+                            <div class="form-group row">
+                                <label for="colFormLabelSm" class="col-md-4 col-form-label col-form-label-sm">Fecha Expiracion</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control form-control-sm" id="colFormLabelSm" placeholder="col-form-label-sm"/>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="colFormLabelSm" class="col-md-4 col-form-label col-form-label-sm">Subir Documento</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control form-control-sm" id="colFormLabelSm" placeholder="col-form-label-sm"/>
                                 </div>
                             </div>                            
                         </div>
                         <div class="modal-footer">                         
-                            <h:commandButton value="Guardar" styleClass="btn btn-primary" action="#{empleadosControl.create}"/>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            <h:commandButton value="#{bundle.Save}" styleClass="btn btn-primary" action="#{empleadosControl.create}"/>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">#{bundle.Close}</button>
                         </div>                        
                     </h:form>
 

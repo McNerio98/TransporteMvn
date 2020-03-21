@@ -5,12 +5,17 @@
  */
 package com.clobi.transporte.controller;
 
+import com.clobi.transporte.controller.util.JsfUtil;
+import com.clobi.transporte.controller.util.JsfUtil.PersistAction;
 import com.clobi.transporte.entity.Empleado;
 import com.clobi.transporte.facade.EmpleadosFacade;
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.ejb.EJBException;
 import javax.inject.Named;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.context.SessionScoped;
@@ -35,7 +40,7 @@ public class EmpleadosController implements Serializable{
     }
     
     public void create(){
-        System.out.print("Data:"+this.employe.getNombres()+" , "+this.employe.getApellidos());
+        this.persist(PersistAction.CREATE, "Error desde Bundle");
     }
     
     public Empleado prepareCreate(){
@@ -61,6 +66,25 @@ public class EmpleadosController implements Serializable{
 
     public void setEmploye(Empleado employe) {
         this.employe = employe;
+    }
+    
+    private void persist(PersistAction persistAction, String infoResult){
+
+        try{
+            if(persistAction != PersistAction.DELETE){
+                getFacade().edit(employe);
+            }else{
+                getFacade().remove(employe);
+            }
+            JsfUtil.addSuccessMessage(infoResult);
+        }catch(EJBException ex){
+            String msg = "Error en la operacion";
+            Throwable cause = ex.getCause();
+            JsfUtil.addErrorMessage(msg);
+        }catch(Exception e){
+            JsfUtil.addErrorMessage("Eror de persistencia");
+        }
+        
     }
     
 }

@@ -36,7 +36,6 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Empleado.findByDui", query = "SELECT e FROM Empleado e WHERE e.dui = :dui")
     , @NamedQuery(name = "Empleado.findByNombres", query = "SELECT e FROM Empleado e WHERE e.nombres = :nombres")
     , @NamedQuery(name = "Empleado.findByApellidos", query = "SELECT e FROM Empleado e WHERE e.apellidos = :apellidos")
-    , @NamedQuery(name = "Empleado.findByEdad", query = "SELECT e FROM Empleado e WHERE e.edad = :edad")
     , @NamedQuery(name = "Empleado.findByEstadocivil", query = "SELECT e FROM Empleado e WHERE e.estadocivil = :estadocivil")
     , @NamedQuery(name = "Empleado.findByTelefono", query = "SELECT e FROM Empleado e WHERE e.telefono = :telefono")
     , @NamedQuery(name = "Empleado.findByTipo", query = "SELECT e FROM Empleado e WHERE e.tipo = :tipo")})
@@ -61,9 +60,9 @@ public class Empleado implements Serializable {
     private String apellidos;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "edad")
+    @Column(name = "fechanacimiento")
     @Temporal(TemporalType.DATE)
-    private Date edad;
+    private Date fechaNacimiento;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 3)
@@ -95,11 +94,11 @@ public class Empleado implements Serializable {
         this.dui = dui;
     }
 
-    public Empleado(String dui, String nombres, String apellidos, Date edad, String estadocivil, String telefono, String tipo) {
+    public Empleado(String dui, String nombres, String apellidos, Date fechaNacimiento, String estadocivil, String telefono, String tipo) {
         this.dui = dui;
         this.nombres = nombres;
         this.apellidos = apellidos;
-        this.edad = edad;
+        this.fechaNacimiento = fechaNacimiento;
         this.estadocivil = estadocivil;
         this.telefono = telefono;
         this.tipo = tipo;
@@ -129,12 +128,12 @@ public class Empleado implements Serializable {
         this.apellidos = apellidos;
     }
 
-    public Date getEdad() {
-        return edad;
+    public Date getFechaNacimiento() {
+        return fechaNacimiento;
     }
 
-    public void setEdad(Date edad) {
-        this.edad = edad;
+    public void setFechaNacimiento(Date fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
     }
 
     public String getEstadocivil() {
