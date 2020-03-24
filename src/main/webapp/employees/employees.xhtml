@@ -7,65 +7,74 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:p="http://primefaces.org/ui">
-    
-<ui:composition template="/template1.xhtml">
 
-    <ui:define name="title">
-        <h:outputText value="Empleados"></h:outputText>
-    </ui:define>
+    <ui:composition template="/template1.xhtml">
 
-    <ui:define name="encabezado">
-        <h:outputText value="Empleados Registrados"></h:outputText>
-    </ui:define>
+        <ui:define name="title">
+            <h:outputText value="Empleados"></h:outputText>
+        </ui:define>
 
-    <ui:define name="contenido">
-        <div style="text-align: right;" class="mb-2">
-            <h:form>
-                <p:commandButton actionListener="#{empleadosControl.prepareCreate}" value="+ Nuevo" styleClass="btn btn-success" a:data-toggle="modal" a:data-target="#modalEmploye"/>
-            </h:form>
-        </div>
+        <ui:define name="stylesSpecifided">
+            <h:outputStylesheet library="css" name="datepicker.css"/>
+        </ui:define>
 
-        <h:dataTable value = "#{empleadosControl.lstEmpleados}" var = "it"
-                     styleClass = "table"
-                     headerClass = "thead-dark"
-                     rowClasses = "employeeTableOddRow,employeeTableEvenRow">
+        <ui:define name="encabezado">
+            <h:outputText value="Empleados Registrados"></h:outputText>
+        </ui:define>
 
-            <h:column>    				
-                <f:facet name = "header">Contacto</f:facet>    				
-                    #{it.telefono}
-            </h:column>
+        <ui:define name="contenido">
+            <div style="text-align: right;" class="mb-2">
+                <h:form>
+                    <p:commandButton actionListener="#{empleadosControl.prepareCreate}" value="+ Nuevo" styleClass="btn btn-success" a:data-toggle="modal" a:data-target="#modalEmploye"/>
+                </h:form>
+            </div>
+            <h:form id='formEmpleado'>
+                <h:dataTable value = "#{empleadosControl.lstEmpleados}" var = "it"
+                             styleClass = "table"
+                             headerClass = "thead-dark"
+                             rowClasses = "employeeTableOddRow,employeeTableEvenRow"
+                             id="lstEmployees">
 
-            <h:column>
-                <f:facet name = "header">Nombre</f:facet>
-                    #{it.nombres}
-            </h:column>
+                    <h:column>    				
+                        <f:facet name = "header">Contacto</f:facet>    				
+                            #{it.telefono}
+                    </h:column>
 
-            <h:column>
-                <f:facet name = "header">Apellido</f:facet>
-                    #{it.apellidos}
-            </h:column>
+                    <h:column>
+                        <f:facet name = "header">Nombre</f:facet>
+                            #{it.nombres}
+                    </h:column>
 
-            <h:column>
-                <f:facet name = "header">Estado Civil</f:facet>
-                    #{it.estadocivil}
-            </h:column>
-            <h:column>
-                <f:facet name="header">Opciones</f:facet>
-                <button type="button" class="btn btn-danger" value="#{it.dui}">
-                    <i class="far fa-edit"></i>
-                    Edit
-                </button>
-                <button type="button" class="btn btn-warning" value="#{it.dui}">
-                    <i class="fas fa-trash-alt"></i>
-                    Eliminar
-                </button>                
-            </h:column>
-        </h:dataTable>
-        <ui:include src="Create.xhtml"/>
+                    <h:column>
+                        <f:facet name = "header">Apellido</f:facet>
+                            #{it.apellidos}
+                    </h:column>
 
-    </ui:define>
+                    <h:column>
+                        <f:facet name = "header">Estado Civil</f:facet>
+                            #{it.estadocivil}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Opciones</f:facet>
+                        <button type="button" class="btn btn-danger" value="#{it.dui}">
+                            <i class="far fa-edit"></i>
+                            Edit
+                        </button>
+                        <button type="button" class="btn btn-warning" value="#{it.dui}">
+                            <i class="fas fa-trash-alt"></i>
+                            Eliminar
+                        </button>                
+                    </h:column>
+                </h:dataTable>
+             </h:form>
+            <ui:include src="Create.xhtml"/>
 
-</ui:composition>
+        </ui:define>
+        <ui:define name="scriptsSpecifided">
+            <h:outputScript library="js" name="employees_global.js"/>
+        </ui:define>
+
+    </ui:composition>
 </html>
 
 

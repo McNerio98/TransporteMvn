@@ -5,7 +5,6 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:jsf="http://xmlns.jcp.org/jsf"
       xmlns:p="http://primefaces.org/ui">
 
     <ui:composition>
@@ -18,7 +17,7 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <h:form>
+                    <h:form id="frmEmployees">
                         <div class="modal-body">
                             <div class="row">
                                 <div class="col-sm-6">
@@ -39,9 +38,13 @@
                                 </div>
                                 <div class="form-group col-sm-6">
                                     <label for="inputPassword4">Fecha Nacimiento</label>
-                                    <h:inputText value="#{empleadosControl.employe.fechaNacimiento}" label="Date">
-                                        <f:convertDateTime pattern = "yyyy-mm-dd" />
-                                    </h:inputText>
+                                    <h:inputText value="#{empleadosControl.employe.fechaNacimiento}" 
+                                                 label="Date" 
+                                                 id="txtFechaNac" 
+                                                 styleClass="form-control"
+                                                 a:placeholder="dd/MM/yyy">
+                                        <f:convertDateTime pattern = "yyyy/mm/dd" />
+                                    </h:inputText> 
                                 </div>
                             </div>
                             <div class="form-row">
@@ -59,6 +62,7 @@
                             </div>
                             <hr/>
                             <p>Documentos Personales</p>
+                            
                             <div class="form-group row">
                                 <label for="txtDUI" class="col-md-4 col-form-label col-form-label-sm">DUI</label>
                                 <div class="col-md-8">
@@ -81,10 +85,16 @@
                                 <div class="col-md-8">
                                     <input type="text" class="form-control form-control-sm" id="colFormLabelSm" placeholder="col-form-label-sm"/>
                                 </div>
-                            </div>                            
+                            </div>
+                        <hr/>                            
                         </div>
                         <div class="modal-footer">                         
-                            <h:commandButton value="#{bundle.Save}" styleClass="btn btn-primary" action="#{empleadosControl.create}"/>
+                            <p:commandButton actionListener="#{empleadosControl.create}" 
+                                             value="#{bundle.Save}" 
+                                             styleClass="btn btn-primary"
+                                             update=":formEmpleado:lstEmployees"
+                                             oncomplete="closeModal('#modalEmploye');"
+                                             />
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">#{bundle.Close}</button>
                         </div>                        
                     </h:form>
