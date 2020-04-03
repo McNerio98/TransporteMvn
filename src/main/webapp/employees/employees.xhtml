@@ -23,51 +23,113 @@
         </ui:define>
 
         <ui:define name="contenido">
-            <div style="text-align: right;" class="mb-2">
-                <h:form>
-                    <p:commandButton actionListener="#{empleadosControl.prepareCreate}" value="+ Nuevo" styleClass="btn btn-success" a:data-toggle="modal" a:data-target="#modalEmploye"/>
-                </h:form>
-            </div>
-            <h:form id='formEmpleado'>
-                <h:dataTable value = "#{empleadosControl.lstEmpleados}" var = "it"
-                             styleClass = "table"
-                             headerClass = "thead-dark"
-                             rowClasses = "employeeTableOddRow,employeeTableEvenRow"
-                             id="lstEmployees">
-
-                    <h:column>    				
-                        <f:facet name = "header">Contacto</f:facet>    				
-                            #{it.telefono}
-                    </h:column>
-
-                    <h:column>
-                        <f:facet name = "header">Nombre</f:facet>
-                            #{it.nombres}
-                    </h:column>
-
-                    <h:column>
-                        <f:facet name = "header">Apellido</f:facet>
-                            #{it.apellidos}
-                    </h:column>
-
-                    <h:column>
-                        <f:facet name = "header">Estado Civil</f:facet>
-                            #{it.estadocivil}
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">Opciones</f:facet>
-                        <button type="button" class="btn btn-danger" value="#{it.dui}">
-                            <i class="far fa-edit"></i>
-                            Edit
-                        </button>
-                        <button type="button" class="btn btn-warning" value="#{it.dui}">
-                            <i class="fas fa-trash-alt"></i>
-                            Eliminar
-                        </button>                
-                    </h:column>
-                </h:dataTable>
-             </h:form>
+            <p:commandLink value="Test" actionListener="#{empleadosControl.methodTest}"/>
+            <h:form id='formEmpleado'>             
+                <p:dataTable id="lstEmployees"
+                             value="#{empleadosControl.lstEmpleados}"
+                             var="item"
+                             selectionMode="single"
+                             styleClass="table table-bordered"
+                             rowKey="#{item}"
+                             emptyMessage="Sin registro de Empleados"
+                             selection="#{empleadosControl.selected}"
+                             >
+                    <p:ajax event="rowSelect" update="btnDelete btnUpdate btnAbonar btnUploadDocuments"/>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundle.DUI}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.dui}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundle.FullName}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.nombres} #{item.apellidos}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundle.Telephone}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.telefono}"/>
+                    </p:column>                    
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundle.MaritalStatus}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.estadocivil}"/>
+                    </p:column>                     
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundle.Abono}"/>
+                        </f:facet>
+                        <h:outputText value="$ 0.00"/>
+                    </p:column>                     
+                    <f:facet name="footer">
+                        <p:commandLink actionListener="#{empleadosControl.recargarEmpleados}"
+                                        styleClass="btn btn-app m-2 border border-warning icon1"
+                                         id="btnReload"
+                                         update="formEmpleado">
+                        <i class="fas fa-sync"></i>
+                        <h:outputText value="#{bundle.Reload}"/>
+                        </p:commandLink>
+                        <p:commandLink actionListener="#{empleadosControl.prepareCreate}"
+                                       styleClass="btn btn-app m-2 border border-warning"
+                                         a:data-toggle="modal"
+                                         update=":frmEmployees"
+                                         a:data-target="#modalEmploye"> 
+                        <i class="fas fa-plus"></i>
+                        <h:outputText value="#{bundle.Create}"/>
+                        </p:commandLink>
+                        <p:commandLink styleClass="btn btn-app m-2 border border-warning"
+                                       id="btnUpdate"
+                                         disabled="#{empty empleadosControl.selected}"
+                                         a:data-toggle="modal"
+                                         update=":frmEmployees"
+                                         a:data-target="#modalEmploye">
+                        <i class="fas fa-edit"></i>
+                        <h:outputText value="#{bundle.Edit}"/>
+                        </p:commandLink>
+                        <p:commandLink styleClass="btn btn-app m-2 border border-warning"                                     
+                                         id="btnDelete"
+                                         disabled="#{empty empleadosControl.selected}"
+                                         a:data-toggle="modal"
+                                         a:data-target="#modalConfirmEmploye">
+                        <i class="fas fa-trash-alt"></i>
+                        <h:outputText value="#{bundle.Delete}"/>
+                        </p:commandLink>
+                        <p:commandLink actionListener="#{empleadosControl.prepareCreate}"
+                                       styleClass="btn btn-app m-2 border border-warning"                                     
+                                         id="btnView"
+                                         disabled="#{empty empleadosControl.selected}"
+                                         a:data-toggle="modal"
+                                         a:data-target="#modalConfirmEmploye">
+                        <i class="fas fa-eye"></i>
+                        <h:outputText value="#{bundle.View}"/>
+                        </p:commandLink>  
+                        <p:commandLink styleClass="btn btn-app m-2 border border-warning"                                     
+                                         id="btnUploadDocuments"
+                                         a:data-toggle="modal"
+                                          disabled="#{empty empleadosControl.selected}"
+                                         a:data-target="#upload-doc-modal">
+                        <i class="fas fa-file-upload"></i>
+                        <h:outputText value="#{bundle.UploadDocuments}"/>
+                        </p:commandLink>  
+                        <p:commandLink actionListener="#{empleadosControl.prepareCreate}"
+                                       styleClass="btn btn-app m-2 border border-warning"                                     
+                                         id="btnAbonar"
+                                         disabled="#{empty empleadosControl.selected}"
+                                         a:data-toggle="modal"
+                                         a:data-target="#modalConfirmEmploye">
+                        <i class="fas fa-cash-register"></i>
+                        <h:outputText value="#{bundle.Abono}"/>
+                        </p:commandLink>                          
+                    </f:facet>
+                </p:dataTable>
+            </h:form>
             <ui:include src="Create.xhtml"/>
+            <ui:include src="DeleteConfirm.xhtml"/>
+            <ui:include src="UploadDocument.xhtml"/>
 
         </ui:define>
         <ui:define name="scriptsSpecifided">

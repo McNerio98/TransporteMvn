@@ -18,85 +18,75 @@
                         </button>
                     </div>
                     <h:form id="frmEmployees">
-                        <div class="modal-body">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <h:inputText value = "#{empleadosControl.employe.nombres}" a:placeholder="Nombres" styleClass="form-control"/>
+                        <h:panelGroup id="display" layout="block">
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="input-group col-12 mb-2">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-id-badge"></i>
+                                            </span>
+                                        </div>
+                                        <h:inputText value="#{empleadosControl.selected.dui}" 
+                                                     maxlength="9" 
+                                                     required="true" 
+                                                     styleClass="form-control form-control-sm" 
+                                                     id="txtDUI" 
+                                                     a:placeholder="Digite Numero de DUI"
+                                                     disabled="#{!(empty empleadosControl.selected.dui)}"/>                                    
+                                    </div>
                                 </div>
-                                <div class="col-sm-6">
-                                    <h:inputText value = "#{empleadosControl.employe.apellidos}" a:placeholder="Apellidos" styleClass="form-control"/>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <h:inputText value = "#{empleadosControl.selected.nombres}" a:placeholder="Nombres" styleClass="form-control"/>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <h:inputText value = "#{empleadosControl.selected.apellidos}" a:placeholder="Apellidos" styleClass="form-control"/>
+                                    </div>
                                 </div>
+                                <div class="form-row">
+                                    <div class="form-group col-sm-6">
+                                        <label for="inputEmail4">Estado Civil</label>
+                                        <h:selectOneMenu value="#{empleadosControl.selected.estadocivil}" styleClass="form-control">
+                                            <f:selectItem itemValue="sol" itemLabel="Soltero/a"/>
+                                            <f:selectItem itemValue="cas" itemLabel="Casado/a"/>
+                                            <f:selectItem itemValue="aco" itemLabel="Acompañado/a"/>
+                                        </h:selectOneMenu>   
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label for="inputPassword4">Fecha Nacimiento</label>
+                                        <p:datePicker id="popup" value="#{empleadosControl.selected.fechaNacimiento}" 
+                                                      a:placeholder="dd/MM/yyy"
+                                                      pattern="yyyy/mm/dd">
+                                            <f:convertDateTime pattern = "yyyy/mm/dd"/>
+                                        </p:datePicker>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-sm-6">
+                                        <label for="inputEmail4">Tipo de Empleado</label>
+                                        <h:selectOneMenu value="#{empleadosControl.selected.tipo}" styleClass="form-control">
+                                            <f:selectItem itemValue="mot" itemLabel="Motorista"/>
+                                            <f:selectItem itemValue="ayu" itemLabel="Ayudante"/>
+                                        </h:selectOneMenu>   
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label for="inputPassword4">Numero de Telefono</label>
+                                        <h:inputText value="${empleadosControl.selected.telefono}" maxlength="8" styleClass="form-control"/>
+                                    </div>
+                                </div>                            
+                            </div>    
+
+                            <div class="modal-footer">
+                                <p:commandLink actionListener="#{empleadosControl.create}" 
+                                                 value="#{bundle.Save}" 
+                                                 styleClass="btn btn-primary"
+                                                 update="display, :formEmpleado:lstEmployees,:pnlMessageJSF"
+                                                 oncomplete="closeModal('#modalEmploye');"
+                                                 />
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">#{bundle.Close}</button>
                             </div>
-                            <div class="form-row">
-                                <div class="form-group col-sm-6">
-                                    <label for="inputEmail4">Estado Civil</label>
-                                    <h:selectOneMenu value="#{empleadosControl.employe.estadocivil}" styleClass="form-control">
-                                        <f:selectItem itemValue="sol" itemLabel="Soltero/a"/>
-                                        <f:selectItem itemValue="cas" itemLabel="Casado/a"/>
-                                        <f:selectItem itemValue="aco" itemLabel="Acompañado/a"/>
-                                    </h:selectOneMenu>   
-                                </div>
-                                <div class="form-group col-sm-6">
-                                    <label for="inputPassword4">Fecha Nacimiento</label>
-                                    <h:inputText value="#{empleadosControl.employe.fechaNacimiento}" 
-                                                 label="Date" 
-                                                 id="txtFechaNac" 
-                                                 styleClass="form-control"
-                                                 a:placeholder="dd/MM/yyy">
-                                        <f:convertDateTime pattern = "yyyy/mm/dd" />
-                                    </h:inputText> 
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col-sm-6">
-                                    <label for="inputEmail4">Tipo de Empleado</label>
-                                    <h:selectOneMenu value="#{empleadosControl.employe.tipo}" styleClass="form-control">
-                                        <f:selectItem itemValue="mot" itemLabel="Motorista"/>
-                                        <f:selectItem itemValue="ayu" itemLabel="Ayudante"/>
-                                    </h:selectOneMenu>   
-                                </div>
-                                <div class="form-group col-sm-6">
-                                    <label for="inputPassword4">Numero de Telefono</label>
-                                    <h:inputText value="${empleadosControl.employe.telefono}" maxlength="8" styleClass="form-control"/>
-                                </div>
-                            </div>
-                            <hr/>
-                            <p>Documentos Personales</p>
-                            
-                            <div class="form-group row">
-                                <label for="txtDUI" class="col-md-4 col-form-label col-form-label-sm">DUI</label>
-                                <div class="col-md-8">
-                                    <h:inputText value="#{empleadosControl.employe.dui}" 
-                                                 maxlength="9" 
-                                                 required="true" 
-                                                 styleClass="form-control form-control-sm" 
-                                                 id="txtDUI" 
-                                                 a:placeholder="Digite Numero de DUI"/>
-                                </div>
-                            </div>                            
-                            <div class="form-group row">
-                                <label for="colFormLabelSm" class="col-md-4 col-form-label col-form-label-sm">Fecha Expiracion</label>
-                                <div class="col-md-8">
-                                    <input type="text" class="form-control form-control-sm" id="colFormLabelSm" placeholder="col-form-label-sm"/>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="colFormLabelSm" class="col-md-4 col-form-label col-form-label-sm">Subir Documento</label>
-                                <div class="col-md-8">
-                                    <input type="text" class="form-control form-control-sm" id="colFormLabelSm" placeholder="col-form-label-sm"/>
-                                </div>
-                            </div>
-                        <hr/>                            
-                        </div>
-                        <div class="modal-footer">                         
-                            <p:commandButton actionListener="#{empleadosControl.create}" 
-                                             value="#{bundle.Save}" 
-                                             styleClass="btn btn-primary"
-                                             update=":formEmpleado:lstEmployees"
-                                             oncomplete="closeModal('#modalEmploye');"
-                                             />
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">#{bundle.Close}</button>
-                        </div>                        
+                        </h:panelGroup>
                     </h:form>
 
                 </div>

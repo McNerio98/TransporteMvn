@@ -26,8 +26,8 @@ public abstract class AbstractFacade<T> {
         getEntityManager().persist(entity);
     }
 
-    public void edit(T entity) {
-        getEntityManager().merge(entity);
+    public T edit(T entity) {
+        return getEntityManager().merge(entity);
     }
 
     public void remove(T entity) {
@@ -43,5 +43,17 @@ public abstract class AbstractFacade<T> {
         javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
         cq.select(cq.from(entityClass));
         return getEntityManager().createQuery(cq).getResultList();
+    }
+    
+    public void initTransaction(){
+        getEntityManager().getTransaction().begin();
+    }
+    
+    public void rollback(){
+        getEntityManager().getTransaction().rollback();
+    }
+    
+    public void commit(){
+        getEntityManager().getTransaction().commit();
     }
 }

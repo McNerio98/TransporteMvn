@@ -31,3 +31,19 @@ and open the template in the editor.
     background-color: #36485ed1 !important;
     color: white !important;
 }
+
+.icon1{
+    font-size: 1.5rem;
+    color: dodgerblue;
+}
+
+.containerCustom1{
+    margin: 5px;
+    padding: 5px;
+    border: 1px solid dodgerblue;
+    border-radius: 8px;
+}
+
+.p-hidden{
+    overflow: hidden;
+}

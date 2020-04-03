@@ -9,6 +9,8 @@
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <title><ui:insert name="title">Default Title</ui:insert></title>
+        <h:outputStylesheet library="css" name="bootstrap-Sweetalert-4.min.css"/>
+        <h:outputStylesheet library="css" name="toastr.css"/>
         <h:outputStylesheet library="css" name="OverlayScrollbars.min.css"/>
         <h:outputStylesheet library="css" name="adminlte.css"/>
         <h:outputStylesheet library="css" name="custom1.css"/>
@@ -32,6 +34,15 @@
                             <div class="col-sm-6">
                                 <h1 class="m-0 text-dark">
                                     <ui:insert name="encabezado">Default Title</ui:insert>
+                                    <h:panelGroup id="pnlMessageJSFParent" style="display: none;">
+                                    <h:messages id="pnlMessageJSF" 
+                                                errorClass="MessageError nodeMsg" 
+                                                infoClass="MessageSuccess nodeMsg"
+                                                globalOnly="true"
+                                                />                                        
+                                    </h:panelGroup>
+
+                                    
                                 </h1>
                             </div><!-- /.col -->
                             <div class="col-sm-6">
@@ -48,15 +59,18 @@
 
                 <section class="content">
                     <div class="container-fluid">
+                        <!--
                         <p:growl id="growl" life="3000" />
-                        
+                        -->
                         <ui:insert name="contenido">contenido</ui:insert>
                     </div>
                 </section>
-                <h:outputScript library="primefaces" name="jquery/jquery.js" /> 
                 <h:outputScript library="js" name="bootstrap.bundle.js"/>
+                <h:outputScript library="js" name="sweetalert2.min.js"/>
+                <h:outputScript library="js" name="toastr.min.js"/>
                 <h:outputScript library="js" name="jquery.overlayScrollbars.min.js"/>
                 <h:outputScript library="js" name="adminlte.js"/>
+                <h:outputScript library="js" name="globalScript1.js"/>
                 <ui:insert name="scriptsSpecifided"></ui:insert>
             </div>
         </div>
