@@ -1,0 +1,49 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Apr 6, 2020, 4:45:56 PM
+    Author     : McNerio
+*/
+
+[class*="sidebar-dark-"] .sidebar a {
+	color: #484644 !important;
+}
+
+[class*="sidebar-dark-"] {
+	background-color: #e3e5e4 !important;
+}
+
+.navbar-white {
+	background-color: #343a40 !important;
+}
+
+.main-header {
+	border-bottom: 1px solid #343a40 !important;
+	/* z-index: 1034; */
+}
+
+.navbar-light .navbar-nav .nav-link {
+	color: rgba(255,255,255,.8) !important;
+}
+
+
+.navbar-light .navbar-nav .nav-link:hover {
+	color: white !important;
+}
+
+.border-rg-custom1{
+	border-right: 1px solid #606060 !important;
+}
+
+.nav-link .active{
+    background-color: #484644 !important;
+    color: white !important;
+}
+
+.sidebar-dark-primary .nav-sidebar > .nav-item > .nav-link.active{
+	background-color: inherit !important;
+    color: dodgerblue !important;
+}

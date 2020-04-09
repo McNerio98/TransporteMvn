@@ -41,6 +41,11 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Empleado.findByTipo", query = "SELECT e FROM Empleado e WHERE e.tipo = :tipo")})
 public class Empleado implements Serializable {
 
+    @OneToMany(mappedBy = "idauxiliar")
+    private List<OperacionUnidad> operacionUnidadList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idconductor")
+    private List<OperacionUnidad> operacionUnidadList1;
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -216,9 +221,51 @@ public class Empleado implements Serializable {
         return true;
     }
 
+    public String estadoCivilCase() {
+        String estado = "none";
+        switch (this.estadocivil) {
+            case "sol":
+                estado = "Soltero";
+            case "aco":
+                estado = "Acompaniado";
+            case "cas":
+                estado = "Casado";
+        }
+        return estado;
+    }
+    
+    public String tipoEmpleadoCase(){
+        String tipo = "none";
+        switch (this.tipo) {
+            case "mot":
+                tipo = "Motorista";
+            case "ayu":
+                tipo = "Auxiliar Motorista";
+        }        
+        return tipo;
+    }
+
     @Override
     public String toString() {
         return "com.clobi.transporte.entity.Empleado[ dui=" + dui + " ]";
     }
-    
+
+    @XmlTransient
+    public List<OperacionUnidad> getOperacionUnidadList() {
+        return operacionUnidadList;
+    }
+
+    public void setOperacionUnidadList(List<OperacionUnidad> operacionUnidadList) {
+        this.operacionUnidadList = operacionUnidadList;
+    }
+
+    @XmlTransient
+    public List<OperacionUnidad> getOperacionUnidadList1() {
+        return operacionUnidadList1;
+    }
+
+    public void setOperacionUnidadList1(List<OperacionUnidad> operacionUnidadList1) {
+        this.operacionUnidadList1 = operacionUnidadList1;
+    }
+
 }

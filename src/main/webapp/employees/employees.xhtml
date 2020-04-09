@@ -6,131 +6,137 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
       xmlns:p="http://primefaces.org/ui">
 
     <ui:composition template="/template1.xhtml">
-
         <ui:define name="title">
             <h:outputText value="Empleados"></h:outputText>
         </ui:define>
-
         <ui:define name="stylesSpecifided">
             <h:outputStylesheet library="css" name="datepicker.css"/>
         </ui:define>
-
         <ui:define name="encabezado">
             <h:outputText value="Empleados Registrados"></h:outputText>
         </ui:define>
-
         <ui:define name="contenido">
-            <p:commandLink value="Test" actionListener="#{empleadosControl.methodTest}"/>
-            <h:form id='formEmpleado'>             
-                <p:dataTable id="lstEmployees"
-                             value="#{empleadosControl.lstEmpleados}"
-                             var="item"
-                             selectionMode="single"
-                             styleClass="table table-bordered"
-                             rowKey="#{item}"
-                             emptyMessage="Sin registro de Empleados"
-                             selection="#{empleadosControl.selected}"
-                             >
-                    <p:ajax event="rowSelect" update="btnDelete btnUpdate btnAbonar btnUploadDocuments"/>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="#{bundle.DUI}"/>
-                        </f:facet>
-                        <h:outputText value="#{item.dui}"/>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="#{bundle.FullName}"/>
-                        </f:facet>
-                        <h:outputText value="#{item.nombres} #{item.apellidos}"/>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="#{bundle.Telephone}"/>
-                        </f:facet>
-                        <h:outputText value="#{item.telefono}"/>
-                    </p:column>                    
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="#{bundle.MaritalStatus}"/>
-                        </f:facet>
-                        <h:outputText value="#{item.estadocivil}"/>
-                    </p:column>                     
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="#{bundle.Abono}"/>
-                        </f:facet>
-                        <h:outputText value="$ 0.00"/>
-                    </p:column>                     
-                    <f:facet name="footer">
-                        <p:commandLink actionListener="#{empleadosControl.recargarEmpleados}"
-                                        styleClass="btn btn-app m-2 border border-warning icon1"
-                                         id="btnReload"
-                                         update="formEmpleado">
-                        <i class="fas fa-sync"></i>
-                        <h:outputText value="#{bundle.Reload}"/>
-                        </p:commandLink>
-                        <p:commandLink actionListener="#{empleadosControl.prepareCreate}"
-                                       styleClass="btn btn-app m-2 border border-warning"
-                                         a:data-toggle="modal"
-                                         update=":frmEmployees"
-                                         a:data-target="#modalEmploye"> 
-                        <i class="fas fa-plus"></i>
-                        <h:outputText value="#{bundle.Create}"/>
-                        </p:commandLink>
-                        <p:commandLink styleClass="btn btn-app m-2 border border-warning"
-                                       id="btnUpdate"
-                                         disabled="#{empty empleadosControl.selected}"
-                                         a:data-toggle="modal"
-                                         update=":frmEmployees"
-                                         a:data-target="#modalEmploye">
-                        <i class="fas fa-edit"></i>
-                        <h:outputText value="#{bundle.Edit}"/>
-                        </p:commandLink>
-                        <p:commandLink styleClass="btn btn-app m-2 border border-warning"                                     
-                                         id="btnDelete"
-                                         disabled="#{empty empleadosControl.selected}"
-                                         a:data-toggle="modal"
-                                         a:data-target="#modalConfirmEmploye">
-                        <i class="fas fa-trash-alt"></i>
-                        <h:outputText value="#{bundle.Delete}"/>
-                        </p:commandLink>
-                        <p:commandLink actionListener="#{empleadosControl.prepareCreate}"
-                                       styleClass="btn btn-app m-2 border border-warning"                                     
-                                         id="btnView"
-                                         disabled="#{empty empleadosControl.selected}"
-                                         a:data-toggle="modal"
-                                         a:data-target="#modalConfirmEmploye">
-                        <i class="fas fa-eye"></i>
-                        <h:outputText value="#{bundle.View}"/>
-                        </p:commandLink>  
-                        <p:commandLink styleClass="btn btn-app m-2 border border-warning"                                     
-                                         id="btnUploadDocuments"
-                                         a:data-toggle="modal"
-                                          disabled="#{empty empleadosControl.selected}"
-                                         a:data-target="#upload-doc-modal">
-                        <i class="fas fa-file-upload"></i>
-                        <h:outputText value="#{bundle.UploadDocuments}"/>
-                        </p:commandLink>  
-                        <p:commandLink actionListener="#{empleadosControl.prepareCreate}"
-                                       styleClass="btn btn-app m-2 border border-warning"                                     
-                                         id="btnAbonar"
-                                         disabled="#{empty empleadosControl.selected}"
-                                         a:data-toggle="modal"
-                                         a:data-target="#modalConfirmEmploye">
-                        <i class="fas fa-cash-register"></i>
-                        <h:outputText value="#{bundle.Abono}"/>
-                        </p:commandLink>                          
-                    </f:facet>
-                </p:dataTable>
-            </h:form>
-            <ui:include src="Create.xhtml"/>
-            <ui:include src="DeleteConfirm.xhtml"/>
-            <ui:include src="UploadDocument.xhtml"/>
+            <div class="card">
+                <div class="m-auto p-md-2" style="width: 100%; max-width: 1024px;">
+                    <div class="card-header text-muted h5">
+                        Gestione y Configure el personal
+                    </div>
+                    <h:panelGroup layout="block" styleClass="card-body" id="viewEmployee">
+                        <h:panelGroup styleClass="row" layout="block" rendered="#{empleadosControl.selected != null}">
+                            <div class="col-md-4">
+                                <img src="#{facesContext.externalContext.requestContextPath}/resources/img/avatar.png" alt="" class="img-center-round"/>
+                                <div class="text-center border-bottom pt-3">
+                                    <label for="" class="text-muted font-weight-normal">
+                                        Tipo Empleado /
+                                    </label>
+                                    <span><h:outputText value="#{empleadosControl.selected.tipoEmpleadoCase()}"/></span>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p class="text-muted font-weight-bolder m-none">Informacion Empleado
+                                        </p>
+                                        <p class="text-muted font-weight-normal"><h:outputText value="#{empleadosControl.selected.nombres} #{empleadosControl.selected.apellidos}"/></p>
+                                        <div>
+                                            <p class="text-muted mt-custom1">DUI: <h:outputText styleClass="text-primary" value="#{empleadosControl.selected.dui}"/></p>
+                                            <p class="text-muted mt-custom1">Fecha de Nacimiento: 
+                                                <h:outputText value="#{empleadosControl.selected.fechaNacimiento}" styleClass="text-primary">
+                                                        <f:convertDateTime type="date" parent="dd/MM/yyyy"/>
+                                                </h:outputText>                                                        
+                                            </p>
+                                            <p class="text-muted mt-custom1">Edad: <h:outputText styleClass="text-primary" value="32a"/> </p>
+                                            <p class="text-muted mt-custom1">Contacto: <h:outputText styleClass="text-primary" value="#{empleadosControl.selected.telefono}"/></p>
+                                            <p class="text-muted mt-custom1">Estado Civil: <h:outputText styleClass="text-primary" value="#{empleadosControl.selected.estadoCivilCase()}"/></p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="rounded border border-info row p-2 text-info mb-2">
+                                            <div class="h3 m-none">
+                                                <i class="fas fa-file-pdf"></i>
+                                            </div>
+                                            <div class="ml-2">
+                                                3 Documentos Adjuntos
+                                            </div>
+                                        </div>
+                                        <div class="rounded border border-danger row p-2 text-danger mb-2">
+                                            <div class="h3 m-none">
+                                                <i class="far fa-bell"></i>
+                                            </div>
+                                            <div class="ml-2">
+                                                2 Alertas
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>                            
+                        </h:panelGroup>
+                    </h:panelGroup>
 
+                    <div class="row text-right">
+                        <div class="col-12 mb-2" id="pnlButtons">
+                            <h:form id="formButtons">
+                                <p:commandButton actionListener="#{empleadosControl.prepareCreate}"
+                                                 styleClass="btn-ct btn-ct-success d-inline-block ml-1"
+                                                 a:data-toggle="modal"
+                                                 a:data-target="#modalEmploye"
+                                                 value="+ #{bundle.Create}"/> 
+                                <p:commandButton styleClass="btn-ct btn-ct-warning d-inline-block ml-1"
+                                                 id="btnUpdate"
+                                                 disabled="#{empty empleadosControl.selected}"
+                                                 value="#{bundle.Edit}"/>
+                                <p:commandButton styleClass="btn-ct btn-ct-danger d-inline-block m-1"                                     
+                                                 id="btnDelete"
+                                                 disabled="#{empty empleadosControl.selected}"
+                                                 value="#{bundle.Delete}"/>
+                            </h:form>                                    
+                        </div>
+                    </div>                           
+
+                    <h:form id="listFormEmployees">
+                        <p:dataTable id="lstEmployees"
+                                     value="#{empleadosControl.lstEmpleados}"
+                                     var="item"
+                                     selectionMode="single"
+                                     tableStyleClass="table clobi-style"
+                                     rowKey="#{item}"
+                                     emptyMessage="Sin registro de Empleados"
+                                     selection="#{empleadosControl.selected}"
+                                     >
+                            <p:ajax event="rowSelect"   update=":formButtons :viewEmployee"/>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="#{bundle.DUI}"/>
+                                </f:facet>
+                                <h:outputText value="#{item.dui}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="#{bundle.FullName}"/>
+                                </f:facet>
+                                <h:outputText value="#{item.nombres} #{item.apellidos}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="#{bundle.Telephone}"/>
+                                </f:facet>
+                                <h:outputText value="#{item.telefono}"/>
+                            </p:column>                    
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="#{bundle.TypeEmployee}"/>
+                                </f:facet>
+                                <h:outputText value="#{item.tipoEmpleadoCase()}"/>
+                            </p:column>                                        
+                        </p:dataTable>                            
+                    </h:form>
+                </div>
+            </div>
+            <ui:include src="Create.xhtml"/>
         </ui:define>
         <ui:define name="scriptsSpecifided">
             <h:outputScript library="js" name="employees_global.js"/>

@@ -1,0 +1,88 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="nuevaOpeUnidadModal" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content br-none">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="row mb-md-2">
+                                <div class="col-md-4">
+                                    <h1 class="h1 text-success text-center">0/11</h1>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="text-muted"><i class="fas fa-bus"></i><span> Ninguna Unidad Selecionada</span></div>
+                                    <div class="p-md-1 p-lg-2 bg-success mt-md-2">
+                                        Estado: En Ejecucion
+                                    </div>                                
+                                </div>
+                            </div>
+                            <div class="row mb-md-2 mt-md-3 border-top">
+                                <div class="col-md-6">
+                                    <span class="text-center d-block text-pink">Motorista</span>
+                                    <span class="text-center d-block">Jorge Baltazar</span>
+                                </div>
+                                <div class="col-md-6">
+                                    <span class="text-center d-block text-pink">Auxiliar</span>
+                                    <span class="text-center d-block">--No Asignado--</span>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <a href=""><u>Cambiar Asignaciones</u></a>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-row mb-2">
+                                <div class="col-md-4 text-center"><label for="findByIdBus">Buscar </label></div>
+                                <div class="col-md-8"><input type="text" class="form-control" id="findByIdBus"></div>
+                            </div>
+                            <div id="allUniDisponible" class="table-responsive" style="overflow-y: auto; max-height: 140px;">
+                                <table class="table table-striped pth-0">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Unidad</th>
+                                            <th>Placa</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th><input type="radio" name="" id=""> </th>
+                                            <th>EQ15</th>
+                                            <th>ABC1547649</th>
+                                        </tr>                                    
+                                        <tr>
+                                            <th><input type="radio" name="" id=""> </th>
+                                            <th>EQ03</th>
+                                            <th>ABC1547989</th>
+                                        </tr>                                    
+                                        <tr>
+                                            <th><input type="radio" name="" id=""> </th>
+                                            <th>EQ03</th>
+                                            <th>ABC1547989</th>
+                                        </tr>                                    
+                                        <tr>
+                                            <th><input type="radio" name="" id=""> </th>
+                                            <th>EQ03</th>
+                                            <th>ABC1547989</th>
+                                        </tr>                                                                                                            
+                                    </tbody>
+                                </table>
+                            </div>       
+                        </div>                    
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button type="button" class="btn btn-ct-success" data-dismiss="modal">Crear</button>
+                    <button type="button" class="btn btn-ct-danger">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>    
+</ui:composition>
+

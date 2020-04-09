@@ -43,7 +43,7 @@ public class AnticiposByActividad implements Serializable {
     @NotNull
     @Column(name = "anticipo")
     private double anticipo;
-    @JoinColumn(name = "idactividad", referencedColumnName = "idactividad")
+    @JoinColumn(name = "idactividad", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private ActividadDiaria idactividad;
 

@@ -67,7 +67,7 @@
                                         <label for="inputEmail4">Tipo de Empleado</label>
                                         <h:selectOneMenu value="#{empleadosControl.selected.tipo}" styleClass="form-control">
                                             <f:selectItem itemValue="mot" itemLabel="Motorista"/>
-                                            <f:selectItem itemValue="ayu" itemLabel="Ayudante"/>
+                                            <f:selectItem itemValue="ayu" itemLabel="Auxiliar Motorista"/>
                                         </h:selectOneMenu>   
                                     </div>
                                     <div class="form-group col-sm-6">
@@ -81,7 +81,7 @@
                                 <p:commandLink actionListener="#{empleadosControl.create}" 
                                                  value="#{bundle.Save}" 
                                                  styleClass="btn btn-primary"
-                                                 update="display, :formEmpleado:lstEmployees,:pnlMessageJSF"
+                                                 update="display, :listFormEmployees:lstEmployees,:pnlMessageJSF"
                                                  oncomplete="closeModal('#modalEmploye');"
                                                  />
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">#{bundle.Close}</button>

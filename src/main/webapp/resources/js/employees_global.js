@@ -17,9 +17,25 @@ $(document).ready(function () {
         autoclose: true,
         clearBtn: true
     });
-    //ASIGNACION DE FUNCIONES A EVENTOS DE NODOS 
+    //ASIGNACION DE FUNCIONES A EVENTOS DE NODOS
+
+    function addEventSelect() {
+        $('table.clobi-style tr').removeClass('selected');
+        $(this).addClass('selected');
+    };
+    
+    function refreshEventRowSelect() {
+        $('table.clobi-style tbody tr').off('click');
+        $('table.clobi-style tbody tr').on('click', addEventSelect);
+    };
+
+refreshEventRowSelect();
+
+    $('#listFormEmployees').on('DOMSubtreeModified', refreshEventRowSelect);
+    
 });
 
-function closeModal(obj){
+function closeModal(obj) {
     $(obj).modal('hide');
-};
+}
+;

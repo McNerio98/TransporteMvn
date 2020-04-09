@@ -36,6 +36,9 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Unidad.findByNumerounidad", query = "SELECT u FROM Unidad u WHERE u.numerounidad = :numerounidad")})
 public class Unidad implements Serializable {
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "placa")
+    private List<OperacionUnidad> operacionUnidadList;
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -47,8 +50,10 @@ public class Unidad implements Serializable {
     @NotNull
     @Column(name = "numerounidad")
     private int numerounidad;
+    /*
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "placa")
     private List<ActividadDiaria> actividadDiariaList;
+    */
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "placa")
     private List<UnidadByEmpleado> unidadByEmpleadoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "placa")
@@ -85,6 +90,7 @@ public class Unidad implements Serializable {
         this.numerounidad = numerounidad;
     }
 
+    /*
     @XmlTransient
     public List<ActividadDiaria> getActividadDiariaList() {
         return actividadDiariaList;
@@ -93,6 +99,7 @@ public class Unidad implements Serializable {
     public void setActividadDiariaList(List<ActividadDiaria> actividadDiariaList) {
         this.actividadDiariaList = actividadDiariaList;
     }
+*/
 
     @XmlTransient
     public List<UnidadByEmpleado> getUnidadByEmpleadoList() {
@@ -143,6 +150,15 @@ public class Unidad implements Serializable {
     @Override
     public String toString() {
         return "com.clobi.transporte.entity.Unidad[ placa=" + placa + " ]";
+    }
+
+    @XmlTransient
+    public List<OperacionUnidad> getOperacionUnidadList() {
+        return operacionUnidadList;
+    }
+
+    public void setOperacionUnidadList(List<OperacionUnidad> operacionUnidadList) {
+        this.operacionUnidadList = operacionUnidadList;
     }
     
 }

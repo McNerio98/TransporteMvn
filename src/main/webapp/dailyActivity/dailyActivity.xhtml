@@ -4,6 +4,7 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:p="http://primefaces.org/ui">
 
     <ui:composition template="/template1.xhtml">
@@ -17,7 +18,44 @@
         </ui:define>
 
         <ui:define name="contenido">
-            <p:panelGrid>Hola mundo</p:panelGrid>
+            <ui:include src="banner.xhtml"/>
+            <div class="card">
+                <h:panelGroup styleClass="card-body" id="pnlPrincipal">
+                    <h:panelGroup layout="block"
+                                  id="createDailyActivity"
+                                  rendered="#{!ADController.activityStatus}"
+                                  styleClass="text-center pt-md-3 pb-md-3">
+                        <h:form id="createNewActivity"
+                                rendered="#{!ADController.activityStatus}">
+                            <p:commandLink styleClass="pt-md-4 pb-md-4"
+                                           actionListener="#{ADController.createActivity}"
+                                           update="pnlPrincipal">
+                                <i class="fas fa-plus"></i>
+                                <br/>
+                                <u>Iniciar actividad</u>                           
+                            </p:commandLink>                                                    
+                        </h:form>
+                    </h:panelGroup>
+                    <h:panelGroup styleClass="row"
+                                  id="listActivities"
+                                  rendered="#{ADController.activityStatus}">
+                        <div class="card-custom border rounded">
+                            <h3 class="text-muted h4 text-center p-md-2" style="background-color: #f5f6f7;">Que necesita hacer?</h3>
+                            <div class="p-2">
+                                <h4 class="text-center h1 text-muted"><i class="fas fa-cubes"></i></h4>
+                                <p:commandLink styleClass="d-block text-center" 
+                                               a:data-toggle="modal" 
+                                               a:data-target="#nuevoViaje">
+                                    <u>Nuevo Registro</u>
+                                </p:commandLink>
+                                <a href="" class="d-block text-center"><u>Registrar Gasto</u></a>
+                                <a href="" class="d-block text-center"><u>Auditoria</u></a>
+                                <a href="" class="d-block text-center text-pink"><u>Finalizar AD</u></a>
+                            </div>
+                        </div>                        
+                    </h:panelGroup>
+                </h:panelGroup>
+            </div>            
         </ui:define>
 
     </ui:composition>
