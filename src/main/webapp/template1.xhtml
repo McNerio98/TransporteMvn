@@ -8,12 +8,15 @@
 
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!--        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css" />-->
         <title><ui:insert name="title">Default Title</ui:insert></title>
         <h:outputStylesheet library="css" name="bootstrap-Sweetalert-4.min.css"/>
         <h:outputStylesheet library="css" name="toastr.css"/>
         <h:outputStylesheet library="css" name="OverlayScrollbars.min.css"/>
         <h:outputStylesheet library="css" name="adminlte.css"/>
         <h:outputStylesheet library="css" name="custom1.css"/>
+        <h:outputStylesheet library="css" name="jquery.dataTables.min.css"/>
         <h:outputStylesheet library="webjars" name="font-awesome/5.12.0/css/all.min-jsf.css" />
         <h:outputStylesheet library="webjars" name="font-awesome/5.12.0/css/v4-shims.min-jsf.css" />
         <ui:insert name="stylesSpecifided"></ui:insert>
@@ -46,12 +49,7 @@
                                 </h1>
                             </div><!-- /.col -->
                             <div class="col-sm-6">
-                                <ol class="breadcrumb float-sm-right">
-                                    <li class="breadcrumb-item">
-                                        <h:link outcome="home" value="Home"/>
-                                    </li>
-                                    <li class="breadcrumb-item active">Dashboard</li>
-                                </ol>
+                                
                             </div><!-- /.col -->
                         </div><!-- /.row -->
                     </div><!-- /.container-fluid -->
@@ -70,7 +68,9 @@
                 <h:outputScript library="js" name="toastr.min.js"/>
                 <h:outputScript library="js" name="jquery.overlayScrollbars.min.js"/>
                 <h:outputScript library="js" name="adminlte.js"/>
+                <h:outputScript library="js" name="dataTable.min.js"/>
                 <h:outputScript library="js" name="globalScript1.js"/>
+                
                 <ui:insert name="scriptsSpecifided"></ui:insert>
             </div>
         </div>
