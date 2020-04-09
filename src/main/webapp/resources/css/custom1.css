@@ -47,3 +47,109 @@ and open the template in the editor.
 .p-hidden{
     overflow: hidden;
 }
+
+.cortarTexto{
+
+    /* Responsável pelo efeito de texto limitado */
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    overflow:hidden;
+}
+
+.inputfile{
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.label {
+
+    border-radius: 5px;
+    padding: 10px;
+    color: white;
+    background-color: #3085d6;
+    display: inline-block;
+}
+
+.label:hover {
+    transition-delay:  0.1s;
+    background-color: #0062cc;
+    cursor: pointer;
+}
+
+/*.ui-datatable * {
+    border : 1px;
+}
+
+table {
+    width: 100% !important; 
+    border-collapse: collapse !important;
+}
+
+table td {
+    border-left: 0px solid #000 !important;
+    border-right: 0px solid #000 !important;
+    border-bottom: 1px solid #ccc !important;
+    padding: 10px 18px !important;
+    box-sizing: content-box !important;
+}
+
+table tr{
+    color: #666 !important;
+    font-weight: normal !important;
+    font-size: 15px !important;
+}
+
+table tr:hover {
+    background: #ffef8f !important;
+    border-left: 0px solid #000 !important;
+}
+
+
+table th {
+    border: 0px solid #ccc !important;
+    font-size: 15px !important;
+    color: #000 !important;
+    background: #fff !important;
+    border-left: 0px solid #000 !important;
+    border-right: 0px solid #000 !important;
+    border-bottom: 1px solid #000 !important;
+}
+
+table td:first-child {
+    border-left: none;
+}
+
+table td:last-child {
+    border-right: none;
+}
+
+@media only screen and (max-width: 300px) {
+    .control-sidebar{
+        width: 100vw;
+    }
+}
+
+.ui-datepicker{
+    width: 100%;
+    margin: auto;
+    left: 0;
+    top: 0;
+    right: 0;
+}
+
+.ui-datepicker .ui-widget-content {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #888888;
+    background: #ffffff;
+    font-weight: normal;
+    color: #000000; 
+}
+
+.ui-datepicker-calendar > tr > td{
+    background: #ccc;
+}*/
