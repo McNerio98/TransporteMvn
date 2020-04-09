@@ -22,6 +22,10 @@
             <h:outputText value="Empleados Registrados"></h:outputText>
         </ui:define>
 
+        <ui:define name="actual">
+            <h:link outcome="employees" value="Empleados"/>
+        </ui:define>
+            
         <ui:define name="contenido">
             <p:commandLink value="Test" actionListener="#{empleadosControl.methodTest}"/>
             <h:form id='formEmpleado'>             
