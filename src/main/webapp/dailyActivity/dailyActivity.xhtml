@@ -5,7 +5,8 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <ui:composition template="/template1.xhtml">
 
@@ -29,34 +30,80 @@
                                 rendered="#{!ADController.activityStatus}">
                             <p:commandLink styleClass="pt-md-4 pb-md-4"
                                            actionListener="#{ADController.createActivity}"
-                                           update="pnlPrincipal">
+                                           update="pnlPrincipal,:pnlMessageJSF">
                                 <i class="fas fa-plus"></i>
                                 <br/>
                                 <u>Iniciar actividad</u>                           
                             </p:commandLink>                                                    
                         </h:form>
                     </h:panelGroup>
-                    <h:panelGroup styleClass="row"
-                                  id="listActivities"
-                                  rendered="#{ADController.activityStatus}">
-                        <div class="card-custom border rounded">
-                            <h3 class="text-muted h4 text-center p-md-2" style="background-color: #f5f6f7;">Que necesita hacer?</h3>
-                            <div class="p-2">
-                                <h4 class="text-center h1 text-muted"><i class="fas fa-cubes"></i></h4>
-                                <p:commandLink styleClass="d-block text-center" 
+                    <!--Panel Principal-->
+                    <h:panelGroup layout="block"
+                                  rendered="#{ADController.activityStatus}"
+                                  id="listActivities">
+                        <div class="row border-bottom pb-lg-3 mb-md-1 mb-lg-3 ">
+                            <h4 class="text-center h1 text-muted d-block" style="width: 100%;"><i class="fas fa-cubes"></i></h4>
+                            <h:form class="text-center col-12">
+                                <p:commandLink styleClass="text-center pl-md-3 pr-md-3 d-md-inline d-block"
+                                               actionListener="#{ADController.prepareOperation}"
+                                               update="listActivities"
                                                a:data-toggle="modal" 
-                                               a:data-target="#nuevoViaje">
+                                               a:data-target="#nuevaOpeUnidadModal">
                                     <u>Nuevo Registro</u>
-                                </p:commandLink>
-                                <a href="" class="d-block text-center"><u>Registrar Gasto</u></a>
-                                <a href="" class="d-block text-center"><u>Auditoria</u></a>
-                                <a href="" class="d-block text-center text-pink"><u>Finalizar AD</u></a>
-                            </div>
+                                </p:commandLink>                                
+                                <a href="" class="text-center pl-md-3 pr-md-3 d-md-inline d-block"><u>Registrar Gasto</u></a>
+                                <a href="" class="text-center pl-md-3 pr-md-3 d-md-inline d-block"><u>Auditoria</u></a>
+                                <a href="" class="text-center text-pink pl-md-3 pr-md-3 d-md-inline d-block"><u>Finalizar AD</u></a>                                
+                            </h:form>
                         </div>                        
+                        <!--COMIENZA LA ITERACION-->
+                        <c:set var="contador" value="1" scope="request"/>
+                        <c:forEach var="i" items="#{ADController.listOperaciones}">
+                            <c:if test="#{contador == 1}">
+                                <h:outputText escape="false" value="&lt;div class='row'&gt;" />
+                            </c:if>
+                            <!--INIT-->
+                            <div class="col-md-6 col-lg-3">
+                                <div class="card-custom border rounded">
+                                    <div class="header p-2 text-purple" style="background-color: #f5f6f7;">
+                                        <i class="fas fa-bus"></i><span> #{i.placa.numerounidad} | #{i.placa.placa} </span>
+                                    </div>
+                                    <div class="row p-1">
+                                        <div class="col-md-8">
+                                            <span class="d-block">Conductor</span>
+                                            <span class="d-block"><h:outputText value="#{i.idconductor.nombres} #{i.idconductor.apellidos}"/></span>
+                                            <span class="d-block">Auxiliar</span>
+                                            <span class="d-block">
+                                                <h:outputText  rendered="#{!(empty i.idauxiliar)}" value="#{i.idauxiliar.nombres} #{i.idauxiliar.apellidos}"/>
+                                            </span>
+                                        </div>
+                                        <div class="col-md-4 h2 text-right">
+                                            <h:outputText value="#{i.viajesrealizados}/11"/>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <p:commandLink actionListener="#{ADController.setOperacionSelected(i)}">
+                                                + Viaje
+                                            </p:commandLink>
+                                            <a href="#" class="d-block text-center">+ Viaje</a>
+                                            <a href="#" class="d-block text-center">Anticipos</a>
+                                            <a href="#" class="d-block text-center">Finalizar</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--END-->
+                            <c:set var="contador" value="#{contador + 1}"/>
+                            <c:if test="#{contador > 4}">
+                                <h:outputText escape="false" value="&lt;/div&gt;" />
+                                <c:set var="contador" value="1"/>
+                            </c:if>
+                        </c:forEach>
                     </h:panelGroup>
                 </h:panelGroup>
-            </div>            
+            </div>  
+            <ui:include src="CreateOperatividad.xhtml"/>
         </ui:define>
-
     </ui:composition>
 </html>

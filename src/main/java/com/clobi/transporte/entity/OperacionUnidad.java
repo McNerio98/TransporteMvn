@@ -31,6 +31,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "OperacionUnidad.findAll", query = "SELECT o FROM OperacionUnidad o")
     , @NamedQuery(name = "OperacionUnidad.findById", query = "SELECT o FROM OperacionUnidad o WHERE o.id = :id")
     , @NamedQuery(name = "OperacionUnidad.findByEstado", query = "SELECT o FROM OperacionUnidad o WHERE o.estado = :estado")
+    , @NamedQuery(name = "OperacionUnidad.findByActividad", query = "SELECT o FROM OperacionUnidad o WHERE o.idactividaddiaria = :actividad")
     , @NamedQuery(name = "OperacionUnidad.findByViajesrealizados", query = "SELECT o FROM OperacionUnidad o WHERE o.viajesrealizados = :viajesrealizados")
     , @NamedQuery(name = "OperacionUnidad.findByContador", query = "SELECT o FROM OperacionUnidad o WHERE o.contador = :contador")})
 public class OperacionUnidad implements Serializable {
@@ -165,5 +166,5 @@ public class OperacionUnidad implements Serializable {
     public String toString() {
         return "com.clobi.transporte.entity.OperacionUnidad[ id=" + id + " ]";
     }
-    
+
 }

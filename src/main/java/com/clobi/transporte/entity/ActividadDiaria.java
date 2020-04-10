@@ -39,7 +39,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "ActividadDiaria.findById", query = "SELECT a FROM ActividadDiaria a WHERE a.id = :id")
     , @NamedQuery(name = "ActividadDiaria.findByTotalviajes", query = "SELECT a FROM ActividadDiaria a WHERE a.totalviajes = :totalviajes")
     , @NamedQuery(name = "ActividadDiaria.findByIngresototal", query = "SELECT a FROM ActividadDiaria a WHERE a.ingresototal = :ingresototal")
-    , @NamedQuery(name = "ActividadDiaria.countToday", query = "SELECT count(a) from ActividadDiaria a")        
+    , @NamedQuery(name = "ActividadDiaria.countToday", query = "SELECT count(a) from ActividadDiaria a")
     , @NamedQuery(name = "ActividadDiaria.findByFecha", query = "SELECT a FROM ActividadDiaria a WHERE a.fecha = :fecha")
     , @NamedQuery(name = "ActividadDiaria.findByEstado", query = "SELECT a FROM ActividadDiaria a WHERE a.estado = :estado")})
 public class ActividadDiaria implements Serializable {
@@ -102,7 +102,6 @@ public class ActividadDiaria implements Serializable {
         this.totalviajes = totalviajes;
     }
 
-
     public Date getFecha() {
         return fecha;
     }
@@ -160,5 +159,5 @@ public class ActividadDiaria implements Serializable {
     public void setOperacionUnidadList(List<OperacionUnidad> operacionUnidadList) {
         this.operacionUnidadList = operacionUnidadList;
     }
-    
+
 }

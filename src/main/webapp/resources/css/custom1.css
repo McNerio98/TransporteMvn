@@ -183,3 +183,11 @@ table.clobi-style tbody tr{
 .text-purple{
 	color: #563d7c;
 }
+
+.br-none{
+	border-radius: 0px !important; 
+}
+
+table.pth-0 th{
+	padding: 0px 5px !important;
+}
