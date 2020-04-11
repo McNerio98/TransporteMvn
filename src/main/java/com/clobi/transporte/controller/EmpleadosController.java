@@ -59,6 +59,8 @@ public class EmpleadosController implements Serializable {
 
     public Empleado prepareCreate() {
         if (this.selected != null) {
+            System.out.print("Dato 1: " + selected.getNombres());
+            System.out.print("Dato 1: " + selected.getApellidos());
             selected = null;
         }
         this.selected = new Empleado();
@@ -158,6 +160,10 @@ public class EmpleadosController implements Serializable {
 
     public void destroy() {
         this.persist(PersistAction.DELETE, "Se Removio un elemento con exito!");
+    }
+    
+    public void showStatus(){
+        System.out.print("Se envio al metodo");
     }
 
     private void persist(PersistAction persistAction, String infoResult) {

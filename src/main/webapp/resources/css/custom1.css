@@ -5,7 +5,7 @@ and open the template in the editor.
 */
 /* 
     Created on : 03-02-2020, 09:44:04 AM
-    Author     : desarrollo
+    Author     : McNerio
 */
 
 
@@ -153,3 +153,141 @@ table td:last-child {
 .ui-datepicker-calendar > tr > td{
     background: #ccc;
 }*/
+.img-center-round{
+    display: block;
+    margin: auto;
+    border-radius: 50%;
+    width: 150px;
+    height: auto;
+    border: 1px solid gray;
+}
+
+.m-none{
+    margin: 0px !important;
+}
+
+.mt-custom1{
+    margin: 5px 0px !important;
+}
+
+.btn-ct{
+    padding: 5px !important;
+    font-size: 0.8rem !important;
+    border-radius: 5px;
+}
+
+.btn-ct:disabled{
+    cursor: not-allowed;
+}
+
+.btn-ct-success, .btn-ct-success:disabled:hover{
+    color: white;
+    border: 1px solid #5cb85c;
+    background-color: #5cb85c;
+}
+
+.btn-ct-success:hover{
+    border: 1px solid #5cb85c;
+    background-color: white;
+    color: #5cb85c;
+}
+
+
+.btn-ct-warning, .btn-ct-warning:disabled:hover{
+    color: white;
+    border: 1px solid #f77b03;
+    background-color: #f77b03;
+}
+
+.btn-ct-warning:hover{
+    border: 1px solid #f77b03;
+    background-color: white;
+    color: #f77b03;
+}
+
+.btn-ct-secondary, .btn-ct-secondary:disabled:hover{
+    color: gray;
+    border: 1px solid #ddd;
+    background-color: #ddd;
+}
+
+.btn-ct-secondary:hover{
+    border: 1px solid #ddd;
+    background-color: white;
+}
+
+
+.btn-ct-danger, .btn-ct-danger:disabled:hover{
+    color: white;
+    border: 1px solid tomato;
+    background-color: tomato;
+}
+
+.btn-ct-danger:hover{
+    border: 1px solid tomato;
+    background-color: white;
+    color: tomato;
+}
+
+.btn-ct-success:disabled, .btn-ct-warning:disabled, 
+.btn-ct-danger:disabled, .btn-ct-secondary:disabled{
+    opacity: 0.5;
+    cursor: not-allowed !important;
+}
+
+
+.selected{
+    background-color: rgb(245, 245, 245);
+    color: dodgerblue;
+}
+
+table.clobi-style tbody tr{
+    cursor: pointer;
+}
+
+.small-box-custom1 .icon > i.fas{
+    font-size: 50px;
+    top: 20px;
+}
+
+.small-box-custom1 .icon > i {
+    position: absolute;
+    right: 15px;
+    transition: all .3s linear;
+}
+.small-box-custom1 .icon {
+    color: rgba(0,0,0,.15);
+    z-index: 0;
+}
+
+.small-box-custom1 h3 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin: 0 0 10px 0;
+    padding: 0;
+    white-space: nowrap;
+    z-index: 5;
+}
+
+.small-box-custom1 {
+    box-shadow: 0 0 1px rgba(0,0,0,.125),0 1px 3px rgba(0,0,0,.2);
+    display: block;
+    margin-bottom: 10px;
+    position: relative;
+    color: white;
+}
+
+.small-box-custom1 > .inner {
+    padding: 5px;
+}
+
+.text-pink{
+    color: #e83e8c;
+}
+
+.text-purple{
+    color: #563d7c;
+}
+
+
+

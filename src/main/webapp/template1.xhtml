@@ -3,13 +3,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui">
 
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<!--        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css" />-->
+        <!--        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css" />-->
         <title><ui:insert name="title">Default Title</ui:insert></title>
         <h:outputStylesheet library="css" name="bootstrap-Sweetalert-4.min.css"/>
         <h:outputStylesheet library="css" name="toastr.css"/>
@@ -17,11 +18,13 @@
         <h:outputStylesheet library="css" name="adminlte.css"/>
         <h:outputStylesheet library="css" name="custom1.css"/>
         <h:outputStylesheet library="css" name="jquery.dataTables.min.css"/>
+        <h:outputStylesheet library="css" name="adminLTEAlters.css"/>
+        <h:outputStylesheet library="primefaces" name="components.css"/>
         <h:outputStylesheet library="webjars" name="font-awesome/5.12.0/css/all.min-jsf.css" />
         <h:outputStylesheet library="webjars" name="font-awesome/5.12.0/css/v4-shims.min-jsf.css" />
         <ui:insert name="stylesSpecifided"></ui:insert>
     </h:head>
-    <h:body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+    <h:body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed">
         <div class="wrapper">
 
             <ui:include src="_nav.xhtml"/>
@@ -29,27 +32,83 @@
             <!-- Main content -->
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
+                <!-- Modal para actualizar el tipo de contrato de un empleado -->
+                <div class="modal fade" id="modalTipoContrato" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalCenterTitle">Configurar tipo de contrato</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>                           
+                            <h:form id="formContrato">
+                                <div class="modal-body">
+                                    Cambia el tipo de contrato para:<br/>
+                                    <h:inputText value="#{empleadosContrato.empleadoContrato.empleado}" 
+                                                 maxlength="9" 
+                                                 required="true" 
+                                                 styleClass="form-control form-control-sm" 
+                                                 disabled="true"/> <br/> 
+                                    <h:inputText value="#{empleadosContrato.empleadoContrato.empleado1.nombres}" 
+                                                 maxlength="9" 
+                                                 required="true" 
+                                                 styleClass="form-control form-control-sm" 
+                                                 disabled="true"/> <br/> 
+                                    <h:inputText value="#{empleadosContrato.empleadoContrato.empleado1.apellidos}" 
+                                                 maxlength="9" 
+                                                 required="true" 
+                                                 styleClass="form-control form-control-sm" 
+                                                 disabled="true"/> <br/> 
+                                    <h:selectOneMenu 
+                                        converter="javax.faces.Integer"
+                                        class="custom-select" 
+                                        id="next" 
+                                        value = "#{empleadosContrato.empleadoContrato.tipocontrato}"
+                                        disabled="#{empty empleadosContrato.empleadoContrato}"> 
+                                        <f:selectItem itemValue ="1" itemLabel = "Permanente" /> 
+                                        <f:selectItem itemValue ="2" itemLabel = "Por Dia" /> 
+                                    </h:selectOneMenu> 	
+                                </div>
+                                <div class="modal-footer">
+                                    <p:commandButton actionListener="#{empleadosContrato.prepareCreate}"
+                                                     styleClass="btn btn-secondary"
+                                                     a:data-dismiss="modal"
+                                                     update="formContrato"
+                                                     value="Cancelar"/> 
+                                    <p:commandButton 
+                                        disabled="#{empty empleadosContrato.empleadoContrato}"
+                                        action="#{empleadosContrato.update()}"
+                                        styleClass="btn btn-primary"
+                                        value="Guardar Cambios">
+                                        <f:ajax  onevent="ContratoSuccess"  onerror="ContratoError" />
+                                    </p:commandButton>
+                                </div>
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- Content Header (Page header) -->
                 <div class="content-header">
                     <div class="container-fluid">
                         <div class="row mb-2">
                             <div class="col-sm-6">
-                                <h1 class="m-0 text-dark">
+                                <h2 class="m-0 text-dark h4">
                                     <ui:insert name="encabezado">Default Title</ui:insert>
                                     <h:panelGroup id="pnlMessageJSFParent" style="display: none;">
-                                    <h:messages id="pnlMessageJSF" 
-                                                errorClass="MessageError nodeMsg" 
-                                                infoClass="MessageSuccess nodeMsg"
-                                                globalOnly="true"
-                                                />                                        
+                                        <h:messages id="pnlMessageJSF" 
+                                                    errorClass="MessageError nodeMsg" 
+                                                    infoClass="MessageSuccess nodeMsg"
+                                                    globalOnly="true"
+                                                    />                                        
                                     </h:panelGroup>
 
-                                    
-                                </h1>
+
+                                </h2>
                             </div><!-- /.col -->
                             <div class="col-sm-6">
-                                
+
                             </div><!-- /.col -->
                         </div><!-- /.row -->
                     </div><!-- /.container-fluid -->
@@ -70,9 +129,15 @@
                 <h:outputScript library="js" name="adminlte.js"/>
                 <h:outputScript library="js" name="dataTable.min.js"/>
                 <h:outputScript library="js" name="globalScript1.js"/>
-                
                 <ui:insert name="scriptsSpecifided"></ui:insert>
             </div>
+            <footer class="main-footer">
+                <strong>Copyright &copy; 2014-2019 <a href="http://adminlte.io">Transporte.Mvn</a>.</strong>
+                All rights reserved.
+                <div class="float-right d-none d-sm-inline-block">
+                    <b>Version</b> Dedug
+                </div>
+            </footer>
         </div>
     </h:body>
 

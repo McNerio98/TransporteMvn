@@ -7,6 +7,13 @@
     <navigation-rule>
         <from-view-id>*</from-view-id>
         <navigation-case>
+            <from-outcome>home</from-outcome>
+            <to-view-id>/dailyActivity/dailyActivity.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>*</from-view-id>
+        <navigation-case>
             <from-outcome>employees</from-outcome>
             <to-view-id>/employees/employees.xhtml</to-view-id>
         </navigation-case>
@@ -14,8 +21,29 @@
     <navigation-rule>
         <from-view-id>*</from-view-id>
         <navigation-case>
-            <from-outcome>home</from-outcome>
-            <to-view-id>/dailyActivity/dailyActivity.xhtml</to-view-id>
+            <from-outcome>unidades</from-outcome>
+            <to-view-id>/unidades/unidades.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>*</from-view-id>
+        <navigation-case>
+            <from-outcome>unidades/create</from-outcome>
+            <to-view-id>/unidades/create.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>*</from-view-id>
+        <navigation-case>
+            <from-outcome>asignaciones</from-outcome>
+            <to-view-id>/asignaciones/asignaciones.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>*</from-view-id>
+        <navigation-case>
+            <from-outcome>asignaciones/create</from-outcome>
+            <to-view-id>/asignaciones/create.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     <application>

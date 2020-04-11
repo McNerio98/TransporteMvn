@@ -1,0 +1,13 @@
+.ui-datatable 
+    tr.ui-state-highlight {
+    background-image: none;
+    background-color: #ffc107 !important;
+}
+
+.dataTables_wrapper .dataTables_filter {
+    float: right;
+    text-align: right;
+    visibility: hidden;
+    display: none;
+}
+

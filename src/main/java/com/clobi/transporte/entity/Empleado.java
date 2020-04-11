@@ -11,11 +11,15 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ColumnResult;
+import javax.persistence.ConstructorResult;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.SqlResultSetMapping;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -31,6 +35,19 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "empleados", catalog = "transporte", schema = "public")
 @XmlRootElement
+//    @SqlResultSetMapping(
+//        name = "EmpleadoMapping",
+//        classes = @ConstructorResult(
+//                targetClass = Empleado.class,
+//                columns = {
+//                    @ColumnResult(name = "dui", type = Long.class),
+//                    @ColumnResult(name = "nombres"),
+//                    @ColumnResult(name = "apellidos"),
+//                    @ColumnResult(name = "fechanacimiento"),
+//                    @ColumnResult(name = "estadocivil"),
+//                    @ColumnResult(name = "telefono"),
+//                    @ColumnResult(name = "tipo")
+//}))
 @NamedQueries({
     @NamedQuery(name = "Empleado.findAll", query = "SELECT e FROM Empleado e")
     , @NamedQuery(name = "Empleado.findByDui", query = "SELECT e FROM Empleado e WHERE e.dui = :dui")
@@ -40,6 +57,19 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Empleado.findByTelefono", query = "SELECT e FROM Empleado e WHERE e.telefono = :telefono")
     , @NamedQuery(name = "Empleado.findByTipo", query = "SELECT e FROM Empleado e WHERE e.tipo = :tipo")})
 public class Empleado implements Serializable {
+
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "empleado1")
+    private EmpleadosContrato empleadosContrato;
+
+    @OneToMany(mappedBy = "ayudante")
+    private List<Asignacion> asignacionList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "motorista")
+    private List<Asignacion> asignacionList1;
+
+    @OneToMany(mappedBy = "idauxiliar")
+    private List<OperacionUnidad> operacionUnidadList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idconductor")
+    private List<OperacionUnidad> operacionUnidadList1;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -216,9 +246,77 @@ public class Empleado implements Serializable {
         return true;
     }
 
+    public String estadoCivilCase() {
+        String estado = "none";
+        switch (this.estadocivil) {
+            case "sol":
+                estado = "Soltero";
+            case "aco":
+                estado = "Acompaniado";
+            case "cas":
+                estado = "Casado";
+        }
+        return estado;
+    }
+    
+    public String tipoEmpleadoCase(){
+        String tipo = "none";
+        switch (this.tipo) {
+            case "mot":
+                tipo = "Motorista";
+            case "ayu":
+                tipo = "Auxiliar Motorista";
+        }        
+        return tipo;
+    }
+
     @Override
     public String toString() {
         return "com.clobi.transporte.entity.Empleado[ dui=" + dui + " ]";
     }
-    
+
+    @XmlTransient
+    public List<OperacionUnidad> getOperacionUnidadList() {
+        return operacionUnidadList;
+    }
+
+    public void setOperacionUnidadList(List<OperacionUnidad> operacionUnidadList) {
+        this.operacionUnidadList = operacionUnidadList;
+    }
+
+    @XmlTransient
+    public List<OperacionUnidad> getOperacionUnidadList1() {
+        return operacionUnidadList1;
+    }
+
+    public void setOperacionUnidadList1(List<OperacionUnidad> operacionUnidadList1) {
+        this.operacionUnidadList1 = operacionUnidadList1;
+    }
+
+    @XmlTransient
+    public List<Asignacion> getAsignacionList() {
+        return asignacionList;
+    }
+
+    public void setAsignacionList(List<Asignacion> asignacionList) {
+        this.asignacionList = asignacionList;
+    }
+
+    @XmlTransient
+    public List<Asignacion> getAsignacionList1() {
+        return asignacionList1;
+    }
+
+    public void setAsignacionList1(List<Asignacion> asignacionList1) {
+        this.asignacionList1 = asignacionList1;
+    }
+
+    public EmpleadosContrato getEmpleadosContrato() {
+        return empleadosContrato;
+    }
+
+    public void setEmpleadosContrato(EmpleadosContrato empleadosContrato) {
+        this.empleadosContrato = empleadosContrato;
+    }
+
 }
