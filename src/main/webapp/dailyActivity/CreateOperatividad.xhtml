@@ -13,7 +13,7 @@
                         <div class="col-md-6">
                             <div class="row mb-md-2">
                                 <div class="col-md-4">
-                                    <h1 class="h1 text-success text-center">0/11</h1>
+                                    <h1 class="h1 text-success text-center">1/11</h1>
                                 </div>
                                 <div class="col-md-8">
                                     <div class="text-muted"><i class="fas fa-bus"></i><span> Ninguna Unidad Selecionada</span></div>
@@ -39,7 +39,7 @@
                         <div class="col-md-6">
                             <div class="form-row mb-2">
                                 <div class="col-md-4 text-center"><label for="findByIdBus">Buscar </label></div>
-                                <div class="col-md-8"><input type="text" class="form-control" id="findByIdBus"></div>
+                                <div class="col-md-8"><input type="text" class="form-control" id="findByIdBus"/></div>
                             </div>
                             <div id="allUniDisponible" class="table-responsive" style="overflow-y: auto; max-height: 140px;">
                                 <table class="table table-striped pth-0">
@@ -52,22 +52,22 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <th><input type="radio" name="" id=""> </th>
+                                            <th><input type="radio" name="" id=""/> </th>
                                             <th>EQ15</th>
                                             <th>ABC1547649</th>
                                         </tr>                                    
                                         <tr>
-                                            <th><input type="radio" name="" id=""> </th>
+                                            <th><input type="radio" name="" id=""/> </th>
                                             <th>EQ03</th>
                                             <th>ABC1547989</th>
                                         </tr>                                    
                                         <tr>
-                                            <th><input type="radio" name="" id=""> </th>
+                                            <th><input type="radio" name="" id=""/> </th>
                                             <th>EQ03</th>
                                             <th>ABC1547989</th>
                                         </tr>                                    
                                         <tr>
-                                            <th><input type="radio" name="" id=""> </th>
+                                            <th><input type="radio" name="" id=""/> </th>
                                             <th>EQ03</th>
                                             <th>ABC1547989</th>
                                         </tr>                                                                                                            
@@ -78,8 +78,12 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <button type="button" class="btn btn-ct-success" data-dismiss="modal">Crear</button>
-                    <button type="button" class="btn btn-ct-danger">Cancelar</button>
+                    <p:commandLink styleClass="btn btn-ct-success"
+                                     a:data-dismiss="modal"
+                                     value="Crear"
+                                     actionListener="#{ADController.createOperation}"
+                                     update=":pnlMessageJSF,:listActivities"/>
+                    <a href="#" data-dismiss="modal" class="btn btn-ct-danger">Cancelar</a>
                 </div>
             </div>
         </div>

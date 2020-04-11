@@ -7,7 +7,8 @@ package com.clobi.transporte.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.BigInteger;
+import java.math.BigDecimal;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -39,14 +40,14 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "ActividadDiaria.findById", query = "SELECT a FROM ActividadDiaria a WHERE a.id = :id")
     , @NamedQuery(name = "ActividadDiaria.findByTotalviajes", query = "SELECT a FROM ActividadDiaria a WHERE a.totalviajes = :totalviajes")
     , @NamedQuery(name = "ActividadDiaria.findByIngresototal", query = "SELECT a FROM ActividadDiaria a WHERE a.ingresototal = :ingresototal")
-    , @NamedQuery(name = "ActividadDiaria.countToday", query = "SELECT count(a) from ActividadDiaria a")        
+    , @NamedQuery(name = "ActividadDiaria.countToday", query = "SELECT count(a) from ActividadDiaria a")
     , @NamedQuery(name = "ActividadDiaria.findByFecha", query = "SELECT a FROM ActividadDiaria a WHERE a.fecha = :fecha")
     , @NamedQuery(name = "ActividadDiaria.findByEstado", query = "SELECT a FROM ActividadDiaria a WHERE a.estado = :estado")})
 public class ActividadDiaria implements Serializable {
 
     @Basic(optional = false)
     @NotNull
-    @Column(name = "ingresototal")
+    @Column(name = "ingresototal", nullable = false)
     private BigDecimal ingresototal;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idactividaddiaria")
     private List<OperacionUnidad> operacionUnidadList;
@@ -102,7 +103,6 @@ public class ActividadDiaria implements Serializable {
         this.totalviajes = totalviajes;
     }
 
-
     public Date getFecha() {
         return fecha;
     }
@@ -144,13 +144,6 @@ public class ActividadDiaria implements Serializable {
         return "com.clobi.transporte.entity.ActividadDiaria[ id=" + id + " ]";
     }
 
-    public BigDecimal getIngresototal() {
-        return ingresototal;
-    }
-
-    public void setIngresototal(BigDecimal ingresototal) {
-        this.ingresototal = ingresototal;
-    }
 
     @XmlTransient
     public List<OperacionUnidad> getOperacionUnidadList() {
@@ -160,5 +153,13 @@ public class ActividadDiaria implements Serializable {
     public void setOperacionUnidadList(List<OperacionUnidad> operacionUnidadList) {
         this.operacionUnidadList = operacionUnidadList;
     }
-    
+
+    public BigDecimal getIngresototal() {
+        return ingresototal;
+    }
+
+    public void setIngresototal(BigDecimal ingresototal) {
+        this.ingresototal = ingresototal;
+    }
+
 }
