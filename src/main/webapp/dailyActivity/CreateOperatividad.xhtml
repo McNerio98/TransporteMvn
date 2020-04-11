@@ -78,12 +78,12 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <p:commandButton styleClass="btn btn-ct-success"
+                    <p:commandLink styleClass="btn btn-ct-success"
                                      a:data-dismiss="modal"
                                      value="Crear"
                                      actionListener="#{ADController.createOperation}"
-                                     update=":pnlMessageJSF"/>
-                    <button type="button" data-dismiss="modal" class="btn btn-ct-danger">Cancelar</button>
+                                     update=":pnlMessageJSF,:listActivities"/>
+                    <a href="#" data-dismiss="modal" class="btn btn-ct-danger">Cancelar</a>
                 </div>
             </div>
         </div>

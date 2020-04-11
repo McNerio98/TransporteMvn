@@ -6,7 +6,11 @@
 package com.clobi.transporte.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.BigDecimal;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,9 +20,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -36,7 +42,21 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "OperacionUnidad.findByContador", query = "SELECT o FROM OperacionUnidad o WHERE o.contador = :contador")})
 public class OperacionUnidad implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "ingreso", nullable = false)
+    private BigDecimal ingreso;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "pagoconductor", nullable = false)
+    private BigDecimal pagoconductor;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "pagoauxiliar", nullable = false)
+    private BigDecimal pagoauxiliar;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idoperacion")
+    private List<Anticipo> anticipoList;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -65,6 +85,8 @@ public class OperacionUnidad implements Serializable {
     @ManyToOne(optional = false)
     private Unidad placa;
 
+    private static final long serialVersionUID = 1L;
+
     public OperacionUnidad() {
     }
 
@@ -72,10 +94,13 @@ public class OperacionUnidad implements Serializable {
         this.id = id;
     }
 
-    public OperacionUnidad(Integer id, short estado, short viajesrealizados) {
+    public OperacionUnidad(Integer id, short estado, short viajesrealizados, BigDecimal ingreso, BigDecimal pagoconductor, BigDecimal pagoauxiliar) {
         this.id = id;
         this.estado = estado;
         this.viajesrealizados = viajesrealizados;
+        this.ingreso = ingreso;
+        this.pagoconductor = pagoconductor;
+        this.pagoauxiliar = pagoauxiliar;
     }
 
     public Integer getId() {
@@ -109,6 +134,7 @@ public class OperacionUnidad implements Serializable {
     public void setContador(Integer contador) {
         this.contador = contador;
     }
+
 
     public ActividadDiaria getIdactividaddiaria() {
         return idactividaddiaria;
@@ -148,7 +174,7 @@ public class OperacionUnidad implements Serializable {
         hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
-
+    
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
@@ -167,4 +193,38 @@ public class OperacionUnidad implements Serializable {
         return "com.clobi.transporte.entity.OperacionUnidad[ id=" + id + " ]";
     }
 
+    public BigDecimal getIngreso() {
+        return ingreso;
+    }
+
+    public void setIngreso(BigDecimal ingreso) {
+        this.ingreso = ingreso;
+    }
+
+    public BigDecimal getPagoconductor() {
+        return pagoconductor;
+    }
+
+    public void setPagoconductor(BigDecimal pagoconductor) {
+        this.pagoconductor = pagoconductor;
+    }
+
+    public BigDecimal getPagoauxiliar() {
+        return pagoauxiliar;
+    }
+
+    public void setPagoauxiliar(BigDecimal pagoauxiliar) {
+        this.pagoauxiliar = pagoauxiliar;
+    }
+
+    @XmlTransient
+    public List<Anticipo> getAnticipoList() {
+        return anticipoList;
+    }
+
+    public void setAnticipoList(List<Anticipo> anticipoList) {
+        this.anticipoList = anticipoList;
+    }
+    
+    
 }

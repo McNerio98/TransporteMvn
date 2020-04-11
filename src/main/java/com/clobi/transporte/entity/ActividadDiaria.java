@@ -7,7 +7,8 @@ package com.clobi.transporte.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.BigInteger;
+import java.math.BigDecimal;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -46,7 +47,7 @@ public class ActividadDiaria implements Serializable {
 
     @Basic(optional = false)
     @NotNull
-    @Column(name = "ingresototal")
+    @Column(name = "ingresototal", nullable = false)
     private BigDecimal ingresototal;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idactividaddiaria")
     private List<OperacionUnidad> operacionUnidadList;
@@ -143,13 +144,6 @@ public class ActividadDiaria implements Serializable {
         return "com.clobi.transporte.entity.ActividadDiaria[ id=" + id + " ]";
     }
 
-    public BigDecimal getIngresototal() {
-        return ingresototal;
-    }
-
-    public void setIngresototal(BigDecimal ingresototal) {
-        this.ingresototal = ingresototal;
-    }
 
     @XmlTransient
     public List<OperacionUnidad> getOperacionUnidadList() {
@@ -158,6 +152,14 @@ public class ActividadDiaria implements Serializable {
 
     public void setOperacionUnidadList(List<OperacionUnidad> operacionUnidadList) {
         this.operacionUnidadList = operacionUnidadList;
+    }
+
+    public BigDecimal getIngresototal() {
+        return ingresototal;
+    }
+
+    public void setIngresototal(BigDecimal ingresototal) {
+        this.ingresototal = ingresototal;
     }
 
 }
