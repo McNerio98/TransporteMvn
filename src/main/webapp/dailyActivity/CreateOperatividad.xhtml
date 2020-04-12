@@ -10,79 +10,81 @@
             <div class="modal-content br-none">
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-6">
+                        <h:panelGroup styleClass="col-md-6" id="detailsAsignacion" layout="block">
                             <div class="row mb-md-2">
                                 <div class="col-md-4">
                                     <h1 class="h1 text-success text-center">1/11</h1>
                                 </div>
                                 <div class="col-md-8">
-                                    <div class="text-muted"><i class="fas fa-bus"></i><span> Ninguna Unidad Selecionada</span></div>
+                                    <div class="text-muted"><i class="fas fa-bus"></i>
+                                        <h:outputText rendered="#{!(empty ADController.asignacionSelected)}"
+                                                      value="EQ#{ADController.asignacionSelected.unidad.numerounidad} | AB#{ADController.asignacionSelected.unidad.placa}"/>
+                                        <h:outputText rendered="#{empty ADController.asignacionSelected}"
+                                                      value=" Ninguna Unidad Selecionada"/>
+                                    </div>
                                     <div class="p-md-1 p-lg-2 bg-success mt-md-2">
                                         Estado: En Ejecucion
-                                    </div>                                
+                                    </div>
                                 </div>
                             </div>
                             <div class="row mb-md-2 mt-md-3 border-top">
                                 <div class="col-md-6">
-                                    <span class="text-center d-block text-pink">Motorista</span>
-                                    <span class="text-center d-block">Jorge Baltazar</span>
+                                    <h:outputText styleClass="text-center d-block text-pink" value="Motorista"/>
+                                    <h:outputText styleClass="text-center d-block" 
+                                                  value="#{ADController.asignacionSelected.motorista.nombres} #{ADController.asignacionSelected.motorista.apellidos}"/>
                                 </div>
                                 <div class="col-md-6">
-                                    <span class="text-center d-block text-pink">Auxiliar</span>
-                                    <span class="text-center d-block">--No Asignado--</span>
+                                    <h:outputText styleClass="text-center d-block text-pink" value="Auxiliar"/>
+                                    
+                                    <h:outputText styleClass="text-center d-block" 
+                                                  rendered="#{!(empty ADController.asignacionSelected.ayudante)}"
+                                                  value="#{ADController.asignacionSelected.ayudante.nombres} #{ADController.asignacionSelected.ayudante.apellidos}"/>                                    
+                                    
+                                    <h:outputText styleClass="text-center d-block"
+                                                  rendered="#{empty ADController.asignacionSelected.ayudante}"
+                                                  value="--No Asignado--"/>
                                 </div>
                             </div>
                             <div class="text-center">
                                 <a href=""><u>Cambiar Asignaciones</u></a>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
+                            </div>                            
+                        </h:panelGroup>
+                        <h:panelGroup layout="block" styleClass="col-md-6" id="pnlListAsignaciones">
                             <div class="form-row mb-2">
                                 <div class="col-md-4 text-center"><label for="findByIdBus">Buscar </label></div>
                                 <div class="col-md-8"><input type="text" class="form-control" id="findByIdBus"/></div>
                             </div>
                             <div id="allUniDisponible" class="table-responsive" style="overflow-y: auto; max-height: 140px;">
-                                <table class="table table-striped pth-0">
-                                    <thead>
-                                        <tr>
-                                            <th></th>
-                                            <th>Unidad</th>
-                                            <th>Placa</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <th><input type="radio" name="" id=""/> </th>
-                                            <th>EQ15</th>
-                                            <th>ABC1547649</th>
-                                        </tr>                                    
-                                        <tr>
-                                            <th><input type="radio" name="" id=""/> </th>
-                                            <th>EQ03</th>
-                                            <th>ABC1547989</th>
-                                        </tr>                                    
-                                        <tr>
-                                            <th><input type="radio" name="" id=""/> </th>
-                                            <th>EQ03</th>
-                                            <th>ABC1547989</th>
-                                        </tr>                                    
-                                        <tr>
-                                            <th><input type="radio" name="" id=""/> </th>
-                                            <th>EQ03</th>
-                                            <th>ABC1547989</th>
-                                        </tr>                                                                                                            
-                                    </tbody>
-                                </table>
-                            </div>       
-                        </div>                    
+                                <h:dataTable value="#{ADController.listAsignaciones}"
+                                             styleClass="table table-striped pth-0"
+                                             var="tc">
+                                    <h:column>
+                                        <f:facet name="header">*</f:facet>
+                                        <p:commandLink actionListener="#{ADController.setAsignacionSelected(tc)}"
+                                                       update=":detailsAsignacion">
+                                            <input type="radio" name="selectAsignacion"/>
+                                        </p:commandLink>
+                                    </h:column>                                    
+                                    <h:column>
+                                        <f:facet name="header">Unidad</f:facet>
+                                        <h:outputText value="EQ#{tc.unidad.numerounidad}"/>
+                                    </h:column>                                                                        
+                                    <h:column>
+                                        <f:facet name="header">Placa</f:facet>
+                                        <h:outputText value="AB#{tc.unidad.placa}"/>
+                                    </h:column>                                                                        
+                                </h:dataTable>
+                            </div>                            
+                        </h:panelGroup>
+
                     </div>
                 </div>
                 <div class="card-footer">
                     <p:commandLink styleClass="btn btn-ct-success"
-                                     a:data-dismiss="modal"
-                                     value="Crear"
-                                     actionListener="#{ADController.createOperation}"
-                                     update=":pnlMessageJSF,:listActivities"/>
+                                   a:data-dismiss="modal"
+                                   value="Crear"
+                                   actionListener="#{ADController.createOperation}"
+                                   update=":pnlMessageJSF,:listActivities"/>
                     <a href="#" data-dismiss="modal" class="btn btn-ct-danger">Cancelar</a>
                 </div>
             </div>

@@ -10,11 +10,13 @@ import com.clobi.transporte.controller.util.JsfUtil;
 import com.clobi.transporte.controller.util.JsfUtil.PersistAction;
 import com.clobi.transporte.entity.ActividadDiaria;
 import com.clobi.transporte.entity.Anticipo;
+import com.clobi.transporte.entity.Asignacion;
 import com.clobi.transporte.entity.Empleado;
 import com.clobi.transporte.entity.OperacionUnidad;
 import com.clobi.transporte.entity.Unidad;
 import com.clobi.transporte.facade.ADFacade;
 import com.clobi.transporte.facade.AnticiposFacade;
+import com.clobi.transporte.facade.AsignacionFacade;
 import com.clobi.transporte.facade.EmpleadosFacade;
 import com.clobi.transporte.facade.OperationFacade;
 import java.io.Serializable;
@@ -43,8 +45,8 @@ public class ActividadDiariaController implements Serializable {
     private List<OperacionUnidad> listOperaciones;
     private Anticipo anticipoInsert;
     private BigDecimal totalAnticipos;
-    //Aqui deberia ir el objeto donde esta relacionada la unidad con el motorista y el auxiliar 
-    private Unidad unidadFornewOperation;
+    private List<Asignacion> listAsignaciones;
+    private Asignacion asignacionSelected;
 
     @EJB
     private ADFacade ejbADFacade;
@@ -54,6 +56,8 @@ public class ActividadDiariaController implements Serializable {
     private OperationFacade ejbOperacion;
     @EJB
     private AnticiposFacade ejbAnticipos;
+    @EJB
+    private AsignacionFacade ebjAsignacion;
 
     @PostConstruct
     public void init() {
@@ -64,12 +68,17 @@ public class ActividadDiariaController implements Serializable {
         }
 
     }
-    public void showAdvance(OperacionUnidad e){
+
+    public void showAdvance(OperacionUnidad e) {
         this.operacionSelected = e;
         this.anticipoInsert = null;
         this.totalAnticipos = ejbAnticipos.totalAnticipos(e);
     }
-    
+
+    public void showDetailsEnd(OperacionUnidad e) {
+        this.operacionSelected = e;
+    }
+
     public void prepareActivity() {
         Date currentDay = new Date();
         this.actividad = new ActividadDiaria();
@@ -89,13 +98,14 @@ public class ActividadDiariaController implements Serializable {
         this.operacionSelected.setPagoconductor(new BigDecimal(0.0));
         this.operacionSelected.setPagoauxiliar(new BigDecimal(0.0));
         this.operacionSelected.setIngreso(new BigDecimal(0.0));
+        this.listAsignaciones = ebjAsignacion.findAll();
     }
-    
-    public void prepareAnticipo(){
+
+    public void prepareAnticipo() {
         this.anticipoInsert = new Anticipo();
     }
-    
-    public void createAnticipo(){
+
+    public void createAnticipo() {
         this.anticipoInsert.setHora(new Date());
         this.anticipoInsert.setIdoperacion(operacionSelected);
         persistAnticipo(PersistAction.CREATE, "Anticipo Registrado!");
@@ -109,26 +119,17 @@ public class ActividadDiariaController implements Serializable {
     }
 
     public void createOperation() {
+        this.operacionSelected.setPlaca(this.asignacionSelected.getUnidad());
+        this.operacionSelected.setIdconductor(this.asignacionSelected.getMotorista());
+        if (!this.asignacionSelected.getAyudante().getDui().equals("")) {
+            this.operacionSelected.setIdauxiliar(this.asignacionSelected.getAyudante());
+        }
         persistOperation(PersistAction.CREATE, "Operacion Exitosa");
     }
 
     public void persistOperation(PersistAction actionPersist, String infoResult) {
-        //Este es un codigo auxiliar mientras se termina la logica del proceso 
-        // 1. Selecionar: Unidad, 2 Empleados, un conductor y un auxiliar 
-        // Id Unidad(length: 7) -> ABC145789      
-        // Id Unidad(length: 7) -> 456789
-        // Id Unidad(length: 7) -> 987456
         try {
-            //Areglar estar parte 
-            if (actionPersist == PersistAction.CREATE) {
-                Unidad u = ejbADFacade.obtenerUnidadAux("ABC1457");
-                Empleado e1 = ejbEmpleadosFacade.find("345666");
-                Empleado e2 = ejbEmpleadosFacade.find("345566");
-                this.operacionSelected.setPlaca(u);
-                this.operacionSelected.setIdconductor(e1);
-                this.operacionSelected.setIdauxiliar(e2);
-                ejbOperacion.edit(operacionSelected);
-            } else if (actionPersist == PersistAction.UPDATE) {
+            if (actionPersist != PersistAction.DELETE) {
                 ejbOperacion.edit(operacionSelected);
             }
             JsfUtil.addSuccessMessage(infoResult);
@@ -155,20 +156,20 @@ public class ActividadDiariaController implements Serializable {
             JsfUtil.addErrorMessage("Error en la Operacion 2");
         }
     }
-    
-    private void persistAnticipo(PersistAction actionPersist, String infoResult){
-        try{
-            if(actionPersist != PersistAction.DELETE){
+
+    private void persistAnticipo(PersistAction actionPersist, String infoResult) {
+        try {
+            if (actionPersist != PersistAction.DELETE) {
                 ejbAnticipos.edit(anticipoInsert);
             }
             JsfUtil.addSuccessMessage(infoResult);
             //Preguntar como recargar solo el componente que se altero en lugar de toda la lista 
             this.listOperaciones = ejbOperacion.listOperaciones(this.actividad);
-        }catch(Exception e){
+        } catch (Exception e) {
             JsfUtil.addErrorMessage("Error en la Operacion 2");
         }
     }
-    
+
     public Anticipo getAnticipoInsert() {
         return anticipoInsert;
     }
@@ -176,6 +177,7 @@ public class ActividadDiariaController implements Serializable {
     public void setAnticipoInsert(Anticipo anticipoInsert) {
         this.anticipoInsert = anticipoInsert;
     }
+
     public boolean isActivityStatus() {
         return activityStatus;
     }
@@ -190,8 +192,8 @@ public class ActividadDiariaController implements Serializable {
 
     public void setOperacionSelected(OperacionUnidad operacionSelected) {
         this.operacionSelected = operacionSelected;
-    }    
-    
+    }
+
     public List<OperacionUnidad> getListOperaciones() {
         return listOperaciones;
     }
@@ -207,6 +209,21 @@ public class ActividadDiariaController implements Serializable {
     public void setTotalAnticipos(BigDecimal totalAnticipos) {
         this.totalAnticipos = totalAnticipos;
     }
-    
-    
+
+    public List<Asignacion> getListAsignaciones() {
+        return listAsignaciones;
+    }
+
+    public void setListAsignaciones(List<Asignacion> listAsignaciones) {
+        this.listAsignaciones = listAsignaciones;
+    }
+
+    public Asignacion getAsignacionSelected() {
+        return asignacionSelected;
+    }
+
+    public void setAsignacionSelected(Asignacion asignacionSelected) {
+        this.asignacionSelected = asignacionSelected;
+    }
+
 }

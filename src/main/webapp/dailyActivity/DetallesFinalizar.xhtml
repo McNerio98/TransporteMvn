@@ -1,0 +1,173 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <div class="modal fade" id="modalDetallesFinalizar" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+            <h:panelGroup layout="block" styleClass="modal-content br-none" id="pnlDetallesFinalizar">
+                <div class="modal-header bg-dark br-none">
+                    <h5 class="modal-title text-warning" id="exampleModalCenterTitle">
+                        <h:outputText value="EQ#{ADController.operacionSelected.placa.numerounidad} | AB#{ADController.operacionSelected.placa.placa}"/>
+                    </h5>
+                    <button type="button" class="close text-warning" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row" style="height: 81px; overflow: hidden;">
+                        <div class="col-md-3">
+                            <a class="btn btn-app" href="#containerNotas">
+                                <span class="badge bg-warning">3</span>
+                                <i class="fas fa-bullhorn"></i> Notas
+                            </a>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="justify-content-between align-items-center border-bottom mb-3">
+                                        <p class="flex-column text-right">
+                                            <small class="font-weight-bold">
+                                                <i class="fas fa-cash-register"></i> 
+                                                <h:outputText value="#{ADController.operacionSelected.idconductor.nombres} #{ADController.operacionSelected.idconductor.apellidos}"/>
+                                            </small><br/>
+                                            <span class="text-muted">Motorista</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="justify-content-between align-items-center border-bottom mb-3">
+                                        <p class="flex-column text-right">
+                                            <small class="font-weight-bold">
+                                                <i class="fas fa-cash-register"></i> 
+                                                <h:outputText rendered="#{!(empty ADController.operacionSelected.idauxiliar)}"
+                                                              value="#{ADController.operacionSelected.idauxiliar.nombres} #{ADController.operacionSelected.idauxiliar.apellidos}"/>
+                                                <h:outputText rendered="#{empty ADController.operacionSelected.idauxiliar}"
+                                                              value="--No Asignado--"/>
+                                            </small><br/>
+                                            <span class="text-muted">Auxiliar</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h:form styleClass="input-group mb-3"
+                            rendered="#{empty ADController.operacionSelected.contador}">
+                        <div class="input-group-prepend">
+                            <p:commandButton styleClass="btn btn-secondary" 
+                                             value="Calcular"/>
+                        </div>
+                        <h:inputText styleClass="form-control" 
+                                     value="#{ADController.operacionSelected.contador}"
+                                     a:placeholder="Ingrese contador"/>
+                    </h:form>
+                    <div>
+                        <table class="table table-bordered th-custom3">
+                            <thead>
+                                <tr>
+                                    <th style="width: 10px">#</th>
+                                    <th>Descripcion</th>
+                                    <th>Valor</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1.</td>
+                                    <td>Viajes Realizados</td>
+                                    <td>
+                                        <span class="d-block text-center text-muted">10/11</span>
+                                    </td>
+                                </tr>                                
+                                <tr>
+                                    <td>1.</td>
+                                    <td>Conteo Ingresado</td>
+                                    <td>
+                                        <span class="d-block text-center text-muted">No establecido</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2.</td>
+                                    <td>Conteo Anterior</td>
+                                    <td>
+                                        <span class="d-block text-center text-muted">0</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>3.</td>
+                                    <td>Diferencia Calculada <span class="badge bg-warning">Nuevo</span></td>
+                                    <td>
+                                        <span class="d-block text-center text-muted">1234</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>4.</td>
+                                    <td>Ingreso Total Calculado</td>
+                                    <td>
+                                        <span class="d-block text-center text-muted">$ 98.45</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>5.</td>
+                                    <td>Total anticipos <span class="badge bg-success">Nuevo</span></td>
+                                    <td>
+                                        <span class="d-block text-center text-muted">$ 68.45</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>6.</td>
+                                    <td>Pago Motorista</td>
+                                    <td>
+                                        <span class="d-block text-center text-muted">$ 10.45</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>7.</td>
+                                    <td>Descuento ahorro motorista </td>
+                                    <td>
+                                        <span class="d-block text-center text-muted">$ 3.45</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>8.</td>
+                                    <td>Pago Auxiliar</td>
+                                    <td>
+                                        <span class="d-block text-center text-muted">$ 3.45</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>9.</td>
+                                    <td>Descuento ahorro auxiliar</td>
+                                    <td>
+                                        <span class="d-block text-center text-muted">$ 3.45</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div>
+                            <h5 class="d-block text-muted text-center p-0 bg-dark">Notas</h5>
+                            <div class="p-md-2 border rounded mb-1">
+                                <p class="m-0">Los datos calculados no coinciden con los datos de los montos entregados</p>
+                            </div>
+                            <div class="form-group mb-1">
+                                <textarea class="form-control" rows="2" placeholder="Ingrese contenido nota ..."></textarea>
+                            </div>                            
+                        </div>
+                        <div id="containerNotas">
+                            <a href="#" class="d-block text-muted text-center"><u>+Nueva Nota</u></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-ct btn-ct-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn-ct btn-ct-success">Finalizar</button>
+                </div>
+            </h:panelGroup>
+        </div>
+    </div>                    
+</ui:composition>

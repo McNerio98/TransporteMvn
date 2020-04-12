@@ -37,7 +37,6 @@ public class ADFacade extends AbstractFacade<ActividadDiaria> {
     public ActividadDiaria currentActivity() {
         ActividadDiaria ad = null;
         try {
-            SimpleDateFormat formateador = new SimpleDateFormat("yyyy/MM/dd");
             Query sql = getEntityManager().createNamedQuery("ActividadDiaria.findByFecha", ActividadDiaria.class);
             sql.setParameter("fecha", new Date());
             ad = (ActividadDiaria) sql.getSingleResult();

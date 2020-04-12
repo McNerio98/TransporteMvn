@@ -46,6 +46,7 @@
                             <h:form class="text-center col-12">
                                 <p:commandLink styleClass="text-center pl-md-3 pr-md-3 d-md-inline d-block"
                                                actionListener="#{ADController.prepareOperation}"
+                                               update=":pnlListAsignaciones"
                                                a:data-toggle="modal" 
                                                a:data-target="#nuevaOpeUnidadModal">
                                     <u>Nuevo Registro</u>
@@ -139,7 +140,21 @@
                                                            styleClass="d-block col-md-6 text-center text-primary"
                                                            actionListener="#{ADController.showAdvance(i)}"
                                                            update=":pnlListAnticipos"/>
-                                            <a class="d-block col-md-6 text-center text-danger" href="#"><h:outputText value="#{bundle.EndProcess}"/></a>
+                                            
+                                            <p:commandLink value="#{bundle.EndProcess}"
+                                                           actionListener="#{ADController.showDetailsEnd(i)}"
+                                                           styleClass="d-block col-md-6 text-center text-danger"
+                                                           rendered="#{i.estado == 1}"
+                                                           update=":pnlDetallesFinalizar"
+                                                           a:data-toggle="modal" 
+                                                           a:data-target="#modalDetallesFinalizar"/>
+                                            
+                                            <p:commandLink value="#{bundle.Details}"
+                                                           actionListener="#{ADController.showDetailsEnd(i)}"
+                                                           styleClass="d-block col-md-6 text-center text-danger"
+                                                           rendered="#{i.estado == 2}"
+                                                           a:data-toggle="modal" 
+                                                           a:data-target="#modalDetallesFinalizar"/>                                            
                                         </div>
                                     </div>
                                 </div>
@@ -158,6 +173,7 @@
             <ui:include src="CreateOperatividad.xhtml"/>
             <ui:include src="ConfirmNewViaje.xhtml"/>
             <ui:include src="ListAnticipos.xhtml"/>
+            <ui:include src="DetallesFinalizar.xhtml"/>
 
         </ui:define>
     </ui:composition>

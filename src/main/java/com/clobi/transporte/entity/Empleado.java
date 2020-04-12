@@ -251,10 +251,13 @@ public class Empleado implements Serializable {
         switch (this.estadocivil) {
             case "sol":
                 estado = "Soltero";
+                break;
             case "aco":
                 estado = "Acompaniado";
+                break;
             case "cas":
                 estado = "Casado";
+                break;
         }
         return estado;
     }
@@ -264,8 +267,10 @@ public class Empleado implements Serializable {
         switch (this.tipo) {
             case "mot":
                 tipo = "Motorista";
+                break;
             case "ayu":
                 tipo = "Auxiliar Motorista";
+                break;
         }        
         return tipo;
     }
