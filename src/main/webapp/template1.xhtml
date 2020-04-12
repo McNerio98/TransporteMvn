@@ -5,7 +5,8 @@
       xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -44,45 +45,55 @@
                             </div>                           
                             <h:form id="formContrato">
                                 <div class="modal-body">
-                                    Cambia el tipo de contrato para:<br/>
-                                    <h:inputText value="#{empleadosContrato.empleadoContrato.empleado}" 
-                                                 maxlength="9" 
-                                                 required="true" 
-                                                 styleClass="form-control form-control-sm" 
-                                                 disabled="true"/> <br/> 
-                                    <h:inputText value="#{empleadosContrato.empleadoContrato.empleado1.nombres}" 
-                                                 maxlength="9" 
-                                                 required="true" 
-                                                 styleClass="form-control form-control-sm" 
-                                                 disabled="true"/> <br/> 
-                                    <h:inputText value="#{empleadosContrato.empleadoContrato.empleado1.apellidos}" 
-                                                 maxlength="9" 
-                                                 required="true" 
-                                                 styleClass="form-control form-control-sm" 
-                                                 disabled="true"/> <br/> 
-                                    <h:selectOneMenu 
-                                        converter="javax.faces.Integer"
-                                        class="custom-select" 
-                                        id="next" 
-                                        value = "#{empleadosContrato.empleadoContrato.tipocontrato}"
-                                        disabled="#{empty empleadosContrato.empleadoContrato}"> 
-                                        <f:selectItem itemValue ="1" itemLabel = "Permanente" /> 
-                                        <f:selectItem itemValue ="2" itemLabel = "Por Dia" /> 
-                                    </h:selectOneMenu> 	
+                                    <c:if test="#{empleadosContrato.empleadoContrato.empleado != null}">
+                                        Cambia el tipo de contrato para:<br/>
+                                        <h:inputText value="#{empleadosContrato.empleadoContrato.empleado}" 
+                                                     maxlength="9" 
+                                                     required="true" 
+                                                     styleClass="form-control form-control-sm" 
+                                                     disabled="true"/> <br/> 
+                                        <h:inputText value="#{empleadosContrato.empleadoContrato.empleado1.nombres}" 
+                                                     maxlength="9" 
+                                                     required="true" 
+                                                     styleClass="form-control form-control-sm" 
+                                                     disabled="true"/> <br/> 
+                                        <h:inputText value="#{empleadosContrato.empleadoContrato.empleado1.apellidos}" 
+                                                     maxlength="9" 
+                                                     required="true" 
+                                                     styleClass="form-control form-control-sm" 
+                                                     disabled="true"/> <br/> 
+                                        <h:selectOneMenu 
+                                            converter="javax.faces.Integer"
+                                            class="custom-select" 
+                                            id="next" 
+                                            value = "#{empleadosContrato.empleadoContrato.tipocontrato}"
+                                            disabled="#{empty empleadosContrato.empleadoContrato}"> 
+                                            <f:selectItem itemValue ="1" itemLabel = "Permanente" /> 
+                                            <f:selectItem itemValue ="2" itemLabel = "Por Dia" /> 
+                                        </h:selectOneMenu> 
+                                    </c:if>
+                                    <c:if test="#{empleadosContrato.empleadoContrato.empleado == null}">
+                                        Selecciona un empleado
+                                    </c:if>
                                 </div>
                                 <div class="modal-footer">
-                                    <p:commandButton actionListener="#{empleadosContrato.prepareCreate}"
-                                                     styleClass="btn btn-secondary"
-                                                     a:data-dismiss="modal"
-                                                     update="formContrato"
-                                                     value="Cancelar"/> 
-                                    <p:commandButton 
-                                        disabled="#{empty empleadosContrato.empleadoContrato}"
-                                        action="#{empleadosContrato.update()}"
-                                        styleClass="btn btn-primary"
-                                        value="Guardar Cambios">
-                                        <f:ajax  onevent="ContratoSuccess"  onerror="ContratoError" />
-                                    </p:commandButton>
+                                    <c:if test="#{empleadosContrato.empleadoContrato.empleado != null}">
+                                        <p:commandButton actionListener="#{empleadosContrato.prepareCreate}"
+                                                         styleClass="btn btn-secondary"
+                                                         a:data-dismiss="modal"
+                                                         update="formContrato"
+                                                         value="Cancelar"/> 
+                                        <p:commandButton 
+                                            disabled="#{empty empleadosContrato.empleadoContrato}"
+                                            action="#{empleadosContrato.update()}"
+                                            styleClass="btn btn-primary"
+                                            value="Guardar Cambios">
+                                            <f:ajax  onevent="ContratoSuccess"  onerror="ContratoError" />
+                                        </p:commandButton>
+                                    </c:if>
+                                    
+
+
                                 </div>
                             </h:form>
                         </div>
