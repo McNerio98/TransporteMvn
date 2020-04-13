@@ -63,7 +63,7 @@
                             </h:form>
                         </div>                        
                         <!--COMIENZA LA ITERACION-->
-                        <c:set var="contador" value="1" scope="request"/>
+                        <c:set var="contador" value="1"/>
                         <c:forEach var="i" items="#{ADController.listOperaciones}">
                             <c:if test="#{contador == 1}">
                                 <h:outputText escape="false" value="&lt;div class='row' &gt;" />

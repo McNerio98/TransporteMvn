@@ -55,7 +55,6 @@ public class ActividadDiariaController implements Serializable {
     private Asignacion asignacionSelected;
     private Detalles detallesSelected;
     private ActividadFinanciera finanzaInsert;
-    
 
     @EJB
     private ADFacade ejbADFacade;
@@ -79,7 +78,7 @@ public class ActividadDiariaController implements Serializable {
         if (activityStatus) {
             this.listOperaciones = ejbOperacion.listOperaciones(this.actividad);
         }
-        
+
         this.listCategorias = ejbCategorias.findAll();
     }
 
@@ -129,11 +128,15 @@ public class ActividadDiariaController implements Serializable {
     public void prepareAnticipo() {
         this.anticipoInsert = new Anticipo();
     }
-    
-    public void prepareGasto(){
+
+    public void prepareGasto() {
         this.finanzaInsert = new ActividadFinanciera();
-        this.finanzaInsert.setTipo((short)1);
+        this.finanzaInsert.setTipo((short) 1);
         this.finanzaInsert.setIdactividaddiaria(this.actividad);
+    }
+
+    public void createGasto() {
+        persistGasto(PersistAction.CREATE, "Anticipo Registrado!");
     }
 
     public void createAnticipo() {
@@ -188,6 +191,20 @@ public class ActividadDiariaController implements Serializable {
         }
     }
 
+    private void persistGasto(PersistAction actionPersist, String infoResult) {
+        try {
+            if(actionPersist != PersistAction.DELETE){
+                ejbFinanzas.edit(finanzaInsert);
+            }else{
+                ejbFinanzas.remove(finanzaInsert);
+            }
+            this.actividad = ejbADFacade.currentActivity();
+            JsfUtil.addSuccessMessage(infoResult);
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage("Error en la Operacion 2");
+        }
+    }
+
     private void persistAnticipo(PersistAction actionPersist, String infoResult) {
         try {
             if (actionPersist != PersistAction.DELETE) {
@@ -200,24 +217,24 @@ public class ActividadDiariaController implements Serializable {
             JsfUtil.addErrorMessage("Error en la Operacion 2");
         }
     }
-    
+
     //Transaction 
-    public void finalizarOperacion(){
+    public void finalizarOperacion() {
         this.operacionSelected.setContador(this.detallesSelected.getConteoActual());
         this.operacionSelected.setEstado(Enums.ESTADO_ACTIVIDAD.FINALIZADA);
         this.operacionSelected.setIngreso(this.detallesSelected.getIngresoCalculado());
         this.operacionSelected.setPagoconductor(this.detallesSelected.getPagoMotorista());
         //Validar si es nulo 
-        if(this.operacionSelected.getIdauxiliar()!=null){
+        if (this.operacionSelected.getIdauxiliar() != null) {
             this.operacionSelected.setPagoauxiliar(this.detallesSelected.getPagoAuxiliar());
         }
         persistOperation(PersistAction.UPDATE, "Opetatividad Finalizada");
     }
-    
+
     public void calcularDetalles() {
         this.detallesSelected.realizarCalculos();
     }
-    
+
     public Anticipo getAnticipoInsert() {
         return anticipoInsert;
     }
@@ -305,5 +322,5 @@ public class ActividadDiariaController implements Serializable {
     public void setListCategorias(List<Categoria> listCategorias) {
         this.listCategorias = listCategorias;
     }
-    
+
 }
