@@ -6,6 +6,7 @@
 package com.clobi.transporte.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -32,81 +33,72 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "actividadesfinancieras", catalog = "transporte", schema = "public")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "ActividadFinanciera.findAll", query = "SELECT a FROM ActividadFinanciera a")
-    , @NamedQuery(name = "ActividadFinanciera.findByIdactividad", query = "SELECT a FROM ActividadFinanciera a WHERE a.idactividad = :idactividad")
-    , @NamedQuery(name = "ActividadFinanciera.findByConcepto", query = "SELECT a FROM ActividadFinanciera a WHERE a.concepto = :concepto")
-    , @NamedQuery(name = "ActividadFinanciera.findByMonto", query = "SELECT a FROM ActividadFinanciera a WHERE a.monto = :monto")
-    , @NamedQuery(name = "ActividadFinanciera.findByFecha", query = "SELECT a FROM ActividadFinanciera a WHERE a.fecha = :fecha")})
+    @NamedQuery(name = "ActividadFinanciera.actividaddiaria", query = "SELECT a FROM ActividadFinanciera a WHERE a.idactividaddiaria = :ad")})
 public class ActividadFinanciera implements Serializable {
 
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "idactividad")
-    private Integer idactividad;
+    @Column(name = "id", nullable = false)
+    private Integer id;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 20)
-    @Column(name = "concepto")
-    private String concepto;
+    @Column(name = "tipo", nullable = false)
+    private short tipo;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "monto")
-    private double monto;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "fecha")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fecha;
-    @JoinColumn(name = "idcategoria", referencedColumnName = "idcategoria")
+    @Column(name = "monto", nullable = false)
+    private BigDecimal monto;
+    @JoinColumn(name = "idactividaddiaria", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false)
+    private ActividadDiaria idactividaddiaria;
+    @JoinColumn(name = "idcategoria", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private Categoria idcategoria;
 
     public ActividadFinanciera() {
     }
 
-    public ActividadFinanciera(Integer idactividad) {
-        this.idactividad = idactividad;
+    public ActividadFinanciera(Integer id) {
+        this.id = id;
     }
 
-    public ActividadFinanciera(Integer idactividad, String concepto, double monto, Date fecha) {
-        this.idactividad = idactividad;
-        this.concepto = concepto;
+    public ActividadFinanciera(Integer id, short tipo, BigDecimal monto) {
+        this.id = id;
+        this.tipo = tipo;
         this.monto = monto;
-        this.fecha = fecha;
     }
 
-    public Integer getIdactividad() {
-        return idactividad;
+    public Integer getId() {
+        return id;
     }
 
-    public void setIdactividad(Integer idactividad) {
-        this.idactividad = idactividad;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public String getConcepto() {
-        return concepto;
+    public short getTipo() {
+        return tipo;
     }
 
-    public void setConcepto(String concepto) {
-        this.concepto = concepto;
+    public void setTipo(short tipo) {
+        this.tipo = tipo;
     }
 
-    public double getMonto() {
+    public BigDecimal getMonto() {
         return monto;
     }
 
-    public void setMonto(double monto) {
+    public void setMonto(BigDecimal monto) {
         this.monto = monto;
     }
 
-    public Date getFecha() {
-        return fecha;
+    public ActividadDiaria getIdactividaddiaria() {
+        return idactividaddiaria;
     }
 
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
+    public void setIdactividaddiaria(ActividadDiaria idactividaddiaria) {
+        this.idactividaddiaria = idactividaddiaria;
     }
 
     public Categoria getIdcategoria() {
@@ -120,7 +112,7 @@ public class ActividadFinanciera implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idactividad != null ? idactividad.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -131,7 +123,7 @@ public class ActividadFinanciera implements Serializable {
             return false;
         }
         ActividadFinanciera other = (ActividadFinanciera) object;
-        if ((this.idactividad == null && other.idactividad != null) || (this.idactividad != null && !this.idactividad.equals(other.idactividad))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -139,7 +131,6 @@ public class ActividadFinanciera implements Serializable {
 
     @Override
     public String toString() {
-        return "com.clobi.transporte.entity.ActividadFinanciera[ idactividad=" + idactividad + " ]";
+        return "com.clobi.transporte.entity.ActividadFinanciera[ id=" + id + " ]";
     }
-    
 }

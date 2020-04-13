@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalGastosRegistros" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+            <h:panelGroup styleClass="modal-content br-none" layout="block" id="pnlGastosRegistros">
+                <div class="modal-header bg-dark br-none">
+                    <h5 class="modal-title text-warning" id="exampleModalCenterTitle">Registro de Gastos</h5>
+                    <button type="button" class="close text-warning" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h:form>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <!-- select -->
+                                <div class="form-group">
+                                    <label>Categorias</label>
+                                    <h:selectOneMenu value="#{ADController.finanzaInsert.idcategoria}" styleClass="form-control">
+                                        <f:selectItems value="#{ADController.listCategorias}" var="cd" itemValue="#{cd}" itemLabel="#{cd.categoria}" />
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Tipo de movimiento</label>
+                                    <select class="form-control" disabled="">
+                                        <option>Egreso</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>                    
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <button type="button" class="btn btn-secondary">Aceptar</button>
+                            </div>
+                            <h:inputText value="#{ADController.finanzaInsert.monto}" styleClass="form-control" a:placeholder="Ingrese Monto"/>
+                        </div>                         
+                    </h:form>                   
+                    <h:panelGroup rendered="#{ADController.actividad.actividadFinancieraList.size() == 0}"
+                                  style="height: 100%; padding-top: 10px"
+                                  layout="block">
+                        <p class="h4 text-muted text-center">
+                            <h:outputText value="No hay registros"/>     
+                        </p>
+                    </h:panelGroup>                    
+                    <h:panelGroup layout="block" 
+                                  rendered="#{ADController.actividad.actividadFinancieraList.size() > 0}">
+
+                        <h:dataTable value="#{ADController.actividad.actividadFinancieraList}"
+                                     var="g">
+                            <h:column>
+                                <f:facet name="header">Monto</f:facet>
+                                <h:outputText value="#{g.monto}"/>
+                            </h:column>                            
+                            <h:column>
+                                <f:facet name="header">Categoria</f:facet>
+                                <h:outputText value="#{g.idcategoria.categoria}"/>
+                            </h:column>                                                        
+                        </h:dataTable>
+                    </h:panelGroup>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-ct btn-ct-secondary" data-dismiss="modal">Cerrar</button>
+                </div>                
+            </h:panelGroup>
+        </div>
+    </div>                    
+</ui:composition>
+

@@ -9,6 +9,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigDecimal;
 import java.math.BigDecimal;
+import java.math.BigDecimal;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -49,6 +51,8 @@ public class ActividadDiaria implements Serializable {
     @NotNull
     @Column(name = "ingresototal", nullable = false)
     private BigDecimal ingresototal;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idactividaddiaria")
+    private List<ActividadFinanciera> actividadFinancieraList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idactividaddiaria")
     private List<OperacionUnidad> operacionUnidadList;
 
@@ -152,6 +156,16 @@ public class ActividadDiaria implements Serializable {
 
     public void setOperacionUnidadList(List<OperacionUnidad> operacionUnidadList) {
         this.operacionUnidadList = operacionUnidadList;
+    }
+
+
+    @XmlTransient
+    public List<ActividadFinanciera> getActividadFinancieraList() {
+        return actividadFinancieraList;
+    }
+
+    public void setActividadFinancieraList(List<ActividadFinanciera> actividadFinancieraList) {
+        this.actividadFinancieraList = actividadFinancieraList;
     }
 
     public BigDecimal getIngresototal() {

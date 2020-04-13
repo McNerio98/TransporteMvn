@@ -7,7 +7,9 @@ package com.clobi.transporte.facade;
 
 import com.clobi.transporte.entity.ActividadDiaria;
 import com.clobi.transporte.entity.OperacionUnidad;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -39,8 +41,26 @@ public class OperationFacade extends AbstractFacade<OperacionUnidad> {
         Query query = getEntityManager().createNamedQuery("OperacionUnidad.findByActividad", OperacionUnidad.class);
         query.setParameter("actividad", actividad);
         tmp = query.getResultList();
-        
         return tmp.isEmpty() ? new ArrayList<OperacionUnidad>() : tmp;
+    }
+    
+    public Integer ContadorAnterior(String placa, Date todayActivity){
+        Integer contador = 0;
+        SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
+        
+        String sql = "SELECT o.contador FROM operacionesunidades o \n"
+                +"WHERE placa = '"+placa+"' and o.idactividaddiaria = \n" 
+                +"(SELECT a.id FROM actividadesdiarias a \n"
+                +"WHERE a.fecha = date('"+formater.format(todayActivity)+"')-1)";
+        
+        try{
+            Query query = getEntityManager().createNativeQuery(sql);
+            contador = (Integer)query.getSingleResult();
+        }catch(Exception e){
+            System.out.print("Error..");
+        }
+        
+        return contador;
     }
     
     

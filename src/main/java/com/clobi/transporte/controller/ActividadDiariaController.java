@@ -5,19 +5,24 @@
  */
 package com.clobi.transporte.controller;
 
+import com.clobi.transporte.controller.util.Detalles;
 import com.clobi.transporte.controller.util.Enums;
 import com.clobi.transporte.controller.util.JsfUtil;
 import com.clobi.transporte.controller.util.JsfUtil.PersistAction;
 import com.clobi.transporte.entity.ActividadDiaria;
+import com.clobi.transporte.entity.ActividadFinanciera;
 import com.clobi.transporte.entity.Anticipo;
 import com.clobi.transporte.entity.Asignacion;
+import com.clobi.transporte.entity.Categoria;
 import com.clobi.transporte.entity.Empleado;
 import com.clobi.transporte.entity.OperacionUnidad;
 import com.clobi.transporte.entity.Unidad;
 import com.clobi.transporte.facade.ADFacade;
 import com.clobi.transporte.facade.AnticiposFacade;
 import com.clobi.transporte.facade.AsignacionFacade;
+import com.clobi.transporte.facade.CategoriasFacade;
 import com.clobi.transporte.facade.EmpleadosFacade;
+import com.clobi.transporte.facade.FinanzasFacade;
 import com.clobi.transporte.facade.OperationFacade;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -46,7 +51,11 @@ public class ActividadDiariaController implements Serializable {
     private Anticipo anticipoInsert;
     private BigDecimal totalAnticipos;
     private List<Asignacion> listAsignaciones;
+    private List<Categoria> listCategorias;
     private Asignacion asignacionSelected;
+    private Detalles detallesSelected;
+    private ActividadFinanciera finanzaInsert;
+    
 
     @EJB
     private ADFacade ejbADFacade;
@@ -58,6 +67,10 @@ public class ActividadDiariaController implements Serializable {
     private AnticiposFacade ejbAnticipos;
     @EJB
     private AsignacionFacade ebjAsignacion;
+    @EJB
+    private FinanzasFacade ejbFinanzas;
+    @EJB
+    private CategoriasFacade ejbCategorias;
 
     @PostConstruct
     public void init() {
@@ -66,7 +79,8 @@ public class ActividadDiariaController implements Serializable {
         if (activityStatus) {
             this.listOperaciones = ejbOperacion.listOperaciones(this.actividad);
         }
-
+        
+        this.listCategorias = ejbCategorias.findAll();
     }
 
     public void showAdvance(OperacionUnidad e) {
@@ -76,7 +90,19 @@ public class ActividadDiariaController implements Serializable {
     }
 
     public void showDetailsEnd(OperacionUnidad e) {
+        Integer viajesSum = (int) e.getViajesrealizados();
         this.operacionSelected = e;
+        this.detallesSelected = new Detalles();
+        this.detallesSelected.setViajesRealizados(viajesSum);
+        Integer conteoAntetior = ejbOperacion.ContadorAnterior(e.getPlaca().getPlaca(), this.actividad.getFecha());
+        this.detallesSelected.setConteoAnterior(conteoAntetior);
+
+        BigDecimal pago1 = this.detallesSelected.getPrecioViajeMotorista().multiply(new BigDecimal(viajesSum)).setScale(2, BigDecimal.ROUND_HALF_EVEN);
+        this.detallesSelected.setPagoMotorista(pago1);
+        if (e.getIdauxiliar() != null) {
+            BigDecimal pago2 = this.detallesSelected.getPrecioViajeAuxiliar().multiply(new BigDecimal(viajesSum)).setScale(2, BigDecimal.ROUND_HALF_EVEN);
+            this.detallesSelected.setPagoAuxiliar(pago2);
+        }
     }
 
     public void prepareActivity() {
@@ -86,7 +112,6 @@ public class ActividadDiariaController implements Serializable {
         this.actividad.setIngresototal(new BigDecimal(0.0));
         this.actividad.setFecha(currentDay);
         this.actividad.setEstado(Enums.ESTADO_ACTIVIDAD.EJECUCION);
-
     }
 
     public void prepareOperation() {
@@ -103,6 +128,12 @@ public class ActividadDiariaController implements Serializable {
 
     public void prepareAnticipo() {
         this.anticipoInsert = new Anticipo();
+    }
+    
+    public void prepareGasto(){
+        this.finanzaInsert = new ActividadFinanciera();
+        this.finanzaInsert.setTipo((short)1);
+        this.finanzaInsert.setIdactividaddiaria(this.actividad);
     }
 
     public void createAnticipo() {
@@ -169,7 +200,24 @@ public class ActividadDiariaController implements Serializable {
             JsfUtil.addErrorMessage("Error en la Operacion 2");
         }
     }
-
+    
+    //Transaction 
+    public void finalizarOperacion(){
+        this.operacionSelected.setContador(this.detallesSelected.getConteoActual());
+        this.operacionSelected.setEstado(Enums.ESTADO_ACTIVIDAD.FINALIZADA);
+        this.operacionSelected.setIngreso(this.detallesSelected.getIngresoCalculado());
+        this.operacionSelected.setPagoconductor(this.detallesSelected.getPagoMotorista());
+        //Validar si es nulo 
+        if(this.operacionSelected.getIdauxiliar()!=null){
+            this.operacionSelected.setPagoauxiliar(this.detallesSelected.getPagoAuxiliar());
+        }
+        persistOperation(PersistAction.UPDATE, "Opetatividad Finalizada");
+    }
+    
+    public void calcularDetalles() {
+        this.detallesSelected.realizarCalculos();
+    }
+    
     public Anticipo getAnticipoInsert() {
         return anticipoInsert;
     }
@@ -226,4 +274,36 @@ public class ActividadDiariaController implements Serializable {
         this.asignacionSelected = asignacionSelected;
     }
 
+    public Detalles getDetallesSelected() {
+        return detallesSelected;
+    }
+
+    public void setDetallesSelected(Detalles detallesSelected) {
+        this.detallesSelected = detallesSelected;
+    }
+
+    public ActividadDiaria getActividad() {
+        return actividad;
+    }
+
+    public void setActividad(ActividadDiaria actividad) {
+        this.actividad = actividad;
+    }
+
+    public ActividadFinanciera getFinanzaInsert() {
+        return finanzaInsert;
+    }
+
+    public void setFinanzaInsert(ActividadFinanciera finanzaInsert) {
+        this.finanzaInsert = finanzaInsert;
+    }
+
+    public List<Categoria> getListCategorias() {
+        return listCategorias;
+    }
+
+    public void setListCategorias(List<Categoria> listCategorias) {
+        this.listCategorias = listCategorias;
+    }
+    
 }

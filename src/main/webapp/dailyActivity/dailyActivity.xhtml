@@ -50,8 +50,14 @@
                                                a:data-toggle="modal" 
                                                a:data-target="#nuevaOpeUnidadModal">
                                     <u>Nuevo Registro</u>
-                                </p:commandLink>                                
-                                <a href="" class="text-center pl-md-3 pr-md-3 d-md-inline d-block"><u>Registrar Gasto</u></a>
+                                </p:commandLink>
+                                <p:commandLink styleClass="text-center pl-md-3 pr-md-3 d-md-inline d-block"
+                                               actionListener="#{ADController.prepareGasto}"
+                                               a:data-toggle="modal" 
+                                               a:data-target="#modalGastosRegistros"
+                                               update=":pnlGastosRegistros">
+                                    <u>Registrar Gasto</u>
+                                </p:commandLink>
                                 <a href="" class="text-center pl-md-3 pr-md-3 d-md-inline d-block"><u>Auditoria</u></a>
                                 <a href="" class="text-center text-pink pl-md-3 pr-md-3 d-md-inline d-block"><u>Finalizar AD</u></a>                                
                             </h:form>
@@ -140,7 +146,7 @@
                                                            styleClass="d-block col-md-6 text-center text-primary"
                                                            actionListener="#{ADController.showAdvance(i)}"
                                                            update=":pnlListAnticipos"/>
-                                            
+
                                             <p:commandLink value="#{bundle.EndProcess}"
                                                            actionListener="#{ADController.showDetailsEnd(i)}"
                                                            styleClass="d-block col-md-6 text-center text-danger"
@@ -148,11 +154,12 @@
                                                            update=":pnlDetallesFinalizar"
                                                            a:data-toggle="modal" 
                                                            a:data-target="#modalDetallesFinalizar"/>
-                                            
+
                                             <p:commandLink value="#{bundle.Details}"
                                                            actionListener="#{ADController.showDetailsEnd(i)}"
                                                            styleClass="d-block col-md-6 text-center text-danger"
                                                            rendered="#{i.estado == 2}"
+                                                           update=":pnlDetallesFinalizar"
                                                            a:data-toggle="modal" 
                                                            a:data-target="#modalDetallesFinalizar"/>                                            
                                         </div>
@@ -174,6 +181,7 @@
             <ui:include src="ConfirmNewViaje.xhtml"/>
             <ui:include src="ListAnticipos.xhtml"/>
             <ui:include src="DetallesFinalizar.xhtml"/>
+            <ui:include src="RegistrarGasto.xhtml"/>
 
         </ui:define>
     </ui:composition>

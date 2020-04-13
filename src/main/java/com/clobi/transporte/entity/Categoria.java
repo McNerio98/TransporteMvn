@@ -30,51 +30,46 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "categorias", catalog = "transporte", schema = "public")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Categoria.findAll", query = "SELECT c FROM Categoria c")
-    , @NamedQuery(name = "Categoria.findByIdcategoria", query = "SELECT c FROM Categoria c WHERE c.idcategoria = :idcategoria")
-    , @NamedQuery(name = "Categoria.findByCategoria", query = "SELECT c FROM Categoria c WHERE c.categoria = :categoria")
-    , @NamedQuery(name = "Categoria.findByTipocategoria", query = "SELECT c FROM Categoria c WHERE c.tipocategoria = :tipocategoria")})
 public class Categoria implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idcategoria")
+    private List<ActividadFinanciera> actividadFinancieraList;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "idcategoria")
-    private Integer idcategoria;
+    @Column(name = "id", nullable = false)
+    private Integer id;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 20)
-    @Column(name = "categoria")
+    @Column(name = "categoria", nullable = false, length = 20)
     private String categoria;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 3)
-    @Column(name = "tipocategoria")
-    private String tipocategoria;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idcategoria")
-    private List<ActividadFinanciera> actividadFinancieraList;
+    @Size(min = 1, max = 50)
+    @Column(name = "descripcion", nullable = false, length = 50)
+    private String descripcion;
 
     public Categoria() {
     }
 
-    public Categoria(Integer idcategoria) {
-        this.idcategoria = idcategoria;
+    public Categoria(Integer id) {
+        this.id = id;
     }
 
-    public Categoria(Integer idcategoria, String categoria, String tipocategoria) {
-        this.idcategoria = idcategoria;
+    public Categoria(Integer id, String categoria, String descripcion) {
+        this.id = id;
         this.categoria = categoria;
-        this.tipocategoria = tipocategoria;
+        this.descripcion = descripcion;
     }
 
-    public Integer getIdcategoria() {
-        return idcategoria;
+    public Integer getId() {
+        return id;
     }
 
-    public void setIdcategoria(Integer idcategoria) {
-        this.idcategoria = idcategoria;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getCategoria() {
@@ -85,27 +80,18 @@ public class Categoria implements Serializable {
         this.categoria = categoria;
     }
 
-    public String getTipocategoria() {
-        return tipocategoria;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setTipocategoria(String tipocategoria) {
-        this.tipocategoria = tipocategoria;
-    }
-
-    @XmlTransient
-    public List<ActividadFinanciera> getActividadFinancieraList() {
-        return actividadFinancieraList;
-    }
-
-    public void setActividadFinancieraList(List<ActividadFinanciera> actividadFinancieraList) {
-        this.actividadFinancieraList = actividadFinancieraList;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idcategoria != null ? idcategoria.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -116,7 +102,7 @@ public class Categoria implements Serializable {
             return false;
         }
         Categoria other = (Categoria) object;
-        if ((this.idcategoria == null && other.idcategoria != null) || (this.idcategoria != null && !this.idcategoria.equals(other.idcategoria))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -124,7 +110,16 @@ public class Categoria implements Serializable {
 
     @Override
     public String toString() {
-        return "com.clobi.transporte.entity.Categoria[ idcategoria=" + idcategoria + " ]";
+        return "com.clobi.transporte.entity.Categoria[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    public List<ActividadFinanciera> getActividadFinancieraList() {
+        return actividadFinancieraList;
+    }
+
+    public void setActividadFinancieraList(List<ActividadFinanciera> actividadFinancieraList) {
+        this.actividadFinancieraList = actividadFinancieraList;
     }
     
 }

@@ -28,7 +28,7 @@
                                       value="#{ADController.anticipoInsert.anticipo}"
                                       a:placeholder="Ingrese Monto"/>             
                     </h:panelGroup>
-                    <p:commandLink rendered="#{empty ADController.anticipoInsert}"
+                    <p:commandLink rendered="#{(empty ADController.anticipoInsert) and (ADController.operacionSelected.estado == 1)}"
                                    actionListener="#{ADController.prepareAnticipo}"
                                    update="pnlListAnticipos"
                                    styleClass="d-block text-center pb-2">

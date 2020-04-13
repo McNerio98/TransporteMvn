@@ -34,7 +34,7 @@
                                         <p class="flex-column text-right">
                                             <small class="font-weight-bold">
                                                 <i class="fas fa-cash-register"></i> 
-                                                <h:outputText value="#{ADController.operacionSelected.idconductor.nombres} #{ADController.operacionSelected.idconductor.apellidos}"/>
+                                                <h:outputText value=" #{ADController.operacionSelected.idconductor.nombres} #{ADController.operacionSelected.idconductor.apellidos}"/>
                                             </small><br/>
                                             <span class="text-muted">Motorista</span>
                                         </p>
@@ -46,8 +46,8 @@
                                             <small class="font-weight-bold">
                                                 <i class="fas fa-cash-register"></i> 
                                                 <h:outputText rendered="#{!(empty ADController.operacionSelected.idauxiliar)}"
-                                                              value="#{ADController.operacionSelected.idauxiliar.nombres} #{ADController.operacionSelected.idauxiliar.apellidos}"/>
-                                                <h:outputText rendered="#{empty ADController.operacionSelected.idauxiliar}"
+                                                              value=" #{ADController.operacionSelected.idauxiliar.nombres} #{ADController.operacionSelected.idauxiliar.apellidos}"/>
+                                                <h:outputText rendered=" #{empty ADController.operacionSelected.idauxiliar}"
                                                               value="--No Asignado--"/>
                                             </small><br/>
                                             <span class="text-muted">Auxiliar</span>
@@ -58,14 +58,16 @@
                         </div>
                     </div>
                     <h:form styleClass="input-group mb-3"
-                            rendered="#{empty ADController.operacionSelected.contador}">
+                            rendered="#{empty ADController.detallesSelected.conteoActual}">
                         <div class="input-group-prepend">
-                            <p:commandButton styleClass="btn btn-secondary" 
+                            <p:commandButton styleClass="btn btn-secondary"
+                                             actionListener="#{ADController.calcularDetalles}"
+                                             update="pnlDetallesFinalizar"
                                              value="Calcular"/>
                         </div>
                         <h:inputText styleClass="form-control" 
-                                     value="#{ADController.operacionSelected.contador}"
-                                     a:placeholder="Ingrese contador"/>
+                                     value="#{ADController.detallesSelected.conteoActual}"
+                                     a:placeholder="Ingrese contador actual"/>
                     </h:form>
                     <div>
                         <table class="table table-bordered th-custom3">
@@ -81,70 +83,94 @@
                                     <td>1.</td>
                                     <td>Viajes Realizados</td>
                                     <td>
-                                        <span class="d-block text-center text-muted">10/11</span>
+                                        <span class="d-block text-center text-muted">
+                                            <h:outputText value="#{ADController.detallesSelected.viajesRealizados}/11"/>
+                                        </span>
                                     </td>
                                 </tr>                                
                                 <tr>
-                                    <td>1.</td>
+                                    <td>2.</td>
                                     <td>Conteo Ingresado</td>
                                     <td>
-                                        <span class="d-block text-center text-muted">No establecido</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>2.</td>
-                                    <td>Conteo Anterior</td>
-                                    <td>
-                                        <span class="d-block text-center text-muted">0</span>
+                                        <span class="d-block text-center text-muted">
+                                            <h:outputText value="--No Establecido--"
+                                                          rendered="#{ADController.detallesSelected.conteoActual == 0}"/>
+
+                                            <h:outputText rendered="#{ADController.detallesSelected.conteoActual > 0}"
+                                                          value="#{ADController.detallesSelected.conteoActual}"/>
+                                        </span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>3.</td>
-                                    <td>Diferencia Calculada <span class="badge bg-warning">Nuevo</span></td>
+                                    <td>Conteo Anterior</td>
                                     <td>
-                                        <span class="d-block text-center text-muted">1234</span>
+                                        <span class="d-block text-center text-muted">
+                                            <h:outputText value="#{ADController.detallesSelected.conteoAnterior}"/>
+                                        </span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>4.</td>
-                                    <td>Ingreso Total Calculado</td>
+                                    <td>Diferencia Calculada <span class="badge bg-warning">Nuevo</span></td>
                                     <td>
-                                        <span class="d-block text-center text-muted">$ 98.45</span>
+                                        <span class="d-block text-center text-muted">
+                                            <h:outputText value="#{ADController.detallesSelected.diferencia}"/>
+                                        </span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>5.</td>
-                                    <td>Total anticipos <span class="badge bg-success">Nuevo</span></td>
+                                    <td>Ingreso Total Calculado</td>
                                     <td>
-                                        <span class="d-block text-center text-muted">$ 68.45</span>
+                                        <span class="d-block text-center text-muted">
+                                            <h:outputText value="$ #{ADController.detallesSelected.ingresoCalculado}"/>
+                                        </span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>6.</td>
-                                    <td>Pago Motorista</td>
+                                    <td>Total anticipos <span class="badge bg-success">Nuevo</span></td>
                                     <td>
-                                        <span class="d-block text-center text-muted">$ 10.45</span>
+                                        <span class="d-block text-center text-muted">
+                                            <h:outputText value="$ #{ADController.detallesSelected.anticipos}"/>
+                                        </span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>7.</td>
-                                    <td>Descuento ahorro motorista </td>
+                                    <td>Pago Motorista</td>
                                     <td>
-                                        <span class="d-block text-center text-muted">$ 3.45</span>
+                                        <span class="d-block text-center text-muted">
+                                            <h:outputText value="$ #{ADController.detallesSelected.pagoMotorista}"/>
+                                        </span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>8.</td>
-                                    <td>Pago Auxiliar</td>
+                                    <td>Descuento ahorro motorista </td>
                                     <td>
-                                        <span class="d-block text-center text-muted">$ 3.45</span>
+                                        <span class="d-block text-center text-muted">
+                                            <h:outputText value="$ #{ADController.detallesSelected.descuentoMotorista}"/>
+                                        </span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>9.</td>
+                                    <td>Pago Auxiliar</td>
+                                    <td>
+                                        <span class="d-block text-center text-muted">
+                                            <h:outputText value="$ #{ADController.detallesSelected.pagoAuxiliar}"/>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>10.</td>
                                     <td>Descuento ahorro auxiliar</td>
                                     <td>
-                                        <span class="d-block text-center text-muted">$ 3.45</span>
+                                        <span class="d-block text-center text-muted">
+                                            <h:outputText value="$ #{ADController.detallesSelected.descuentoAuxiliar}"/>
+                                        </span>
                                     </td>
                                 </tr>
                             </tbody>
@@ -164,8 +190,13 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn-ct btn-ct-secondary" data-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn-ct btn-ct-success">Finalizar</button>
+                    
+                    <a href="#" class="btn-ct btn-ct-secondary" data-dismiss="modal">Cerrar</a>
+                    <p:commandLink styleClass="btn-ct btn-ct-success"
+                                   actionListener="#{ADController.finalizarOperacion}"
+                                   update=":listActivities, :pnlMessageJSF"
+                                   rendered="#{!(empty ADController.detallesSelected.conteoActual) and (ADController.operacionSelected.estado == 1)}"
+                                   value="#{bundle.EndProcess}"/>
                 </div>
             </h:panelGroup>
         </div>
