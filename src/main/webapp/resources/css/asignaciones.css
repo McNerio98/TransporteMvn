@@ -11,3 +11,7 @@
     display: none;
 }
 
+.myownclass  tr.ui-state-highlight {
+    background-color: #fff !important;
+}
+
