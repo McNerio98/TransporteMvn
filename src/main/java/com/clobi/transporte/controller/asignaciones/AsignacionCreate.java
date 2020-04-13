@@ -70,15 +70,34 @@ public class AsignacionCreate {
     }
     
     public List<Empleado> getMotoristas(){
-        return getEmpleadoFacade().getEmpleados("mot");
+        List<Empleado> list;
+        if(getFacade().findAll().isEmpty()){
+            list = getEmpleadoFacade().getEmpleadosByTipo("mot");
+        }else{
+            list = getEmpleadoFacade().getEmpleados("mot");
+        }
+        return list;
     }
     
     public List<Empleado> getAuxiliares(){
-        return getEmpleadoFacade().getEmpleados("ayu");
+        List<Empleado> list;
+        if(getFacade().findAll().isEmpty()){
+            list = getEmpleadoFacade().getEmpleadosByTipo("ayu");
+        }else{
+            list = getEmpleadoFacade().getEmpleados("ayu");
+        }
+        return list;
     }
     
     public List<Unidad> getUnidades(){
-        return getUnidadFacade().getUnidadesNotAsignadas();
+        List<Unidad> list;
+        if(getFacade().findAll().isEmpty()){
+            list = getUnidadFacade().findAll();
+        }else{
+            list = getUnidadFacade().getUnidadesNotAsignadas();
+        }
+        
+        return list;
     }
     
     public void setAsignacion(Asignacion as){

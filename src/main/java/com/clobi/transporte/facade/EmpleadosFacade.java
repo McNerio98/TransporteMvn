@@ -22,6 +22,7 @@ import javax.persistence.SqlResultSetMapping;
  */
 @Stateless
 public class EmpleadosFacade extends AbstractFacade<Empleado> {
+
     @PersistenceContext(unitName = "transportePU")
     private EntityManager em;
 
@@ -38,22 +39,27 @@ public class EmpleadosFacade extends AbstractFacade<Empleado> {
 
     public List<Empleado> getEmpleados(String tipo) {
         List<Empleado> list;
-        String sql = "select e.dui , e.nombres, e.apellidos, e.fechanacimiento, e.estadocivil, \n"
-                + "e.telefono, e.tipo \n"
-                + "from empleados e, asignaciones a \n"
-                + "where a.motorista != e.dui \n"
-                + "and a.ayudante != e.dui\n"
-                + "and e.tipo =  ?";
+        String sql = "";
+        if (tipo.equals("mot")) {
+            sql = "select e.dui , e.nombres, e.apellidos, e.fechanacimiento, e.estadocivil, \n"
+                    + "e.telefono, e.tipo \n"
+                    + "from empleados e\n"
+                    + "where e.tipo = ? and e.dui not in (\n"
+                    + "    SELECT DISTINCT p.motorista FROM asignaciones p\n"
+                    + ");";
+        } else {
+            sql = "select e.dui , e.nombres, e.apellidos, e.fechanacimiento, e.estadocivil, \n"
+                    + "e.telefono, e.tipo \n"
+                    + "from empleados e\n"
+                    + "where e.tipo = ? and e.dui not in (\n"
+                    + "    SELECT DISTINCT p.ayudante FROM asignaciones p\n"
+                    + ");";
+        }
         Query query = em.createNativeQuery(sql, Empleado.class);
         query.setParameter(1, tipo);
         List<Object[]> listo = query.getResultList();
         System.out.print(listo);
         list = query.getResultList();
-        if(list.isEmpty()){
-            Query q = em.createNamedQuery("Empleado.findByTipo");
-            q.setParameter("tipo", tipo);
-            list = q.getResultList();
-        }
         return list;
     }
 

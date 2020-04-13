@@ -37,15 +37,14 @@ public class UnidadFacade extends AbstractFacade<Unidad> {
         List<Unidad> list;
         String sql = "select u.placa, u.numerounidad, u.modelo, u.ye_ar, u.motor, u.chasis,\n"
                 + "u.marca, u.fechavencimiento\n"
-                + "from asignaciones a, unidades u \n"
-                + "where a.unidad != u.placa;";
+                + "from unidades u \n"
+                + "where u.placa not in (\n"
+                + "    SELECT DISTINCT p.unidad FROM asignaciones p\n"
+                + ");";
         Query query = em.createNativeQuery(sql, Unidad.class);
         List<Object[]> listo = query.getResultList();
         System.out.print(listo);
         list = query.getResultList();
-        if(list.isEmpty()){
-            list = em.createNamedQuery("Unidad.findAll").getResultList();
-        }
         return list;
     }
 

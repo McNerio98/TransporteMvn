@@ -77,7 +77,7 @@
                                                     var="item"
                                                     selectionMode="single"
                                                     rowKey="#{item}"
-                                                    emptyMessage="Sin registro de Unidades"
+                                                    emptyMessage="Sin unidades para asignar"
                                                     selection="#{asignacionCreate.asignacion.unidad}"
                                                     >
                                                     <p:ajax event="rowSelect" update="form:btnCreate" listener="#{asignacionCreate.uSelected(event)}" />
@@ -140,10 +140,10 @@
                                                     var="item"
                                                     selectionMode="single"
                                                     rowKey="#{item}"
-                                                    emptyMessage="Sin registro de Motoristas"
+                                                    emptyMessage="Sin motorista para asignar"
                                                     selection="#{asignacionCreate.asignacion.motorista}"
                                                     >
-                                                    <p:ajax event="rowSelect" update="formContrato formContrato:next form:btnCreate" listener="#{asignacionCreate.mSelected(event)}" />
+                                                    <p:ajax event="rowSelect" update="formContrato  form:btnCreate" listener="#{asignacionCreate.mSelected(event)}" />
                                                     <p:column>
                                                         <f:facet name="header">
                                                             <h:outputText value="DUI"/>
@@ -200,7 +200,7 @@
                                                     var="item"
                                                     selectionMode="single"
                                                     rowKey="#{item}"
-                                                    emptyMessage="Sin registro de Auxiliares"
+                                                    emptyMessage="Sin auxiliar para asignar"
                                                     selection="#{asignacionCreate.asignacion.ayudante}"
                                                     >
                                                     <p:ajax event="rowSelect" update="formContrato form:btnCreate" listener="#{asignacionCreate.aSelected(event)}" />
