@@ -89,9 +89,14 @@ public class ActividadDiariaController implements Serializable {
     }
 
     public void showDetailsEnd(OperacionUnidad e) {
-        Integer viajesSum = (int) e.getViajesrealizados();
         this.operacionSelected = e;
         this.detallesSelected = new Detalles();
+        Integer viajesSum = (int) e.getViajesrealizados();
+        Integer valor = e.getContador();
+        if(valor != 0){
+            this.detallesSelected.setConteoActual(valor);
+            this.detallesSelected.realizarCalculos();
+        }
         this.detallesSelected.setViajesRealizados(viajesSum);
         Integer conteoAntetior = ejbOperacion.ContadorAnterior(e.getPlaca().getPlaca(), this.actividad.getFecha());
         this.detallesSelected.setConteoAnterior(conteoAntetior);
@@ -102,6 +107,7 @@ public class ActividadDiariaController implements Serializable {
             BigDecimal pago2 = this.detallesSelected.getPrecioViajeAuxiliar().multiply(new BigDecimal(viajesSum)).setScale(2, BigDecimal.ROUND_HALF_EVEN);
             this.detallesSelected.setPagoAuxiliar(pago2);
         }
+        
     }
 
     public void prepareActivity() {
@@ -155,7 +161,7 @@ public class ActividadDiariaController implements Serializable {
     public void createOperation() {
         this.operacionSelected.setPlaca(this.asignacionSelected.getUnidad());
         this.operacionSelected.setIdconductor(this.asignacionSelected.getMotorista());
-        if (!this.asignacionSelected.getAyudante().getDui().equals("")) {
+        if (this.asignacionSelected.getAyudante() != null) {
             this.operacionSelected.setIdauxiliar(this.asignacionSelected.getAyudante());
         }
         persistOperation(PersistAction.CREATE, "Operacion Exitosa");

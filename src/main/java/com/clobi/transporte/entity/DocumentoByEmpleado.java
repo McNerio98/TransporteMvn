@@ -30,16 +30,9 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "documentosbyempleados", catalog = "transporte", schema = "public")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "DocumentoByEmpleado.findAll", query = "SELECT d FROM DocumentoByEmpleado d")
-    , @NamedQuery(name = "DocumentoByEmpleado.findByIddocumento", query = "SELECT d FROM DocumentoByEmpleado d WHERE d.iddocumento = :iddocumento")
-    , @NamedQuery(name = "DocumentoByEmpleado.findByNumero", query = "SELECT d FROM DocumentoByEmpleado d WHERE d.numero = :numero")
-    , @NamedQuery(name = "DocumentoByEmpleado.findByExpiracion", query = "SELECT d FROM DocumentoByEmpleado d WHERE d.expiracion = :expiracion")
-    , @NamedQuery(name = "DocumentoByEmpleado.findByFilepath", query = "SELECT d FROM DocumentoByEmpleado d WHERE d.filepath = :filepath")})
+
 public class DocumentoByEmpleado implements Serializable {
 
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -60,12 +53,12 @@ public class DocumentoByEmpleado implements Serializable {
     @Size(min = 1, max = 100)
     @Column(name = "filepath")
     private String filepath;
+    @Size(max = 5)
+    @Column(name = "tipo")
+    private String tipo;
     @JoinColumn(name = "idempleado", referencedColumnName = "dui")
     @ManyToOne(optional = false)
     private Empleado idempleado;
-    @JoinColumn(name = "tipo", referencedColumnName = "idtipodoc")
-    @ManyToOne(optional = false)
-    private TipoDocEmpleado tipo;
 
     public DocumentoByEmpleado() {
     }
@@ -113,20 +106,20 @@ public class DocumentoByEmpleado implements Serializable {
         this.filepath = filepath;
     }
 
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
     public Empleado getIdempleado() {
         return idempleado;
     }
 
     public void setIdempleado(Empleado idempleado) {
         this.idempleado = idempleado;
-    }
-
-    public TipoDocEmpleado getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(TipoDocEmpleado tipo) {
-        this.tipo = tipo;
     }
 
     @Override
@@ -152,6 +145,19 @@ public class DocumentoByEmpleado implements Serializable {
     @Override
     public String toString() {
         return "com.clobi.transporte.entity.DocumentoByEmpleado[ iddocumento=" + iddocumento + " ]";
+    }
+    
+    public String tipoCase(){
+        String result = "any";
+            switch(this.tipo){
+                case "lic":
+                    result = "Licencia de Conducir";
+                    break;
+                case "car":
+                    result = "Carnet de Motorista";
+                    break;
+            }
+        return result;
     }
     
 }

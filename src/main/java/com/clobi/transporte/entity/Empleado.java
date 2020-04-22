@@ -88,6 +88,9 @@ public class Empleado implements Serializable {
     @Size(min = 1, max = 15)
     @Column(name = "apellidos")
     private String apellidos;
+    @NotNull
+    @Column(name = "avatarpath")
+    private String avatarPath;
     @Basic(optional = false)
     @NotNull
     @Column(name = "fechanacimiento")
@@ -248,30 +251,34 @@ public class Empleado implements Serializable {
 
     public String estadoCivilCase() {
         String estado = "none";
-        switch (this.estadocivil) {
-            case "sol":
-                estado = "Soltero";
-                break;
-            case "aco":
-                estado = "Acompaniado";
-                break;
-            case "cas":
-                estado = "Casado";
-                break;
+        if (this.estadocivil != null) {
+            switch (this.estadocivil) {
+                case "sol":
+                    estado = "Soltero";
+                    break;
+                case "aco":
+                    estado = "Acompaniado";
+                    break;
+                case "cas":
+                    estado = "Casado";
+                    break;
+            }
         }
         return estado;
     }
-    
-    public String tipoEmpleadoCase(){
+
+    public String tipoEmpleadoCase() {
         String tipo = "none";
-        switch (this.tipo) {
-            case "mot":
-                tipo = "Motorista";
-                break;
-            case "ayu":
-                tipo = "Auxiliar Motorista";
-                break;
-        }        
+        if (this.tipo != null) {
+            switch (this.tipo) {
+                case "mot":
+                    tipo = "Motorista";
+                    break;
+                case "ayu":
+                    tipo = "Auxiliar Motorista";
+                    break;
+            }
+        }
         return tipo;
     }
 
@@ -322,6 +329,14 @@ public class Empleado implements Serializable {
 
     public void setEmpleadosContrato(EmpleadosContrato empleadosContrato) {
         this.empleadosContrato = empleadosContrato;
+    }
+
+    public String getAvatarPath() {
+        return avatarPath;
+    }
+
+    public void setAvatarPath(String avatarPath) {
+        this.avatarPath = avatarPath;
     }
 
 }

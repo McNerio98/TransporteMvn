@@ -19,7 +19,7 @@
                     <p:commandLink styleClass="btn btn-danger"
                                    actionListener="#{empleadosControl.destroy}"
                                    value="#{bundle.Delete}"
-                                   update=":formEmpleado, :pnlMessageJSF"
+                                   update=":listFormEmployees, :viewEmployee, :pnlMessageJSF"
                                    oncomplete="closeModal('#modalConfirmEmploye')"/>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">#{bundle.Close}</button>
                 </div>

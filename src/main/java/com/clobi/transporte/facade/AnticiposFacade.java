@@ -8,6 +8,7 @@ package com.clobi.transporte.facade;
 import com.clobi.transporte.entity.Anticipo;
 import com.clobi.transporte.entity.OperacionUnidad;
 import java.math.BigDecimal;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -35,14 +36,10 @@ public class AnticiposFacade extends AbstractFacade<Anticipo> {
     }
 
     public BigDecimal totalAnticipos(OperacionUnidad o) {
-        BigDecimal sum = new BigDecimal(0.0);
-        try {
-            Query query = getEntityManager().createNamedQuery("Anticipo.sumAnticipos");
-            query.setParameter("idoperacion", o);
-            sum = (BigDecimal) query.getSingleResult();
-        } catch (Exception e) {
-            System.out.print("Error...");
-        }
-        return sum;
+        BigDecimal sum = null;
+        Query query = getEntityManager().createNamedQuery("Anticipo.sumAnticipos");
+        query.setParameter("idoperacion", o);
+        List<BigDecimal> tmp = query.getResultList();
+        return (tmp.isEmpty())?sum:tmp.get(0);
     }
 }

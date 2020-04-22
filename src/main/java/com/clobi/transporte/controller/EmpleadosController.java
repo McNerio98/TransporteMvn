@@ -5,6 +5,7 @@
  */
 package com.clobi.transporte.controller;
 
+import com.clobi.transporte.controller.util.Enums;
 import com.clobi.transporte.controller.util.JsfUtil;
 import com.clobi.transporte.controller.util.JsfUtil.PersistAction;
 import com.clobi.transporte.entity.DocumentoByEmpleado;
@@ -18,6 +19,7 @@ import java.io.Serializable;
 import java.nio.file.Files;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -43,30 +45,82 @@ public class EmpleadosController implements Serializable {
     private EmpleadosFacade ejbEmpleado;
     @EJB
     private DocEmpleadoFacade ejbDocEmpleado;
-    private DocumentoByEmpleado DocToUp;
     private Empleado selected;
-    private Part DUIDocumentFile;
-
+    private DocumentoByEmpleado licencia;
+    private DocumentoByEmpleado carnet;
+    private Part licenciaFile;
+    private Part carnetFile;
 
     @PostConstruct
     public void init() {
         this.setLstEmpleados(ejbEmpleado.findAll());
     }
 
+    //Creando empleado 
     public void create() {
-        this.persist(PersistAction.CREATE, "Se Registro exitosamente...");
+        UploadDocuments();
+        //this.persist(PersistAction.CREATE, "Se Registro exitosamente...");
+    }
+
+    public void saveDocument() {
+        String realPath = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/");
+        String folderToSave = "documentsSaved";
+        String realFolder = realPath + folderToSave;
+        String fileName = "";
+        try {
+            InputStream input = this.licenciaFile.getInputStream();
+            fileName = this.generateCode("LIC") + ".pdf";
+            Files.copy(input, new File(realFolder, fileName).toPath());
+            JsfUtil.addSuccessMessage("Se subio un elemento");
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage("Error al cargar elemento");
+        }
+    }
+
+    public void update() {
+        this.persist(PersistAction.UPDATE, "Se Actualizo Exitosamente...");
+    }
+
+    //True si los guardo con exito tanto los archivos como los registros  
+    public boolean UploadDocuments() {
+        boolean estado = false;
+        String realPath = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/");
+        String folderToSave = "documentsSaved";
+        String realFolder = realPath + folderToSave;
+        String fileName = "";
+
+        try {
+            //ejbDocEmpleado.initTransaction();
+            System.out.print("Size: " + this.licenciaFile.getSize());
+            System.out.print("Size2: " + this.carnetFile.getSize());
+            InputStream streamLicencia = this.licenciaFile.getInputStream();
+            InputStream streamCarnet = this.carnetFile.getInputStream();
+
+            fileName = this.generateCode("LIC") + ".pdf";
+            Files.copy(streamLicencia, new File(realFolder, fileName).toPath());
+            this.licencia.setFilepath(fileName);
+
+            fileName = this.generateCode("CAR") + ".pdf";
+            Files.copy(streamCarnet, new File(realFolder, fileName).toPath());
+            this.carnet.setFilepath(fileName);
+
+            ejbDocEmpleado.edit(licencia);
+            ejbDocEmpleado.edit(carnet);
+
+            //ejbDocEmpleado.commit();
+            estado = true;
+        } catch (Exception e) {
+            //ejbDocEmpleado.rollback();
+            JsfUtil.addErrorMessage("Error al subir los documentos");
+        }
+        return estado;
     }
 
     public Empleado prepareCreate() {
-        if (this.selected != null) {
-            System.out.print("Dato 1: " + selected.getNombres());
-            System.out.print("Dato 1: " + selected.getApellidos());
-            selected = null;
-        }
+        this.licencia = new DocumentoByEmpleado();
+        this.carnet = new DocumentoByEmpleado();
         this.selected = new Empleado();
-        System.out.print("Entro para la preparacion");
         return this.selected;
-
     }
 
     public List<Empleado> getLstEmpleados() {
@@ -80,65 +134,18 @@ public class EmpleadosController implements Serializable {
     private EmpleadosFacade getFacade() {
         return ejbEmpleado;
     }
-    
-    private DocEmpleadoFacade getDocEmpleadoFacade(){
-        return ejbDocEmpleado;
-    }
-    public Part getDUIDocumentFile() {
-        return DUIDocumentFile;
-    }
 
-    public void setDUIDocumentFile(Part DUIDocumentFile) {
-        this.DUIDocumentFile = DUIDocumentFile;
+    private DocEmpleadoFacade getDocEmpleadoFacade() {
+        return ejbDocEmpleado;
     }
 
     public EmpleadosFacade getEjbEmpleado() {
         return ejbEmpleado;
     }
 
-    public void saveDocument() {
-        String realPath = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/");
-        String folderToSave = "documentsSaved";
-        String realFolder = realPath + folderToSave;
-        String fileName = "";
-        try{
-//Registro en la base de datos            
-//Subir archivo
-             
-            InputStream input = this.DUIDocumentFile.getInputStream();
-            fileName = this.generateCode("DUI")+".pdf";
-            Files.copy(input, new File(realFolder, fileName).toPath());
-            JsfUtil.addSuccessMessage("Se subio un elemento");
-        }catch(Exception e){
-            JsfUtil.addErrorMessage("Error al cargar elemento");
-        }
-    }
-    
-    public void prototypeUpDocument(){
-        String realPath = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/");
-        String folderToSave = "documentsSaved";
-        String realFolder = realPath + folderToSave;
-        String fileName = "";
-        
-        try{
-            getDocEmpleadoFacade().initTransaction();
-            fileName = this.generateCode("DUI")+".pdf";
-            this.DocToUp.setFilepath("/" + fileName);
-            getDocEmpleadoFacade().create(DocToUp);
-            InputStream input = this.DUIDocumentFile.getInputStream();
-            
-            Files.copy(input, new File(realFolder, fileName).toPath());
-            JsfUtil.addSuccessMessage("Se subio un elemento");
-            getDocEmpleadoFacade().commit();
-        }catch(Exception e){
-            getDocEmpleadoFacade().rollback();
-            JsfUtil.addErrorMessage("Error al cargar elemento");
-        }    
-    }
-    
-    private String generateCode(String idenDocument){
+    private String generateCode(String idenDocument) {
         String code = "generic";
-        code = this.selected.getDui()+idenDocument;
+        code = this.selected.getDui() + idenDocument;
         return code;
     }
 
@@ -161,29 +168,81 @@ public class EmpleadosController implements Serializable {
     public void destroy() {
         this.persist(PersistAction.DELETE, "Se Removio un elemento con exito!");
     }
-    
-    public void showStatus(){
+
+    public void showStatus() {
         System.out.print("Se envio al metodo");
     }
 
     private void persist(PersistAction persistAction, String infoResult) {
-
         try {
+            //ejbEmpleado.initTransaction();
             if (persistAction != PersistAction.DELETE) {
                 Empleado p = getFacade().edit(selected);
-                this.selected = null;
+                //Si esta creando es obligacion subir los archivos 
+                if (persistAction == PersistAction.CREATE) {
+                    this.licencia.setIdempleado(p);
+                    this.carnet.setIdempleado(selected);
+                    if (!UploadDocuments()) {
+                        throw new Exception("Error al subir archivos");
+                    }
+                }
             } else {
                 getFacade().remove(selected);
             }
             this.setLstEmpleados(ejbEmpleado.findAll());
             JsfUtil.addSuccessMessage(infoResult);
+            //ejbEmpleado.commit();
         } catch (EJBException ex) {
             String msg = "Error en la operacion";
             Throwable cause = ex.getCause();
             JsfUtil.addErrorMessage(msg);
+            //ejbEmpleado.rollback();
         } catch (Exception e) {
             JsfUtil.addErrorMessage("Error de persistencia");
+            //ejbEmpleado.rollback();
         }
+
+        this.selected = null;
+    }
+
+    public DocEmpleadoFacade getEjbDocEmpleado() {
+        return ejbDocEmpleado;
+    }
+
+    public void setEjbDocEmpleado(DocEmpleadoFacade ejbDocEmpleado) {
+        this.ejbDocEmpleado = ejbDocEmpleado;
+    }
+
+    public DocumentoByEmpleado getLicencia() {
+        return licencia;
+    }
+
+    public void setLicencia(DocumentoByEmpleado licencia) {
+        this.licencia = licencia;
+    }
+
+    public Part getLicenciaFile() {
+        return licenciaFile;
+    }
+
+    public void setLicenciaFile(Part licenciaFile) {
+        this.licenciaFile = licenciaFile;
+    }
+
+    public Part getCarnetFile() {
+        return carnetFile;
+    }
+
+    public void setCarnetFile(Part carnetFile) {
+        this.carnetFile = carnetFile;
+    }
+
+    public DocumentoByEmpleado getCarnet() {
+        return carnet;
+    }
+
+    public void setCarnet(DocumentoByEmpleado carnet) {
+        this.carnet = carnet;
     }
 
 }

@@ -28,4 +28,9 @@ public class Enums {
         public static final short AYUDANTE = 4;
         public static final short AGUA = 5;
     }
+    
+    public static final class TIPO_DOC {
+        public static final String LICENCIA = "lic";
+        public static final String CARNET = "car";
+    }    
 }

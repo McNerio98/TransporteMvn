@@ -27,31 +27,14 @@ import javax.xml.bind.annotation.XmlTransient;
  *
  * @author desarrollo
  */
-@Entity
-@Table(name = "tipodocsempleados", catalog = "transporte", schema = "public")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "TipoDocEmpleado.findAll", query = "SELECT t FROM TipoDocEmpleado t")
-    , @NamedQuery(name = "TipoDocEmpleado.findByIdtipodoc", query = "SELECT t FROM TipoDocEmpleado t WHERE t.idtipodoc = :idtipodoc")
-    , @NamedQuery(name = "TipoDocEmpleado.findByTipodoc", query = "SELECT t FROM TipoDocEmpleado t WHERE t.tipodoc = :tipodoc")
-    , @NamedQuery(name = "TipoDocEmpleado.findByDescripcion", query = "SELECT t FROM TipoDocEmpleado t WHERE t.descripcion = :descripcion")})
+
+
 public class TipoDocEmpleado implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "idtipodoc")
     private Integer idtipodoc;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 10)
-    @Column(name = "tipodoc")
     private String tipodoc;
-    @Size(max = 20)
-    @Column(name = "descripcion")
     private String descripcion;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipo")
     private List<DocumentoByEmpleado> documentoByEmpleadoList;
 
     public TipoDocEmpleado() {

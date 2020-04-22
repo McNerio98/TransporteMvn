@@ -10,6 +10,7 @@ import com.clobi.transporte.entity.DocumentoByEmpleado;
 import com.clobi.transporte.entity.Unidad;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -36,34 +37,21 @@ public class ADFacade extends AbstractFacade<ActividadDiaria> {
 
     public ActividadDiaria currentActivity() {
         ActividadDiaria ad = null;
-        try {
-            Query sql = getEntityManager().createNamedQuery("ActividadDiaria.findByFecha", ActividadDiaria.class);
-            sql.setParameter("fecha", new Date());
-            ad = (ActividadDiaria) sql.getSingleResult();
-        } catch (Exception e) {
-            System.out.print("Error o no se encontro ningun resultado");
-        }
-        return ad;
+        Query sql = getEntityManager().createNamedQuery("ActividadDiaria.findByFecha", ActividadDiaria.class);
+        sql.setParameter("fecha", new Date());
+        List<ActividadDiaria> tmp = sql.getResultList();
+        return (tmp.isEmpty() ? ad : tmp.get(0));
     }
 
     public Integer todayRecords() {
-        Integer cantidadRecords = -1;
-        try {
-            cantidadRecords = (int) ((long) getEntityManager().createNamedQuery("ActividadDiaria.countToday").getSingleResult());
-        } catch (Exception e) {
-            System.out.print("Error al obtener el total de registros ");
-        }
-        return cantidadRecords;
+        Integer c = -1;
+        List<Integer> tmp = getEntityManager().createNamedQuery("ActividadDiaria.countToday").getResultList();
+        return (tmp.isEmpty() ? c : tmp.get(0));
     }
-    
-    //Metodos Auxiliares 
-    public Unidad obtenerUnidadAux(String id){
+
+    public Unidad obtenerUnidadAux(String id) {
         Unidad u = null;
-        try{
-            u = getEntityManager().find(Unidad.class, id);
-        }catch(Exception e){
-            System.out.print("Error al encontrar unidad");
-        }
+        u = getEntityManager().find(Unidad.class, id);
         return u;
     }
 }

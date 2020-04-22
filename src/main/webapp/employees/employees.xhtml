@@ -28,7 +28,7 @@
                     <h:panelGroup layout="block" styleClass="card-body" id="viewEmployee">
                         <h:panelGroup styleClass="row" layout="block" rendered="#{empleadosControl.selected != null}">
                             <div class="col-md-4">
-                                <img src="#{facesContext.externalContext.requestContextPath}/resources/img/avatar.png" alt="" class="img-center-round"/>
+                                <img src="#{facesContext.externalContext.requestContextPath}/resources/img#{empleadosControl.selected.avatarPath}" alt="" class="img-center-round"/>
                                 <div class="text-center border-bottom pt-3">
                                     <label for="" class="text-muted font-weight-normal">
                                         Tipo Empleado /
@@ -84,6 +84,7 @@
                                                  styleClass="btn-ct btn-ct-success d-inline-block ml-1"
                                                  a:data-toggle="modal"
                                                  a:data-target="#modalEmploye"
+                                                 update=":listFormEmployees:lstEmployees"
                                                  value="+ #{bundle.Create}"/> 
                                 <p:commandButton styleClass="btn-ct btn-ct-warning d-inline-block ml-1"
                                                  a:data-toggle="modal"
@@ -92,7 +93,9 @@
                                                  id="btnUpdate"
                                                  disabled="#{empty empleadosControl.selected}"
                                                  value="#{bundle.Edit}"/>
-                                <p:commandButton styleClass="btn-ct btn-ct-danger d-inline-block m-1"                                     
+                                <p:commandButton styleClass="btn-ct btn-ct-danger d-inline-block m-1"
+                                                 a:data-toggle="modal"
+                                                 a:data-target="#modalConfirmEmploye"
                                                  id="btnDelete"
                                                  disabled="#{empty empleadosControl.selected}"
                                                  value="#{bundle.Delete}"/>
@@ -140,8 +143,10 @@
                 </div>
             </div>
             <ui:include src="Create.xhtml"/>
+            <ui:include src="DeleteConfirm.xhtml"/>
         </ui:define>
         <ui:define name="scriptsSpecifided">
+            <h:outputScript library="js" name="bs-custom-file-input.min.js"/>
             <h:outputScript library="js" name="employees_global.js"/>
         </ui:define>
 
