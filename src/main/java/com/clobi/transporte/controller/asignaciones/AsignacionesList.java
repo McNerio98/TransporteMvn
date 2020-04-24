@@ -65,6 +65,10 @@ public class AsignacionesList implements Serializable {
         this.setAsignacion(selected);
     }
     
+    public void eliminarAsignacion(){
+        persist(JsfUtil.PersistAction.DELETE,"Accion exitosa");
+    }
+    
     public void guardarCambios(){
         persist(JsfUtil.PersistAction.UPDATE, "Se han guardado los cambios");
     }
@@ -109,6 +113,7 @@ public class AsignacionesList implements Serializable {
                 } else {
                     getFacade().remove(selected);
                 }
+                this.init();
                 JsfUtil.addSuccessMessage(successMessage);
             } catch (EJBException ex) {
                 String msg = "";

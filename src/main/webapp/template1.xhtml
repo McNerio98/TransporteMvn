@@ -19,6 +19,7 @@
         <h:outputStylesheet library="css" name="adminlte.css"/>
         <h:outputStylesheet library="css" name="custom1.css"/>
         <h:outputStylesheet library="css" name="jquery.dataTables.min.css"/>
+        <h:outputStylesheet library="css" name="datatableResponsive.css"/>
         <h:outputStylesheet library="css" name="adminLTEAlters.css"/>
         <h:outputStylesheet library="primefaces" name="components.css"/>
         <h:outputStylesheet library="webjars" name="font-awesome/5.12.0/css/all.min-jsf.css" />
@@ -40,12 +41,12 @@
                             <div class="modal-header">
                                 <h5 class="modal-title" id="exampleModalCenterTitle">Configurar tipo de contrato</h5>
                                 <p:commandLink actionListener="#{empleadosContrato.prepareCreate}"
-                                                         styleClass="close"
-                                                         a:data-dismiss="modal"
-                                                         a:aria-label="Close"
-                                                         update="formContrato"
-                                                         value="">
-                                        <span aria-hidden="true">&times;</span>
+                                               styleClass="close"
+                                               a:data-dismiss="modal"
+                                               a:aria-label="Close"
+                                               update="formContrato"
+                                               value="">
+                                    <span aria-hidden="true">&times;</span>
                                 </p:commandLink> 
                             </div>                           
                             <h:form id="formContrato">
@@ -96,7 +97,7 @@
                                             <f:ajax  onevent="ContratoSuccess"  onerror="ContratoError" />
                                         </p:commandButton>
                                     </c:if>
-                                    
+
 
 
                                 </div>
@@ -145,6 +146,16 @@
                 <h:outputScript library="js" name="adminlte.js"/>
                 <h:outputScript library="js" name="dataTable.min.js"/>
                 <h:outputScript library="js" name="globalScript1.js"/>
+                <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+                <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+
+                <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+                <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap4.min.js"></script>
+
+                <script type="text/javascript" src="https://cdn.datatables.net/rowgroup/1.0.3/js/dataTables.rowGroup.min.js"></script>
+
+
+                <script type="text/javascript" src="https://cdn.datatables.net/fixedheader/3.1.5/js/dataTables.fixedHeader.min.js"></script>
                 <ui:insert name="scriptsSpecifided"></ui:insert>
             </div>
             <footer class="main-footer">

@@ -1,0 +1,13 @@
+.dataTables_wrapper .dataTables_filter {
+    float: right;
+    text-align: right;
+    visibility: hidden;
+    display: none;
+}
+
+#form:popup_input{
+    border: 0 !important;
+    display: none !important;
+}
+
+

@@ -6,7 +6,8 @@
       xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:jsf="http://xmlns.jcp.org/jsf">
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
 
 
@@ -43,7 +44,9 @@
                                                     
                                                 </a>-->
                         <div class="card-header">
-                            <p class="float-left text-muted" style="font-size: 20px">Lista de Asignaciones</p>
+                            <p class="float-left text-muted titleCnk">
+                                Asignaciones
+                            </p>
                             <div class="form-group col-12 col-lg-6 col-md-6">
 
                                 <input 
@@ -67,7 +70,9 @@
                                 <!--Table-->
                                 <div class="col-md-12 table-responsive">
                                     <h:form id="formAsignaciones">
+
                                         <p:dataTable
+                                            id="listAsig"
                                             widgetVar="myTableWidgetVar"
                                             rowIndexVar="rowIndex"
                                             value="#{asignacionesList.asignacionesList}"
@@ -78,58 +83,64 @@
                                             emptyMessage="Sin registro de Unidades"
                                             selection="#{asignacionesList.asignacion}"
                                             >
-                                            <p:ajax event="rowSelect" listener="#{asignacionesList.rowSelected(event)}"  />
-                                            <p:column>
-                                                <f:facet name="header">
-                                                    <h:outputText value="ID"/>
-                                                </f:facet>
-                                                <h:outputText value="#{item.id}"/>
-                                            </p:column>
-                                            <p:column> 
-                                                <f:facet name="header">
-                                                    <h:outputText value="EQUIPO"/>
-                                                </f:facet>
-                                                <h:outputText value="AB#{item.unidad.placa}"/>
-                                            </p:column>
-                                            <p:column>
-                                                <f:facet name="header">
-                                                    <h:outputText value="MOTORISTA"/>
-                                                </f:facet>
-                                                <h:outputText value="#{item.motorista.nombres} #{item.motorista.apellidos}"/>
-                                            </p:column>
-                                            <p:column>
-                                                <f:facet name="header">
-                                                    <h:outputText value="AUXILIAR"/>
-                                                </f:facet>
-                                                <h:outputText value="#{item.ayudante.nombres} #{item.ayudante.apellidos}"/>
-                                            </p:column>
-                                            <p:column>
-                                                <p:commandLink actionListener="#{asignacionesList.setAsignacion(item)}"
-                                                               a:data-toggle="dropdown" 
-                                                               a:aria-haspopup="true" 
-                                                               a:aria-expanded="false"
-                                                               style="padding: 20px"
-                                                               onclick="reset(); selectByRowKey(#{item.id});">
-                                                    <i 
-                                                        style="font-size: 17px; 
-                                                        color:#C0C0C0" 
-                                                        class="text-muted fas fa-ellipsis-v"
-                                                        >
+                                            <p:ajax event="rowSelect"  listener="#{asignacionesList.rowSelected(event)}"  />
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <h:outputText value="ID"/>
+                                                    </f:facet>
+                                                    <h:outputText value="#{item.id}"/>
+                                                </p:column>
+                                                <p:column a:data-priority="1"> 
+                                                    <f:facet name="header">
+                                                        <h:outputText value="EQUIPO"/>
+                                                    </f:facet>
+                                                    <h:outputText value="AB#{item.unidad.placa}"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <h:outputText value="MOTORISTA"/>
+                                                    </f:facet>
+                                                    <h:outputText value="#{item.motorista.nombres} #{item.motorista.apellidos}"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <h:outputText value="AUXILIAR"/>
+                                                    </f:facet>
+                                                    <h:outputText value="#{item.ayudante.nombres} #{item.ayudante.apellidos}"/>
+                                                </p:column>
+                                                <p:column id="e" a:data-priority="2">
+                                                    <div class="dropdown">
+                                                        <p:commandLink actionListener="#{asignacionesList.setAsignacion(item)}"
+                                                                       a:data-toggle="dropdown" 
+                                                                       a:aria-haspopup="true" 
+                                                                       a:aria-expanded="false"
+                                                                       style="padding: 20px"
+                                                                       onclick="reset(); selectByRowKey(#{item.id});">
+                                                            <i 
+                                                                style="font-size: 17px; 
+                                                                color:#C0C0C0" 
+                                                                class="text-muted  fas fa-ellipsis-v"
+                                                                >
 
 
-                                                    </i>
+                                                            </i>
 
-                                                </p:commandLink> 
-                                                <!---DropDown-->
-                                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left">
-                                                    <button class="dropdown-item" 
-                                                            data-toggle="modal" 
-                                                            data-target=".bd-example-modal-lg"  
-                                                            type="button">Editar Motorista y Auxilar</button>
-                                                    <button class="dropdown-item" type="button">Eliminar</button>
-                                                </div>
-                                            </p:column>
+                                                        </p:commandLink> 
+                                                        <!---DropDown-->
+                                                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left">
+                                                            <button class="dropdown-item" 
+                                                                    data-toggle="modal" 
+                                                                    data-target=".bd-example-modal-lg"  
+                                                                    type="button">Editar Motorista y Auxilar</button>
+                                                            <button class="dropdown-item" 
+                                                                    type="button"
+                                                                    data-toggle="modal" 
+                                                                    data-target="#modalfordeletingAsig">Eliminar</button>
+                                                        </div>
+                                                    </div>
+                                                </p:column>
                                         </p:dataTable>
+
                                     </h:form>
                                 </div>
                             </div>
@@ -138,6 +149,32 @@
                     </div>
                 </div>
             </div>
+            <!-- Modal for deleting asignacion -->
+            <div class="modal fade" id="modalfordeletingAsig" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Eliminar asignacion</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            ¿Desea realmente eliminar el registro?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <h:form>
+                                <h:commandButton action="#{asignacionesList.eliminarAsignacion()}"
+                                                 class="btn btn-primary"
+                                                 value="Eliminar"/>
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
             <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
@@ -146,9 +183,15 @@
                                 <div id="carouselExampleSlidesOnly" class="carousel slide" data-interval="false" data-ride="carousel">
                                     <div class="carousel-inner">
                                         <div class="carousel-item active">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Seleccionar Motorista</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
                                             <div class="card-body">
                                                 <div class="col-md-12 text-center">
-                                                    <h:graphicImage library="img" name="motorista.png" style="width: 170px; height: 170px;"/>
+                                                    <h:graphicImage library="img" name="motorista.png" style="width: 150px; height: 150px;"/>
                                                 </div>
                                                 <br/>
                                                 <div class="form-group">
@@ -162,7 +205,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="container overflow-auto" style="height: 200px">
+                                                <div class="container overflow-auto" style="height: 150px">
                                                     <p:dataTable
                                                         id="tablaM"
                                                         value="#{asignacionesList.getListEmpleado(1)}"
@@ -172,7 +215,7 @@
                                                         emptyMessage="Sin motorista para asignar"
                                                         selection="#{asignacionesList.asignacion.motorista}"
                                                         >
-                                                        <p:ajax event="rowSelect" />
+                                                        <p:ajax event="rowSelect" update="formConfig" />
                                                         <p:column>
                                                             <f:facet name="header">
                                                                 <h:outputText value="DUI"/>
@@ -190,9 +233,15 @@
                                             </div>
                                         </div>
                                         <div class="carousel-item">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Seleccionar Auxiliar</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
                                             <div class="card-body">
                                                 <div class="col-md-12 text-center">
-                                                    <h:graphicImage library="img" name="auxiliar.png" style="width: 170px; height: 170px;"/>
+                                                    <h:graphicImage library="img" name="auxiliar.png" style="width: 150px; height: 150px;"/>
                                                 </div>
                                                 <br/>
                                                 <div class="form-group">
@@ -207,7 +256,7 @@
                                                     </div>
 
                                                 </div>
-                                                <div class="container overflow-auto" style="height: 200px">
+                                                <div class="container overflow-auto" style="height: 150px">
                                                     <p:dataTable
                                                         id="tablaA"
                                                         value="#{asignacionesList.getListEmpleado(2)}"
@@ -237,10 +286,10 @@
                                         <div class="carousel-item">
                                             <div class="card-body">
                                                 <div class="col-md-12 text-center">
-                                                    <h:graphicImage library="img" name="confirm.png" style="width: 170px; height: 170px;"/>
+                                                    <h:graphicImage library="img" name="confirm.png" style="width: 150px; height: 150px;"/>
                                                 </div>
                                                 <br/>
-                                                <div class="col-md-12 text-center container overflow-auto" style="height: 200px">
+                                                <div class="col-md-12 text-center container overflow-auto" style="height: 150px">
                                                     <h5>¿Esta seguro de hacer los cambios?</h5>
                                                 </div>
                                             </div>
@@ -257,7 +306,7 @@
                                         id="btnN"
                                         role="button" data-slide="next" 
                                         type="button" class="btn btn-warning">Siguiente</button>
-                                        <h:commandButton action="#{asignacionesList.guardarCambios()}"
+                                <h:commandButton action="#{asignacionesList.guardarCambios()}"
                                                  class="btn btn-primary"
                                                  style="display: none" 
                                                  id="btnC"

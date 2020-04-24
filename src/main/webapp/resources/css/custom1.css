@@ -8,6 +8,11 @@ and open the template in the editor.
     Author     : McNerio
 */
 
+.titleCnk{
+    font-size: 32px;
+    color:#1b3a57;
+    font-weight:500;
+}
 
 .bg-custom1{
     background-color:  #1d2e42 !important;

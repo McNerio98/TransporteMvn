@@ -4,6 +4,7 @@
 
 .float{
 	position:fixed;
+        z-index: 100;
 	width:60px;
 	height:60px;
 	bottom:40px;

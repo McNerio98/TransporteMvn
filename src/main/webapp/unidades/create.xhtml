@@ -19,6 +19,7 @@
 
         <ui:define name="stylesSpecifided">
             <h:outputStylesheet library="css" name="datepicker.css"/>
+            <h:outputStylesheet library="css" name="unidades.css"/>
         </ui:define>
 
         <ui:define name="encabezado">
@@ -35,8 +36,7 @@
                 <div class="col-12">
                     <div class="card col-12">
                         <div class="card-header">
-                            <p class="float-left text-dark" 
-                               style="font-size: 20px; font-weight: bold">
+                            <p class="float-left text-muted titleCnk">
                                 Registro de unidades
                             </p>
                         </div>
@@ -121,7 +121,8 @@
                                         <div class="ui-fluid">
                                             
                                                 <small id="emailHelp" class="form-text text-muted">Fecha de vencimiento.</small>
-                                                <p:datePicker id="popup" 
+                                                <p:datePicker id="popup"
+                                                              styleClass="form-control form-control-sm"
                                                               value="#{unidadesController.unidades.fechavencimiento}" 
                                                               a:placeholder="yyyy/mm/dd"
                                                               pattern="yyyy/mm/dd"

@@ -7,22 +7,18 @@ package com.clobi.transporte.entity;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -41,11 +37,11 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Unidad.findByChasis", query = "SELECT u FROM Unidad u WHERE u.chasis = :chasis")
     , @NamedQuery(name = "Unidad.findByMarca", query = "SELECT u FROM Unidad u WHERE u.marca = :marca")
     , @NamedQuery(name = "Unidad.findByFechavencimiento", query = "SELECT u FROM Unidad u WHERE u.fechavencimiento = :fechavencimiento")
-    ,@NamedQuery(name = "Unidad.getDocsByPlaca", query = "SELECT u FROM DocumentoByUnidad u WHERE u.placa.placa = :placa")})
+    , @NamedQuery(name = "Unidad.findByEstadoregistro", query = "SELECT u FROM Unidad u WHERE u.estadoregistro = :estadoregistro")
+    , @NamedQuery(name = "Unidad.ChangeEstadoregistro", query = "UPDATE Unidad u SET u.estadoregistro = false WHERE u.placa = :placa")
+    , @NamedQuery(name = "Unidad.getDocsByPlaca", query = "SELECT u FROM DocumentoByUnidad u WHERE u.placa.placa = :placa")
+})
 public class Unidad implements Serializable {
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "unidad")
-    private List<Asignacion> asignacionList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -88,6 +84,10 @@ public class Unidad implements Serializable {
     @Column(name = "fechavencimiento")
     @Temporal(TemporalType.DATE)
     private Date fechavencimiento;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "estadoregistro")
+    private boolean estadoregistro;
 
     public Unidad() {
     }
@@ -96,7 +96,7 @@ public class Unidad implements Serializable {
         this.placa = placa;
     }
 
-    public Unidad(String placa, int numerounidad, String modelo, String yeAr, String motor, String chasis, String marca, Date fechavencimiento) {
+    public Unidad(String placa, int numerounidad, String modelo, String yeAr, String motor, String chasis, String marca, Date fechavencimiento, boolean estadoregistro) {
         this.placa = placa;
         this.numerounidad = numerounidad;
         this.modelo = modelo;
@@ -105,6 +105,7 @@ public class Unidad implements Serializable {
         this.chasis = chasis;
         this.marca = marca;
         this.fechavencimiento = fechavencimiento;
+        this.estadoregistro = estadoregistro;
     }
 
     public String getPlaca() {
@@ -171,6 +172,14 @@ public class Unidad implements Serializable {
         this.fechavencimiento = fechavencimiento;
     }
 
+    public boolean getEstadoregistro() {
+        return estadoregistro;
+    }
+
+    public void setEstadoregistro(boolean estadoregistro) {
+        this.estadoregistro = estadoregistro;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -194,15 +203,6 @@ public class Unidad implements Serializable {
     @Override
     public String toString() {
         return "com.clobi.transporte.entity.Unidad[ placa=" + placa + " ]";
-    }
-
-    @XmlTransient
-    public List<Asignacion> getAsignacionList() {
-        return asignacionList;
-    }
-
-    public void setAsignacionList(List<Asignacion> asignacionList) {
-        this.asignacionList = asignacionList;
     }
     
 }

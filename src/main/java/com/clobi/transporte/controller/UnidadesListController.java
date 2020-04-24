@@ -48,11 +48,15 @@ public class UnidadesListController implements Serializable {
     @PostConstruct
     public void init() {
         this.listUnidad = new ArrayList<>();
-        this.setUnidadesList(ejbUnidad.findAll());
+        this.setUnidadesList(ejbUnidad.getUnidadesByStatus(true));
     }
 
     private UnidadFacade getFacade() {
         return this.ejbUnidad;
+    }
+
+    public void deleteRegistry() {
+        persist(JsfUtil.PersistAction.DELETE, "Accion exitosas");
     }
 
     public List<DocumentoByUnidad> getAllDocs() {
@@ -62,7 +66,7 @@ public class UnidadesListController implements Serializable {
 
     public void rowSelected(SelectEvent event) {
         System.out.println("Hey, i'm here! " + selected.getPlaca());
-        for(int i =0; i < (getFacade().getDocsByPlaca(this.selected)).size();i++){
+        for (int i = 0; i < (getFacade().getDocsByPlaca(this.selected)).size(); i++) {
             System.out.println("DOCNAME " + (getFacade().getDocsByPlaca(this.selected)).get(i).getPlaca());
         }
         this.setDocsList(getFacade().getDocsByPlaca(this.selected));
@@ -70,7 +74,7 @@ public class UnidadesListController implements Serializable {
 
     public void setDocsList(List<DocumentoByUnidad> l) {
         listDocs = l;
-    }
+    } 
 
     public List<DocumentoByUnidad> getDocsList() {
         return this.listDocs;
@@ -103,7 +107,9 @@ public class UnidadesListController implements Serializable {
                     getFacade().edit(selected);
                     this.selected = null;
                 } else {
-                    getFacade().remove(selected);
+                    //getFacade().remove(selected);
+                    getFacade().setUnidadStatus(selected);
+                    this.init();
                 }
                 JsfUtil.addSuccessMessage(successMessage);
             } catch (EJBException ex) {

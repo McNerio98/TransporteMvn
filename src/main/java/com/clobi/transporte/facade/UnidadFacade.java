@@ -47,11 +47,26 @@ public class UnidadFacade extends AbstractFacade<Unidad> {
         list = query.getResultList();
         return list;
     }
+    
+    public boolean setUnidadStatus(Unidad u){
+        Query query = getEntityManager().createNamedQuery("Unidad.ChangeEstadoregistro");
+        query.setParameter("placa", u.getPlaca());
+        int i = query.executeUpdate();
+        return i == 0 ? false : true;
+    }
 
     public List<DocumentoByUnidad> getDocsByPlaca(Unidad u) {
         List<DocumentoByUnidad> list;
         Query query = getEntityManager().createNamedQuery("Unidad.getDocsByPlaca");
         query.setParameter("placa", u.getPlaca());
+        list = query.getResultList();
+        return list.isEmpty() ? new ArrayList<>() : list;
+    }
+    
+    public List<Unidad> getUnidadesByStatus(boolean status){
+        List<Unidad> list;
+        Query query = getEntityManager().createNamedQuery("Unidad.findByEstadoregistro");
+        query.setParameter("estadoregistro", status);
         list = query.getResultList();
         return list.isEmpty() ? new ArrayList<>() : list;
     }

@@ -3,7 +3,8 @@ $(function () {
     $("table").each(function (index) {
         if (index == 0) {
             $(this).attr("id", "lstAsignaciones");
-            $(this).attr("class", "table row-border table-hover");
+            $(this).attr("class", "table row-border table-hover ");
+            $(this).attr("style", "width: 100%");
         } else if (index == 1) {
             $(this).attr("id", "lstMotorista");
             $(this).attr("class", "table row-border table-hover");
@@ -12,23 +13,23 @@ $(function () {
             $(this).attr("class", "table row-border table-hover");
         }
     });
-
     var t = document.getElementById("lstAsignaciones").getElementsByTagName("tr");
     for (i = 0; i < t.length; i++) {
         t[i].classList.remove("ui-state-highlight");
     }
     $('[data-toggle="tooltip"]').tooltip()
     var table = $('#lstAsignaciones').DataTable({
+        responsive: true,
+        "autoWidth": true,
         "bPaginate": true,
-        "bLengthChange": false,
+        "bLengthChange": true,
         "bFilter": true,
         "bInfo": false,
-        "bAutoWidth": false
+        "bAutoWidth": true
     });
     $('#myInput1').on('keyup', function () {
         table.search(this.value).draw();
     });
-
     var table2 = $('#lstMotorista').DataTable({
         "bPaginate": false,
         "bLengthChange": false,
@@ -36,11 +37,9 @@ $(function () {
         "bInfo": false,
         "bAutoWidth": false
     });
-
     $('#myInput2').on('keyup', function () {
         table2.search(this.value).draw();
     });
-
     var table3 = $('#lstAux').DataTable({
         "bPaginate": false,
         "bLengthChange": false,
@@ -52,11 +51,9 @@ $(function () {
         table3.search(this.value).draw();
     });
 });
-
 function selectCurrentRow(index) {
     var table = PF('myTableWidgetVar');
     console.log(index, table.rows.length);
-
 //    var row = table.rows.get(index);
 //    console.log(row);
 //    if (row.getAttribute("data-ri") === index) {
@@ -104,7 +101,6 @@ function reset() {
                 $(this).attr("class", "table row-border table-hover");
             }
         });
-
         var table2 = $('#lstMotorista').DataTable({
             "bPaginate": false,
             "bLengthChange": false,
@@ -112,11 +108,9 @@ function reset() {
             "bInfo": false,
             "bAutoWidth": false
         });
-
         $('#myInput2').on('keyup', function () {
             table2.search(this.value).draw();
         });
-
         var table3 = $('#lstAux').DataTable({
             "bPaginate": false,
             "bLengthChange": false,
@@ -128,15 +122,13 @@ function reset() {
             table3.search(this.value).draw();
         });
     }, 1100);
-
 }
 
 $('#carouselExampleSlidesOnly').carousel({
     wrap: false
 });
-
 $('#carouselExampleSlidesOnly').on('slid.bs.carousel', function (number) {
-    // do something...
+// do something...
     console.log(number.to)
     if (number.to == 2) {
         document.getElementById("btnN").style.display = "none";
