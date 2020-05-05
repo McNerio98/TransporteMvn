@@ -19,6 +19,7 @@
 
         <ui:define name="stylesSpecifided">
             <h:outputStylesheet library="css" name="datepicker.css"/>
+            <h:outputStylesheet library="css" name="unidades.css"/>
         </ui:define>
 
         <ui:define name="encabezado">
@@ -35,15 +36,14 @@
                 <div class="col-12">
                     <div class="card col-12">
                         <div class="card-header">
-                            <p class="float-left text-dark" 
-                               style="font-size: 20px; font-weight: bold">
-                                Registro de unidades
+                            <p class="float-left text-muted titleCnk">
+                                #{bundle.UnidadesTile}
                             </p>
                         </div>
                         <div class="card-body">
                             <h:head></h:head>
                             <h:form id="form" enctype="multipart/form-data">
-                                <span class="text-muted" style="margin: 10px">Informacion General</span>
+                                <span class="text-muted" style="margin: 10px">#{bundle.UnidadesIG}</span>
                                 <div style="margin-bottom: 10px" class="dropdown-divider"></div>
                                 <div class="form-row">
                                     <div class="form-group col-md-4">
@@ -69,7 +69,7 @@
                                     </div>
                                 </div>
                                 <span class="text-muted" style="margin: 10px">
-                                    Datos de Tajeta Circulacion
+                                    #{bundle.UnidadesDTC}
                                 </span>
                                 <div style="margin-bottom: 10px" class="dropdown-divider"></div>
 
@@ -120,8 +120,9 @@
                                     <div class="form-group col-md-12">
                                         <div class="ui-fluid">
                                             
-                                                <small id="emailHelp" class="form-text text-muted">Fecha de vencimiento.</small>
-                                                <p:datePicker id="popup" 
+                                                <small id="emailHelp" class="form-text text-muted">#{bundle.UnidadesFV}</small>
+                                                <p:datePicker id="popup"
+                                                              styleClass="form-control form-control-sm"
                                                               value="#{unidadesController.unidades.fechavencimiento}" 
                                                               a:placeholder="yyyy/mm/dd"
                                                               pattern="yyyy/mm/dd"
@@ -134,24 +135,24 @@
                                 </div>
 
                                 <span class="text-muted" style="margin: 10px">
-                                    Documentos relacionados
+                                    #{bundle.UnidadesDR}
                                 </span>
                                 <div style="margin-bottom: 10px" class="dropdown-divider"></div>
 
                                 <h:outputLabel class="label" for="upload">
                                     <i class="fas fa-upload"></i>
-                                    Subir Documentos
+                                    #{bundle.UnidadesSA}
                                 </h:outputLabel>  
                                 <h:inputFile
                                     class="inputfile"
                                     value="#{unidadesController.file}" 
                                     a:multiple="true" 
                                     id="upload"/>
-                                <small  class="form-text text-muted">Selecciona los archivos (Ctrl + Clic)</small>
+                                <small  class="form-text text-muted">#{bundle.UnidadesInstruction}</small>
                                 
-                                <div id="list" class="row jumbotron"></div>
+                                <div id="list" style="height: 250px" class="container overflow-auto row jumbotron"></div>
 
-                                <h:commandButton class="btn btn-primary" action="#{unidadesController.create()}"  value="Guardar"/>
+                                <h:commandButton class="btn btn-primary" action="#{unidadesController.create()}"  value="#{bundle.Save}"/>
                             </h:form>
                         </div>
                     </div>

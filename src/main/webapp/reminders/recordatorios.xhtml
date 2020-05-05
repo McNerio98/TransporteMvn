@@ -1,0 +1,150 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:composition template="/template1.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="Recordatorios"></h:outputText>
+        </ui:define>
+
+
+        <ui:define name="stylesSpecifided">
+            <h:outputStylesheet library="css" name="reminders.css"/>
+            <h:outputStylesheet library="css" name="datepicker.css"/>
+        </ui:define>
+
+        <ui:define name="encabezado">
+
+        </ui:define>
+
+        <ui:define name="actual">
+            <h:link outcome="unidades" value="Recordatorios"/>
+        </ui:define>
+
+        <ui:define name="contenido" class="body">
+            <h:outputScript library="js" name="moment.js"/>
+            <script>moment.locale("es");</script>
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Crear un recordatorio</h3>
+                            </div>
+                            <div class="card-body">
+                                <h:form id="calendar">
+                                    <!-- /btn-group -->
+                                    <div class="input-group">
+                                        <h:inputText id="title" 
+                                                     value="#{recordatior.recordatorio.titulo}" 
+                                                     maxlength="50" 
+                                                     required="true" 
+                                                     styleClass="form-control  form-control-sm" 
+                                                     a:placeholder="Titulo"
+                                                     disabled=""/>
+                                    </div>
+                                    <br/>
+                                    <div class="input-group">
+                                        <p:datePicker id="popup"
+                                                      styleClass="form-control form-control-sm"
+                                                      value="#{recordatior.recordatorio.fechacreacion}" 
+                                                      a:placeholder="yyyy-mm-dd"
+                                                      pattern="yyyy-mm-dd"
+                                                      >
+                                            <f:convertDateTime pattern = "yyyy-mm-dd"/>
+                                        </p:datePicker>
+                                    </div>
+                                    <br/><br/>
+                                    <div class="input-group">
+                                        <h:commandButton 
+                                            class="btn btn-primary" 
+                                            action="#{recordatior.save()}"  
+                                            value="#{bundle.Save}"/>
+                                    </div>
+                                    <!-- /input-group -->
+                                    <br/>
+                                    <p class="text-muted">
+                                        Crea un recordatorio de una fecha importante, 
+                                        pagos de tarjetas, combustible, facturas, etc.
+                                    </p>
+                                </h:form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <c:forEach id="list" var="item" items="#{recordatior.recordatorioList}">
+                        <div class="col-md-4 col-xl-3" data-toggle="tooltip" data-placement="top" title="#{item.titulo}">
+                            <div class="card bg-c-1 order-card">
+                                <div class="card-block">
+
+                                    <h6 class="title text-truncate">#{item.titulo}</h6>
+                                    <h2 class="text-right">
+                                        <i class="ovalo far fa-calendar-alt f-left"></i>
+                                        <span class="ovalo">
+                                            <script>
+                                                var now = moment();
+                                                var dat = "#{item.fechacreacion}";
+                                                console.log("#{item.fechacreacion}");
+                                                console.log(dat);
+                                                document.write(now.to(dat));
+                                            </script>
+                                        </span>
+                                    </h2>
+                                    <p class="m-b-0">
+                                        <script>
+                                            var dat = "#{item.fechacreacion}";
+                                            console.log(dat);
+                                            document.write(moment(dat).format('LL'))
+                                        </script>
+                                        <h:form>
+                                            <h:commandButton 
+                                                class="btn btn-primary float-right" 
+                                                action="#{recordatior.delete(item)}"  
+                                                value="Borrar"/>
+                                        </h:form>
+
+                                    </p>
+
+                                </div>
+                            </div>
+                        </div>          
+                    </c:forEach>
+                </div>
+            </div>
+
+            <div class="modal fade" id="reminderModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ui:define>
+        <ui:define name="scriptsSpecifided">
+            <h:outputScript library="js" name="reminder.js"/>
+        </ui:define>
+
+    </ui:composition>
+</html>
+
+

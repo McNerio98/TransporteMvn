@@ -1,0 +1,395 @@
+body{
+    margin-top:20px;
+    background:#FAFAFA;
+}
+.order-card {
+    color: #fff;
+}
+
+[class*="bg-q-"]:hover{
+
+}
+
+.bg-q-1 {
+    color: #5967C3;
+    color: -webkit-linear-gradient(left top, #5967C3, #83cedc);
+    color: linear-gradient(to bottom right, #5967C3, #83cedc);
+}
+
+.bg-q-2 {
+    color: #ffaec2;
+    color: -webkit-linear-gradient(left top, #ffaec2, #7e4aaf);
+    color: linear-gradient(to bottom right, #ffaec2, #7e4aaf);
+}
+
+.bg-q-3 {
+    color: #CA619C;
+    color: -webkit-linear-gradient(left top, #CA619C, #DBC084);
+    color: linear-gradient(to bottom right, #CA619C, #DBC084);
+}
+
+.bg-q-4 {
+    color: #FF5370;
+    color: -webkit-linear-gradient(left top, #FF5370, #ff869a);
+    color: linear-gradient(to bottom right,#FF5370,#ff869a);
+}
+
+.bg-q-5 {
+    color: #8E0E00;
+    color: -webkit-linear-gradient(left top, #8E0E00, #1F1C18);
+    color: linear-gradient(to bottom right,#8E0E00,#1F1C18);
+}
+
+.bg-q-6 {
+    color: #673AB7;
+    color: -webkit-linear-gradient(left top, #673AB7, #512DA8);
+    color: linear-gradient(to bottom right,#673AB7,#512DA8);
+}
+.bg-q-7 {
+    color: #fc00ff;
+    color: -webkit-linear-gradient(left top, #fc00ff, #00dbde);
+    color: linear-gradient(to bottom right,#fc00ff,#00dbde);
+}
+
+.bg-q-8 {
+    color: #2c3e50;
+    color: -webkit-linear-gradient(left top, #2c3e50, #3498db);
+    color: linear-gradient(to bottom right,#2c3e50,#3498db);
+}
+
+.bg-q-9 {
+    color: #304352;
+    color: -webkit-linear-gradient(left top, #304352, #d7d2cc);
+    color: linear-gradient(to bottom right,#304352,#d7d2cc);
+}
+.bg-q-10 {
+    color: #833ab4;
+    color: -webkit-linear-gradient(left top, #833ab4,#fd1d1d ,#fcb045);
+    color: linear-gradient(to bottom right,#833ab4,#fd1d1d ,#fcb045);
+}
+
+
+
+
+.bg-c-1 {
+    border-color: #5967C3;
+    background: #5967C3;
+    background: -webkit-linear-gradient(left top, #5967C3, #83cedc);
+    background: linear-gradient(to bottom right, #5967C3, #83cedc);
+}
+
+.bg-c-2 {
+    border-color: #ffaec2;
+    background: #ffaec2;
+    background: -webkit-linear-gradient(left top, #ffaec2, #7e4aaf);
+    background: linear-gradient(to bottom right, #ffaec2, #7e4aaf);
+}
+
+.bg-c-3 {
+    border-color: #CA619C; 
+    background: #CA619C;
+    background: -webkit-linear-gradient(left top, #CA619C, #DBC084);
+    background: linear-gradient(to bottom right, #CA619C, #DBC084);
+}
+
+.bg-c-4 {
+    border-color: #FF5370;
+    background: #FF5370;
+    background: -webkit-linear-gradient(left top, #FF5370, #ff869a);
+    background: linear-gradient(to bottom right,#FF5370,#ff869a);
+}
+
+.bg-c-5 {
+    border-color: #8E0E00;
+    background: #8E0E00;
+    background: -webkit-linear-gradient(left top, #8E0E00, #1F1C18);
+    background: linear-gradient(to bottom right,#8E0E00,#1F1C18);
+}
+
+.bg-c-6 {
+    border-color: #673AB7;
+    background: #673AB7;
+    background: -webkit-linear-gradient(left top, #673AB7, #512DA8);
+    background: linear-gradient(to bottom right,#673AB7,#512DA8);
+}
+.bg-c-7 {
+    border-color: #fc00ff;
+    background: #fc00ff;
+    background: -webkit-linear-gradient(left top, #fc00ff, #00dbde);
+    background: linear-gradient(to bottom right,#fc00ff,#00dbde);
+}
+
+.bg-c-8 {
+    border-color: #2c3e50;
+    background: #2c3e50;
+    background: -webkit-linear-gradient(left top, #2c3e50, #3498db);
+    background: linear-gradient(to bottom right,#2c3e50,#3498db);
+}
+
+.bg-c-9 {
+    border-color: #304352;
+    background: #304352;
+    background: -webkit-linear-gradient(left top, #304352, #d7d2cc);
+    background: linear-gradient(to bottom right,#304352,#d7d2cc);
+}
+.bg-c-10 {
+    border-color: #833ab4;
+    background: #833ab4;
+    background: -webkit-linear-gradient(left top, #833ab4,#fd1d1d ,#fcb045);
+    background: linear-gradient(to bottom right,#833ab4,#fd1d1d ,#fcb045);
+}
+
+
+
+
+
+.card {
+    border-radius: 5px;
+    -webkit-box-shadow: 0 1px 2px 0.06px rgba(4,26,55,0.16);
+    box-shadow: 0 1px 2px 0.06px rgba(4,26,55,0.16);
+    border: none;
+    margin-bottom: 30px;
+    -webkit-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    min-height:  260px;
+    box-shadow: 0 5px 5px 0px #ccc;
+}
+
+.card .card-block {
+    padding: 25px;
+}
+
+.order-card i {
+    font-size: 26px;
+}
+
+.f-left {
+    float: left;
+}
+
+.f-right {
+    float: right;
+}
+
+.content , .content-header{
+    height: 100%;
+    background: #ffffff;
+    background: -webkit-linear-gradient(to right, #ffffff, #ffffff);
+    background: linear-gradient(to right, #ffffff, #ffffff);
+    width: 100%;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.title{
+    color: #FFF;
+    font-size: 1.2rem;
+    text-align: center;
+    margin-top: 15px;
+}
+
+.ovalo{
+    font-size: 2rem;
+    font-weight: 500;
+}
+
+.title::after{
+    content: '';
+    display: block;
+    height: 3.5px;
+    width: 13px;
+    background-color: #FFF;
+    border-radius: 15px;
+    margin: 5px auto 0 auto;
+}
+
+.main_number{
+    position: absolute;
+    top: 52%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    left: 0; right: 0;
+    text-align: center;
+    font-size: 11rem;
+    color: #FFFFFF;
+    opacity: 0.2;
+    font-weight: 800;
+    -webkit-transition: all 0.4s ease;
+    -moz-transition: all 0.4s ease;
+    -ms-transition: all 0.4s ease;
+    -o-transition: all 0.4s ease;
+    transition: all 0.4s ease;
+}
+
+.main_number::before{
+    content: '';
+    font-size: 2rem;
+    position: absolute;
+    top: 40px;
+    left: 40px;
+}
+
+/*.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header 
+.ui-state-default 
+{ border: 1px solid #888888; 
+  background: #fff;
+  font-weight: normal; 
+  color: #000000; 
+}*/
+
+
+body {
+    background: url('../img/darkdenim3.png') repeat 0 0 #555;
+}
+/* DatePicker Container */
+.ui-datepicker {
+    background: #c8cbcf;
+    width: 216px;
+    height: auto;
+    margin: 5px auto 0;
+    font: 9pt Arial, sans-serif;
+    -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, .5);
+    -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, .5);
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, .5);
+}
+.ui-datepicker a {
+    text-decoration: none;
+}
+/* DatePicker Table */
+.ui-datepicker table {
+    width: 100%;
+}
+.ui-datepicker-header {
+    background: url('../img/dark_leather.png') repeat 0 0 #000;
+    color: #e0e0e0;
+    font-weight: bold;
+    -webkit-box-shadow: inset 0px 1px 1px 0px rgba(250, 250, 250, 2);
+    -moz-box-shadow: inset 0px 1px 1px 0px rgba(250, 250, 250, .2);
+    box-shadow: inset 0px 1px 1px 0px rgba(250, 250, 250, .2);
+    text-shadow: 1px -1px 0px #000;
+    filter: dropshadow(color=#000, offx=1, offy=-1);
+    line-height: 30px;
+    border-width: 1px 0 0 0;
+    border-style: solid;
+    border-color: #111;
+}
+.ui-datepicker-title {
+    text-align: center;
+}
+.ui-datepicker-prev, .ui-datepicker-next {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    cursor: pointer;
+    background-image: url('../img/arrow.png');
+    background-repeat: no-repeat;
+    line-height: 600%;
+    overflow: hidden;
+}
+
+.ui-inputfield{
+    width: 100%;
+    border: 0px;
+    background: transparent;
+    margin-bottom: 20px;
+}
+
+.ui-datepicker-prev {
+    background: #ccc;
+    float: left;
+    background-position: center -30px;
+}
+.ui-datepicker-next {
+    background: #ccc;
+    float: right;
+    background-position: center 0px;
+}
+.ui-datepicker thead {
+    background-color: #f7f7f7;
+    background-image: -moz-linear-gradient(top,  #f7f7f7 0%, #f1f1f1 100%);
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f7f7f7), color-stop(100%,#f1f1f1));
+    background-image: -webkit-linear-gradient(top,  #f7f7f7 0%,#f1f1f1 100%);
+    background-image: -o-linear-gradient(top,  #f7f7f7 0%,#f1f1f1 100%);
+    background-image: -ms-linear-gradient(top,  #f7f7f7 0%,#f1f1f1 100%);
+    background-image: linear-gradient(top,  #f7f7f7 0%,#f1f1f1 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f7f7f7', endColorstr='#f1f1f1',GradientType=0 );
+    border-bottom: 1px solid #bbb;
+}
+.ui-datepicker th {
+    text-transform: uppercase;
+    font-size: 6pt;
+    padding: 5px 0;
+    color: #666666;
+    text-shadow: 1px 0px 0px #fff;
+    filter: dropshadow(color=#fff, offx=1, offy=0);
+}
+.ui-datepicker tbody td {
+    padding: 0;
+    border-right: 1px solid #bbb;
+}
+.ui-datepicker tbody td:last-child {
+    border-right: 0px;
+}
+.ui-datepicker tbody tr {
+    border-bottom: 1px solid #bbb;
+}
+.ui-datepicker tbody tr:last-child {
+    border-bottom: 0px;
+}
+.ui-datepicker td span, .ui-datepicker td a {
+    display: inline-block;
+    font-weight: bold;
+    text-align: center;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    color: #666666;
+    text-shadow: 1px 1px 0px #fff;
+    filter: dropshadow(color=#fff, offx=1, offy=1);
+}
+.ui-datepicker-calendar .ui-state-default {
+
+    background: #ededed;
+    background: -moz-linear-gradient(top,  #ededed 0%, #dedede 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ededed), color-stop(100%,#dedede));
+    background: -webkit-linear-gradient(top,  #ededed 0%,#dedede 100%);
+    background: -o-linear-gradient(top,  #ededed 0%,#dedede 100%);
+    background: -ms-linear-gradient(top,  #ededed 0%,#dedede 100%);
+    background: linear-gradient(top,  #ededed 0%,#dedede 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ededed', endColorstr='#dedede',GradientType=0 );
+    -webkit-box-shadow: inset 1px 1px 0px 0px rgba(250, 250, 250, .5);
+    -moz-box-shadow: inset 1px 1px 0px 0px rgba(250, 250, 250, .5);
+    box-shadow: inset 1px 1px 0px 0px rgba(250, 250, 250, .5);
+}
+.ui-datepicker-calendar .ui-state-hover {
+    background: #f7f7f7;
+}
+.ui-datepicker-calendar .ui-state-active {
+    background: #6eafbf;
+    -webkit-box-shadow: inset 0px 0px 10px 0px rgba(0, 0, 0, .1);
+    -moz-box-shadow: inset 0px 0px 10px 0px rgba(0, 0, 0, .1);
+    box-shadow: inset 0px 0px 10px 0px rgba(0, 0, 0, .1);
+    color: #e0e0e0;
+    text-shadow: 0px 1px 0px #4d7a85;
+    filter: dropshadow(color=#4d7a85, offx=0, offy=1);
+    border: 1px solid #55838f;
+    position: relative;
+    margin: -1px;
+}
+.ui-datepicker-unselectable .ui-state-default {
+    background: #f4f4f4;
+    color: #b4b3b3;
+}
+.ui-datepicker-calendar td:first-child .ui-state-active {
+    width: 29px;
+    margin-left: 0;
+}
+.ui-datepicker-calendar td:last-child .ui-state-active {
+    width: 29px;
+    margin-right: 0;
+}
+.ui-datepicker-calendar tr:last-child .ui-state-active {
+    height: 29px;
+    margin-bottom: 0;
+}

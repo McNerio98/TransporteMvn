@@ -58,7 +58,7 @@ public class AsignacionCreate {
     }
     
     private EmpleadosFacade getEmpleadoFacade(){
-        return this.ejbEmpleado;
+        return this.ejbEmpleado; 
     }
     
     private UnidadFacade getUnidadFacade(){
@@ -67,6 +67,12 @@ public class AsignacionCreate {
     
     public void create(){
         persist(JsfUtil.PersistAction.CREATE, "Asignacion exitosa");
+    }
+    
+    public void transferir() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        AsignacionesList al = context.getApplication().evaluateExpressionGet(context, "#{asignacionesList}", AsignacionesList.class);
+        al.init();
     }
     
     public List<Empleado> getMotoristas(){
@@ -111,7 +117,7 @@ public class AsignacionCreate {
     public void uSelected(SelectEvent event) {
         System.out.println("Unidad seleccionada " + selected.getUnidad().getPlaca());
         this.selected.setUnidad(selected.getUnidad());
-    }
+    } 
     
     public void mSelected(SelectEvent event) {
         System.out.println("Motorista seleccionado " + selected.getMotorista().getDui());
@@ -131,6 +137,7 @@ public class AsignacionCreate {
                 if (persistAction != JsfUtil.PersistAction.DELETE) {
                     getFacade().edit(selected);
                     this.selected = null;
+                    this.transferir();
                 } else {
                     getFacade().remove(selected);
                 }

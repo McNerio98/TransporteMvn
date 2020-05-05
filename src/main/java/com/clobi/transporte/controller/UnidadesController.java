@@ -73,7 +73,7 @@ public class UnidadesController {
         String realPath = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/");
         String folderToSave = "documentsSaved";
         String realFolder = realPath + folderToSave;
-        if (u != null) {
+        if (u != null && file != null) {
             try {
                 for (Part part : JsfUtil.getAllParts(file)) {
 
@@ -85,7 +85,7 @@ public class UnidadesController {
                     doc.setPlaca(u);
                     doc.setEspecificacion("Archivo de " + fileName);
                     getFacadeDocs().create(doc);
-                }
+                } 
                 JsfUtil.addSuccessMessage("Se subio un elemento");
             } catch (IOException e) {
                 System.out.print("FILE: " + e.getMessage());
