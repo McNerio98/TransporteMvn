@@ -30,80 +30,81 @@ import org.primefaces.event.SelectEvent;
 @Named(value = "asignacionesList")
 @SessionScoped
 public class AsignacionesList implements Serializable {
-    
+
     private Asignacion selected;
     private List<Asignacion> list;
     @EJB
     private AsignacionFacade ejbAsignacion;
     @EJB
     private EmpleadosFacade ejbEmpleado;
-    
+
     public AsignacionesList() {
         this.selected = new Asignacion();
         this.list = new ArrayList<>();
         this.ejbAsignacion = new AsignacionFacade();
         this.ejbEmpleado = new EmpleadosFacade();
     }
-    
-    private AsignacionFacade getFacade(){
+
+    private AsignacionFacade getFacade() {
         return this.ejbAsignacion;
     }
-    
-    private EmpleadosFacade getEmpleadoFacade(){
+
+    private EmpleadosFacade getEmpleadoFacade() {
         return this.ejbEmpleado;
     }
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         this.list = new ArrayList<>();
         this.setAsignacionesList(ejbAsignacion.findAll());
-        
+
     }
-    
+
     public void rowSelected(SelectEvent event) {
         System.out.println("Asignado a " + selected.getMotorista());
         this.setAsignacion(selected);
     }
-    
-    public void eliminarAsignacion(){
-        persist(JsfUtil.PersistAction.DELETE,"Accion exitosa");
+
+    public void eliminarAsignacion() {
+        persist(JsfUtil.PersistAction.DELETE, "Accion exitosa");
     }
-    
-    public void guardarCambios(){
+
+    public void guardarCambios() {
         persist(JsfUtil.PersistAction.UPDATE, "Se han guardado los cambios");
     }
-    
-    public List<Empleado> getListEmpleado(int o){
-        if(o == 1){
+
+    public List<Empleado> getListEmpleado(int o) {
+        if (o == 1) {
             return getEmpleadoFacade().getEmpleadosByTipo("mot");
-        }else{
+
+        } else {
             return getEmpleadoFacade().getEmpleadosByTipo("ayu");
         }
     }
-    
-    public void setAsignacionesList(List<Asignacion> l){
+
+    public void setAsignacionesList(List<Asignacion> l) {
         this.list = l;
     }
-    
-    public List<Asignacion> getAsignacionesList(){
+
+    public List<Asignacion> getAsignacionesList() {
         return this.list;
     }
-    
-    public List<Asignacion> listAsignaciones(){
+
+    public List<Asignacion> listAsignaciones() {
         return getFacade().findAll();
     }
-    
-    public Asignacion getAsignacion(){
+
+    public Asignacion getAsignacion() {
         return this.selected;
     }
-    
-    public void setAsignacion(Asignacion s){
+
+    public void setAsignacion(Asignacion s) {
         this.selected = s;
         System.out.print(this.selected.getAyudante().getDui());
         FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("formConfig:tablaM");
         FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("formConfig:tablaA");
     }
-    
+
     private void persist(JsfUtil.PersistAction persistAction, String successMessage) {
         if (selected != null) {
             try {

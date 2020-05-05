@@ -37,7 +37,7 @@
                             <i class="fa fa-plus my-float"></i>
                         </h:link>
                         <div class="card-header">
-                            <p class="float-left text-muted titleCnk">Unidades</p>
+                            <p class="float-left text-muted titleCnk">#{bundle.Unidades}</p>
                             <div class="form-group col-12 col-lg-6 col-md-6">
 
                                 <input 
@@ -136,7 +136,7 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             <h:form>
-                                <h:commandButton class="btn btn-primary" action="#{unidadesListController.deleteRegistry()}"  value="Eliminar"/>
+                                <h:commandButton class="btn btn-primary" action="#{unidadesListController.deleteRegistry()}"  value="#{bundle.Delete}"/>
                             </h:form>
                         </div>
                     </div> 

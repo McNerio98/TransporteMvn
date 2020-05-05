@@ -58,7 +58,7 @@ public class AsignacionCreate {
     }
     
     private EmpleadosFacade getEmpleadoFacade(){
-        return this.ejbEmpleado;
+        return this.ejbEmpleado; 
     }
     
     private UnidadFacade getUnidadFacade(){

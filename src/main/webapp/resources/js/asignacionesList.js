@@ -23,6 +23,7 @@ $(function () {
         "autoWidth": true,
         "bPaginate": true,
         "bLengthChange": true,
+        "processing": true,
         "bFilter": true,
         "bInfo": false,
         "bAutoWidth": true
@@ -122,19 +123,21 @@ function reset() {
             table3.search(this.value).draw();
         });
     }, 1100);
+
 }
 
-$('#carouselExampleSlidesOnly').carousel({
-    wrap: false
+$(function() {
+    $('#carrouselChange').carousel({interval: false});
 });
-$('#carouselExampleSlidesOnly').on('slid.bs.carousel', function (number) {
+$('#carrouselChange').on('slide.bs.carousel', function (number) {
 // do something...
+    
     console.log(number.to)
     if (number.to == 2) {
         document.getElementById("btnN").style.display = "none";
-        document.getElementById("formConfig:btnC").style.display = "block";
+        document.getElementById("save:btnC").style.display = "block";
     } else {
-        document.getElementById("formConfig:btnC").style.display = "none";
+        document.getElementById("save:btnC").style.display = "none";
         document.getElementById("btnN").style.display = "block";
     }
 })
