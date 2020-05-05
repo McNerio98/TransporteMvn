@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.math.BigDecimal;
 import java.math.BigDecimal;
 import java.math.BigDecimal;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -52,8 +53,6 @@ public class ActividadDiaria implements Serializable {
     @Column(name = "ingresototal", nullable = false)
     private BigDecimal ingresototal;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idactividaddiaria")
-    private List<ActividadFinanciera> actividadFinancieraList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idactividaddiaria")
     private List<OperacionUnidad> operacionUnidadList;
 
     private static final long serialVersionUID = 1L;
@@ -75,7 +74,11 @@ public class ActividadDiaria implements Serializable {
     @NotNull
     @Column(name = "estado")
     private short estado;
-
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "autocierre")    
+    private boolean autocierre;
+    
     public ActividadDiaria() {
     }
 
@@ -159,14 +162,6 @@ public class ActividadDiaria implements Serializable {
     }
 
 
-    @XmlTransient
-    public List<ActividadFinanciera> getActividadFinancieraList() {
-        return actividadFinancieraList;
-    }
-
-    public void setActividadFinancieraList(List<ActividadFinanciera> actividadFinancieraList) {
-        this.actividadFinancieraList = actividadFinancieraList;
-    }
 
     public BigDecimal getIngresototal() {
         return ingresototal;
@@ -176,4 +171,11 @@ public class ActividadDiaria implements Serializable {
         this.ingresototal = ingresototal;
     }
 
+    public boolean isAutocierre() {
+        return autocierre;
+    }
+
+    public void setAutocierre(boolean autocierre) {
+        this.autocierre = autocierre;
+    }
 }

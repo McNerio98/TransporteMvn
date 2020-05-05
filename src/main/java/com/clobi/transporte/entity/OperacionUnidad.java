@@ -8,6 +8,7 @@ package com.clobi.transporte.entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigDecimal;
+import java.math.BigDecimal;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -55,6 +56,8 @@ public class OperacionUnidad implements Serializable {
     @Column(name = "pagoauxiliar", nullable = false)
     private BigDecimal pagoauxiliar;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idoperacion")
+    private List<Pago> pagoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idoperacion")
     private List<Anticipo> anticipoList;
 
     @Id
@@ -84,7 +87,10 @@ public class OperacionUnidad implements Serializable {
     @JoinColumn(name = "placa", referencedColumnName = "placa")
     @ManyToOne(optional = false)
     private Unidad placa;
-
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "autocierre")    
+    private boolean autocierre;
     private static final long serialVersionUID = 1L;
 
     public OperacionUnidad() {
@@ -193,6 +199,16 @@ public class OperacionUnidad implements Serializable {
         return "com.clobi.transporte.entity.OperacionUnidad[ id=" + id + " ]";
     }
 
+
+    @XmlTransient
+    public List<Anticipo> getAnticipoList() {
+        return anticipoList;
+    }
+
+    public void setAnticipoList(List<Anticipo> anticipoList) {
+        this.anticipoList = anticipoList;
+    }
+
     public BigDecimal getIngreso() {
         return ingreso;
     }
@@ -218,13 +234,22 @@ public class OperacionUnidad implements Serializable {
     }
 
     @XmlTransient
-    public List<Anticipo> getAnticipoList() {
-        return anticipoList;
+    public List<Pago> getPagoList() {
+        return pagoList;
     }
 
-    public void setAnticipoList(List<Anticipo> anticipoList) {
-        this.anticipoList = anticipoList;
+    public void setPagoList(List<Pago> pagoList) {
+        this.pagoList = pagoList;
     }
+
+    public boolean isAutocierre() {
+        return autocierre;
+    }
+
+    public void setAutocierre(boolean autocierre) {
+        this.autocierre = autocierre;
+    }
+    
     
     
 }

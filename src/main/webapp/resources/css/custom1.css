@@ -339,3 +339,23 @@ table.pth-0 th, table.pth-0 td{
 #profilesAvatarPanel img.selected{
     border: 4px solid darkorange;
 }
+
+.inputTextCustom1 {
+    height: auto;
+    padding: 0px 3px;
+}
+
+.pnlinputTextCustom1 {
+    width: 125px;
+    margin: auto;
+}
+
+.pnlinputTextCustom1 span {
+    padding: 5px !important;
+    width: 26px;
+    justify-content: center;
+}
+
+table.th-custom3 td{
+	padding: 0.4rem !important;
+}

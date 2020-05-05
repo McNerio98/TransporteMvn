@@ -44,6 +44,9 @@ import javax.xml.bind.annotation.XmlTransient;
     ,@NamedQuery(name = "Unidad.getDocsByPlaca", query = "SELECT u FROM DocumentoByUnidad u WHERE u.placa.placa = :placa")})
 public class Unidad implements Serializable {
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "placa")
+    private List<OperacionUnidad> operacionUnidadList;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "unidad")
     private List<Asignacion> asignacionList;
 
@@ -203,6 +206,15 @@ public class Unidad implements Serializable {
 
     public void setAsignacionList(List<Asignacion> asignacionList) {
         this.asignacionList = asignacionList;
+    }
+
+    @XmlTransient
+    public List<OperacionUnidad> getOperacionUnidadList() {
+        return operacionUnidadList;
+    }
+
+    public void setOperacionUnidadList(List<OperacionUnidad> operacionUnidadList) {
+        this.operacionUnidadList = operacionUnidadList;
     }
     
 }

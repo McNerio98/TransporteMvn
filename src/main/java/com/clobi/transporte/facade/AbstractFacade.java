@@ -45,6 +45,7 @@ public abstract class AbstractFacade<T> {
         return getEntityManager().createQuery(cq).getResultList();
     }
     
+    
     public void initTransaction(){
         getEntityManager().getTransaction().begin();
     }

@@ -33,7 +33,8 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Categoria implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idcategoria")
-    private List<ActividadFinanciera> actividadFinancieraList;
+    private List<Pago> pagoList;
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -114,12 +115,12 @@ public class Categoria implements Serializable {
     }
 
     @XmlTransient
-    public List<ActividadFinanciera> getActividadFinancieraList() {
-        return actividadFinancieraList;
+    public List<Pago> getPagoList() {
+        return pagoList;
     }
 
-    public void setActividadFinancieraList(List<ActividadFinanciera> actividadFinancieraList) {
-        this.actividadFinancieraList = actividadFinancieraList;
+    public void setPagoList(List<Pago> pagoList) {
+        this.pagoList = pagoList;
     }
-    
+
 }

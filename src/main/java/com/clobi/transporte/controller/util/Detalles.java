@@ -5,8 +5,10 @@
  */
 package com.clobi.transporte.controller.util;
 
+import com.clobi.transporte.entity.Pago;
 import java.math.BigDecimal;
-import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 /**
  *
  * @author McNerio
@@ -22,10 +24,9 @@ public class Detalles {
     private BigDecimal precioViajeMotorista;
     private BigDecimal precioViajeAuxiliar;
     private BigDecimal Anticipos;
-    private BigDecimal pagoMotorista;
-    private BigDecimal pagoAuxiliar;
     private BigDecimal descuentoMotorista;
     private BigDecimal descuentoAuxiliar;
+    private List<Pago> listPagos;
 
     public Detalles() {
         this.viajesRealizados = 0;
@@ -36,15 +37,17 @@ public class Detalles {
         this.precioViajeMotorista = new BigDecimal(1.81); //Pueden establecerse cambio
         this.precioViajeAuxiliar = new BigDecimal(0.90); //Pueden establecerse cambio
         this.Anticipos = new BigDecimal(0.0);
-        this.pagoMotorista = new BigDecimal(0.0);
-        this.pagoAuxiliar = new BigDecimal(0.0);
         this.descuentoMotorista = new BigDecimal(0.0);
         this.descuentoAuxiliar = new BigDecimal(0.0);
+        
+        this.listPagos = new ArrayList<Pago>(); 
     }
 
     public void realizarCalculos(){
         this.diferencia = this.conteoActual - this.conteoAnterior;
         this.ingresoCalculado = this.precioPasaje.multiply(new BigDecimal(this.diferencia)).setScale(2, BigDecimal.ROUND_HALF_EVEN);
+        calcPagoChofer();
+        calcPagoAuxiliar();
     }
     
     public BigDecimal getPrecioPasaje() {
@@ -111,22 +114,6 @@ public class Detalles {
         this.Anticipos = Anticipos;
     }
 
-    public BigDecimal getPagoMotorista() {
-        return pagoMotorista;
-    }
-
-    public void setPagoMotorista(BigDecimal pagoMotorista) {
-        this.pagoMotorista = pagoMotorista;
-    }
-
-    public BigDecimal getPagoAuxiliar() {
-        return pagoAuxiliar;
-    }
-
-    public void setPagoAuxiliar(BigDecimal pagoAuxiliar) {
-        this.pagoAuxiliar = pagoAuxiliar;
-    }
-
     public BigDecimal getDescuentoMotorista() {
         return descuentoMotorista;
     }
@@ -150,5 +137,25 @@ public class Detalles {
     public void setViajesRealizados(Integer viajesRealizados) {
         this.viajesRealizados = viajesRealizados;
     }
+
+    //Calculos
+    private void calcPagoChofer(){
+        BigDecimal pago = this.getPrecioViajeMotorista().multiply(new BigDecimal(this.viajesRealizados)).setScale(2, BigDecimal.ROUND_HALF_EVEN);
+        listPagos.get(2).setMonto(pago);
+    }
+    
+    private void calcPagoAuxiliar(){
+        BigDecimal pago = this.getPrecioViajeAuxiliar().multiply(new BigDecimal(this.viajesRealizados)).setScale(2, BigDecimal.ROUND_HALF_EVEN);
+        listPagos.get(3).setMonto(pago);
+    }
+
+    public List<Pago> getListPagos() {
+        return listPagos;
+    }
+
+    public void setListPagos(List<Pago> listPagos) {
+        this.listPagos = listPagos;
+    }
+    
     
 }

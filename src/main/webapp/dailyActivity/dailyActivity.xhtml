@@ -51,13 +51,6 @@
                                                a:data-target="#nuevaOpeUnidadModal">
                                     <u>Nuevo Registro</u>
                                 </p:commandLink>
-                                <p:commandLink styleClass="text-center pl-md-3 pr-md-3 d-md-inline d-block"
-                                               actionListener="#{ADController.prepareGasto}"
-                                               a:data-toggle="modal" 
-                                               a:data-target="#modalGastosRegistros"
-                                               update=":pnlGastosRegistros">
-                                    <u>Registrar Gasto</u>
-                                </p:commandLink>
                                 <a href="" class="text-center pl-md-3 pr-md-3 d-md-inline d-block"><u>Auditoria</u></a>
                                 <a href="" class="text-center text-pink pl-md-3 pr-md-3 d-md-inline d-block"><u>Finalizar AD</u></a>                                
                             </h:form>
@@ -181,8 +174,6 @@
             <ui:include src="ConfirmNewViaje.xhtml"/>
             <ui:include src="ListAnticipos.xhtml"/>
             <ui:include src="DetallesFinalizar.xhtml"/>
-            <ui:include src="RegistrarGasto.xhtml"/>
-
         </ui:define>
     </ui:composition>
 </html>

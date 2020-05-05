@@ -6,9 +6,12 @@
 package com.clobi.transporte.facade;
 
 import com.clobi.transporte.entity.Asignacion;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -28,5 +31,18 @@ public class AsignacionFacade extends AbstractFacade<Asignacion> {
     public AsignacionFacade() {
         super(Asignacion.class);
     }
+    
+    
+    public List<Asignacion> unidadesDisponibles(Integer c){
+        //Devuelve las unidades que aun no estan en la asignacion
+        List<Asignacion> tmp;
+        String sql = "select * from asignaciones a where a.unidad not \n"
+                + "in(select o.placa from operacionesunidades o where idactividaddiaria = "+ c +")";
+        System.err.println("El query ejecutado es:" + sql);
+        Query query = getEntityManager().createNativeQuery(sql,Asignacion.class);
+        tmp = query.getResultList();
+        return tmp.isEmpty()?new ArrayList<Asignacion>():tmp;
+    }
+
     
 }

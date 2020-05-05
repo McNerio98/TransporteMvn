@@ -57,140 +57,213 @@
                             </div>
                         </div>
                     </div>
-                    <h:form styleClass="input-group mb-3"
-                            >
-                        <div class="input-group-prepend">
-                            <p:commandButton styleClass="btn btn-secondary"
+                    <h:form>
+                        <div class="text-center">
+                            <p:commandButton styleClass="btn btn-secondary rounded-pill"
+                                             style="display: block; margin: auto; margin-bottom: 10px; width: 50%;"
                                              actionListener="#{ADController.calcularDetalles}"
                                              update="pnlDetallesFinalizar"
+                                             rendered="#{ADController.operacionSelected.estado == 1}"
                                              value="Calcular"/>
                         </div>
-                        <h:inputText styleClass="form-control" 
-                                     value="#{ADController.detallesSelected.conteoActual}"
-                                     a:placeholder="Ingrese contador actual"/>
-                    </h:form>
                     <div>
                         <table class="table table-bordered th-custom3">
                             <thead>
                                 <tr>
-                                    <th style="width: 10px">#</th>
                                     <th>Descripcion</th>
                                     <th>Valor</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>1.</td>
                                     <td>Viajes Realizados</td>
                                     <td>
-                                        <span class="d-block text-center text-muted">
-                                            <h:outputText value="#{ADController.detallesSelected.viajesRealizados}/11"/>
-                                        </span>
+                                        <div class="input-group pnlinputTextCustom1">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-hashtag"></i></span>
+                                            </div>
+                                            <h:inputText value="#{ADController.detallesSelected.viajesRealizados}"
+                                                         styleClass="form-control inputTextCustom1"
+                                                         disabled="#{ADController.operacionSelected.estado == 2}"
+                                                         a:placeholder="valor"/>
+                                        </div>                                        
                                     </td>
                                 </tr>                                
                                 <tr>
-                                    <td>2.</td>
                                     <td>Conteo Ingresado</td>
                                     <td>
-                                        <span class="d-block text-center text-muted">
-                                            <h:outputText value="--No Establecido--"
-                                                          rendered="#{ADController.detallesSelected.conteoActual == 0}"/>
-
-                                            <h:outputText rendered="#{ADController.detallesSelected.conteoActual > 0}"
-                                                          value="#{ADController.detallesSelected.conteoActual}"/>
-                                        </span>
+                                        <div class="input-group pnlinputTextCustom1">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-hashtag"></i></span>
+                                            </div>
+                                            <h:inputText value="#{ADController.detallesSelected.conteoActual}"
+                                                         styleClass="form-control inputTextCustom1"
+                                                         disabled="#{ADController.operacionSelected.estado == 2}"
+                                                         a:placeholder="valor"/>
+                                        </div>                                         
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>3.</td>
                                     <td>Conteo Anterior</td>
                                     <td>
-                                        <span class="d-block text-center text-muted">
-                                            <h:outputText value="#{ADController.detallesSelected.conteoAnterior}"/>
-                                        </span>
+                                        <div class="input-group pnlinputTextCustom1">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-hashtag"></i></span>
+                                            </div>
+                                            <h:inputText value="#{ADController.detallesSelected.conteoAnterior}"
+                                                         styleClass="form-control inputTextCustom1"
+                                                         disabled="#{ADController.operacionSelected.estado == 2}"
+                                                         a:placeholder="valor"/>
+                                        </div> 
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>4.</td>
                                     <td>Diferencia Calculada <span class="badge bg-warning">Nuevo</span></td>
                                     <td>
-                                        <span class="d-block text-center text-muted">
-                                            <h:outputText value="#{ADController.detallesSelected.diferencia}"/>
-                                        </span>
+                                        <div class="input-group pnlinputTextCustom1">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-hashtag"></i></span>
+                                            </div>
+                                            <h:inputText value="#{ADController.detallesSelected.diferencia}"
+                                                         styleClass="form-control inputTextCustom1"
+                                                         disabled="#{ADController.operacionSelected.estado == 2}"
+                                                         a:placeholder="valor"/>
+                                        </div> 
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>5.</td>
                                     <td>Ingreso Total Calculado</td>
                                     <td>
-                                        <span class="d-block text-center text-muted">
-                                            <h:outputText value="$ #{ADController.detallesSelected.ingresoCalculado}"/>
-                                        </span>
+                                        <div class="input-group pnlinputTextCustom1">
+                                            <div class="input-group-prepend">
+                                                 <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                                            </div>
+                                            <h:inputText value="#{ADController.detallesSelected.ingresoCalculado}"
+                                                         styleClass="form-control inputTextCustom1"
+                                                         disabled="#{ADController.operacionSelected.estado == 2}"
+                                                         a:placeholder="valor"/>
+                                        </div> 
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>6.</td>
                                     <td>Total anticipos <span class="badge bg-success">Nuevo</span></td>
                                     <td>
-                                        <span class="d-block text-center text-muted">
-                                            <h:outputText value="$ #{ADController.detallesSelected.anticipos}"/>
-                                        </span>
+                                        <div class="input-group pnlinputTextCustom1">
+                                            <div class="input-group-prepend">
+                                               <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                                            </div>
+                                            <h:inputText value="#{ADController.detallesSelected.anticipos}"
+                                                         styleClass="form-control inputTextCustom1"
+                                                         disabled="#{ADController.operacionSelected.estado == 2}"
+                                                         a:placeholder="valor"/>
+                                        </div> 
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>7.</td>
                                     <td>Pago Motorista</td>
                                     <td>
-                                        <span class="d-block text-center text-muted">
-                                            <h:outputText value="$ #{ADController.detallesSelected.pagoMotorista}"/>
-                                        </span>
+                                        <div class="input-group pnlinputTextCustom1">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                                            </div>
+                                            <h:inputText value="#{ADController.detallesSelected.listPagos.get(2).monto}"
+                                                         styleClass="form-control inputTextCustom1"
+                                                         disabled="#{ADController.operacionSelected.estado == 2}"
+                                                         a:placeholder="valor"/>
+                                        </div> 
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>8.</td>
                                     <td>Descuento ahorro motorista </td>
                                     <td>
-                                        <span class="d-block text-center text-muted">
-                                            <h:outputText value="$ #{ADController.detallesSelected.descuentoMotorista}"/>
-                                        </span>
+                                        <div class="input-group pnlinputTextCustom1">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                                            </div>
+                                            <h:inputText value="#{ADController.detallesSelected.descuentoMotorista}"
+                                                         styleClass="form-control inputTextCustom1"
+                                                         disabled="#{ADController.operacionSelected.estado == 2}"
+                                                         a:placeholder="valor"/>
+                                        </div> 
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>9.</td>
                                     <td>Pago Auxiliar</td>
                                     <td>
-                                        <span class="d-block text-center text-muted">
-                                            <h:outputText value="$ #{ADController.detallesSelected.pagoAuxiliar}"/>
-                                        </span>
+                                        <div class="input-group pnlinputTextCustom1">
+                                            <div class="input-group-prepend">
+                                                 <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                                            </div>
+                                            <h:inputText value="#{ADController.detallesSelected.listPagos.get(3).monto}"
+                                                         styleClass="form-control inputTextCustom1"
+                                                         disabled="#{ADController.operacionSelected.estado == 2}"
+                                                         a:placeholder="valor"/>
+                                        </div> 
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>10.</td>
                                     <td>Descuento ahorro auxiliar</td>
                                     <td>
-                                        <span class="d-block text-center text-muted">
-                                            <h:outputText value="$ #{ADController.detallesSelected.descuentoAuxiliar}"/>
-                                        </span>
+                                        <div class="input-group pnlinputTextCustom1">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                                            </div>
+                                            <h:inputText value="#{ADController.detallesSelected.descuentoAuxiliar}"
+                                                         styleClass="form-control inputTextCustom1"
+                                                         disabled="#{ADController.operacionSelected.estado == 2}"
+                                                         a:placeholder="valor"/>
+                                        </div> 
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td>Pago Galosina</td>
+                                    <td>
+                                        <div class="input-group pnlinputTextCustom1">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                                            </div>
+                                            <h:inputText value="#{ADController.detallesSelected.listPagos.get(0).monto}"
+                                                         styleClass="form-control inputTextCustom1"
+                                                         disabled="#{ADController.operacionSelected.estado == 2}"
+                                                         a:placeholder="valor"/>
+                                        </div> 
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Pago Despacho</td>
+                                    <td>
+                                        <div class="input-group pnlinputTextCustom1">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                                            </div>
+                                            <h:inputText value="#{ADController.detallesSelected.listPagos.get(1).monto}"
+                                                         styleClass="form-control inputTextCustom1"
+                                                         disabled="#{ADController.operacionSelected.estado == 2}"
+                                                         a:placeholder="valor"/>
+                                        </div> 
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Pago Agua</td>
+                                    <td>
+                                        <div class="input-group pnlinputTextCustom1">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                                            </div>
+                                            <h:inputText value="#{ADController.detallesSelected.listPagos.get(4).monto}"
+                                                         styleClass="form-control inputTextCustom1"
+                                                         disabled="#{ADController.operacionSelected.estado == 2}"
+                                                         a:placeholder="valor"/>
+                                        </div> 
+                                    </td>
+                                </tr>                                
                             </tbody>
                         </table>
-                        <div>
-                            <h5 class="d-block text-muted text-center p-0 bg-dark">Notas</h5>
-                            <div class="p-md-2 border rounded mb-1">
-                                <p class="m-0">Los datos calculados no coinciden con los datos de los montos entregados</p>
-                            </div>
-                            <div class="form-group mb-1">
-                                <textarea class="form-control" rows="2" placeholder="Ingrese contenido nota ..."></textarea>
-                            </div>                            
-                        </div>
-                        <div id="containerNotas">
-                            <a href="#" class="d-block text-muted text-center"><u>+Nueva Nota</u></a>
-                        </div>
                     </div>
+                        </h:form>
                 </div>
                 <div class="modal-footer">
-                    
+
                     <a href="#" class="btn-ct btn-ct-secondary" data-dismiss="modal">Cerrar</a>
                     <p:commandLink styleClass="btn-ct btn-ct-success"
                                    actionListener="#{ADController.finalizarOperacion}"

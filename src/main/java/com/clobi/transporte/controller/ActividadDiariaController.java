@@ -10,20 +10,20 @@ import com.clobi.transporte.controller.util.Enums;
 import com.clobi.transporte.controller.util.JsfUtil;
 import com.clobi.transporte.controller.util.JsfUtil.PersistAction;
 import com.clobi.transporte.entity.ActividadDiaria;
-import com.clobi.transporte.entity.ActividadFinanciera;
 import com.clobi.transporte.entity.Anticipo;
 import com.clobi.transporte.entity.Asignacion;
 import com.clobi.transporte.entity.Categoria;
 import com.clobi.transporte.entity.Empleado;
 import com.clobi.transporte.entity.OperacionUnidad;
+import com.clobi.transporte.entity.Pago;
 import com.clobi.transporte.entity.Unidad;
 import com.clobi.transporte.facade.ADFacade;
 import com.clobi.transporte.facade.AnticiposFacade;
 import com.clobi.transporte.facade.AsignacionFacade;
 import com.clobi.transporte.facade.CategoriasFacade;
 import com.clobi.transporte.facade.EmpleadosFacade;
-import com.clobi.transporte.facade.FinanzasFacade;
 import com.clobi.transporte.facade.OperationFacade;
+import com.clobi.transporte.facade.PagosFacade;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -54,7 +54,10 @@ public class ActividadDiariaController implements Serializable {
     private List<Categoria> listCategorias;
     private Asignacion asignacionSelected;
     private Detalles detallesSelected;
-    private ActividadFinanciera finanzaInsert;
+    private List<Empleado> listMotoristaDisp;
+    private List<Empleado> listAuxliarDisp;
+    private Empleado motoristaSelected;
+    private Empleado auxiliarSelected;
 
     @EJB
     private ADFacade ejbADFacade;
@@ -67,9 +70,9 @@ public class ActividadDiariaController implements Serializable {
     @EJB
     private AsignacionFacade ebjAsignacion;
     @EJB
-    private FinanzasFacade ejbFinanzas;
-    @EJB
     private CategoriasFacade ejbCategorias;
+    @EJB
+    private PagosFacade ebjPagos;
 
     @PostConstruct
     public void init() {
@@ -79,7 +82,7 @@ public class ActividadDiariaController implements Serializable {
             this.listOperaciones = ejbOperacion.listOperaciones(this.actividad);
         }
 
-        this.listCategorias = ejbCategorias.findAll();
+        this.listCategorias = ejbCategorias.listCategoriasAsc();
     }
 
     public void showAdvance(OperacionUnidad e) {
@@ -91,23 +94,23 @@ public class ActividadDiariaController implements Serializable {
     public void showDetailsEnd(OperacionUnidad e) {
         this.operacionSelected = e;
         this.detallesSelected = new Detalles();
-        Integer viajesSum = (int) e.getViajesrealizados();
+        //Aqui se hace una condicional, si los valores se cargaran desde la db 
+        //Se setean asumiento que todo esta en el proceso comun 
         Integer valor = e.getContador();
-        if(valor != 0){
+        if (valor != 0) {
             this.detallesSelected.setConteoActual(valor);
             this.detallesSelected.realizarCalculos();
         }
-        this.detallesSelected.setViajesRealizados(viajesSum);
-        Integer conteoAntetior = ejbOperacion.ContadorAnterior(e.getPlaca().getPlaca(), this.actividad.getFecha());
-        this.detallesSelected.setConteoAnterior(conteoAntetior);
+        this.detallesSelected.setViajesRealizados((int) e.getViajesrealizados());
+        //Integer conteoAntetior = ejbOperacion.ContadorAnterior(e.getPlaca().getPlaca(), this.actividad.getFecha());
+        //this.detallesSelected.setConteoAnterior(conteoAntetior);
 
-        BigDecimal pago1 = this.detallesSelected.getPrecioViajeMotorista().multiply(new BigDecimal(viajesSum)).setScale(2, BigDecimal.ROUND_HALF_EVEN);
-        this.detallesSelected.setPagoMotorista(pago1);
-        if (e.getIdauxiliar() != null) {
-            BigDecimal pago2 = this.detallesSelected.getPrecioViajeAuxiliar().multiply(new BigDecimal(viajesSum)).setScale(2, BigDecimal.ROUND_HALF_EVEN);
-            this.detallesSelected.setPagoAuxiliar(pago2);
+        for (Categoria c : listCategorias) {
+            Pago p = new Pago();
+            p.setMonto(new BigDecimal(0.0));
+            p.setIdcategoria(c);
+            detallesSelected.getListPagos().add(p);
         }
-        
     }
 
     public void prepareActivity() {
@@ -128,21 +131,14 @@ public class ActividadDiariaController implements Serializable {
         this.operacionSelected.setPagoconductor(new BigDecimal(0.0));
         this.operacionSelected.setPagoauxiliar(new BigDecimal(0.0));
         this.operacionSelected.setIngreso(new BigDecimal(0.0));
-        this.listAsignaciones = ebjAsignacion.findAll();
+        this.listAsignaciones = ebjAsignacion.unidadesDisponibles(actividad.getId());
+        this.listMotoristaDisp = ejbEmpleadosFacade.EmpleadosDisponibles("aux");
+        this.listAuxliarDisp = ejbEmpleadosFacade.EmpleadosDisponibles("aux");
+        
     }
 
     public void prepareAnticipo() {
         this.anticipoInsert = new Anticipo();
-    }
-
-    public void prepareGasto() {
-        this.finanzaInsert = new ActividadFinanciera();
-        this.finanzaInsert.setTipo((short) 1);
-        this.finanzaInsert.setIdactividaddiaria(this.actividad);
-    }
-
-    public void createGasto() {
-        persistGasto(PersistAction.CREATE, "Anticipo Registrado!");
     }
 
     public void createAnticipo() {
@@ -151,12 +147,6 @@ public class ActividadDiariaController implements Serializable {
         persistAnticipo(PersistAction.CREATE, "Anticipo Registrado!");
     }
 
-    public void addNewViaje() {
-        short n = this.operacionSelected.getViajesrealizados();
-        n++;
-        this.operacionSelected.setViajesrealizados(n);
-        persistOperation(PersistAction.UPDATE, "Viaje Registrado");
-    }
 
     public void createOperation() {
         this.operacionSelected.setPlaca(this.asignacionSelected.getUnidad());
@@ -197,20 +187,6 @@ public class ActividadDiariaController implements Serializable {
         }
     }
 
-    private void persistGasto(PersistAction actionPersist, String infoResult) {
-        try {
-            if(actionPersist != PersistAction.DELETE){
-                ejbFinanzas.edit(finanzaInsert);
-            }else{
-                ejbFinanzas.remove(finanzaInsert);
-            }
-            this.actividad = ejbADFacade.currentActivity();
-            JsfUtil.addSuccessMessage(infoResult);
-        } catch (Exception e) {
-            JsfUtil.addErrorMessage("Error en la Operacion 2");
-        }
-    }
-
     private void persistAnticipo(PersistAction actionPersist, String infoResult) {
         try {
             if (actionPersist != PersistAction.DELETE) {
@@ -229,12 +205,22 @@ public class ActividadDiariaController implements Serializable {
         this.operacionSelected.setContador(this.detallesSelected.getConteoActual());
         this.operacionSelected.setEstado(Enums.ESTADO_ACTIVIDAD.FINALIZADA);
         this.operacionSelected.setIngreso(this.detallesSelected.getIngresoCalculado());
-        this.operacionSelected.setPagoconductor(this.detallesSelected.getPagoMotorista());
-        //Validar si es nulo 
+        this.operacionSelected.setPagoconductor(detallesSelected.getListPagos().get(2).getMonto()); 
         if (this.operacionSelected.getIdauxiliar() != null) {
-            this.operacionSelected.setPagoauxiliar(this.detallesSelected.getPagoAuxiliar());
+            this.operacionSelected.setPagoauxiliar(detallesSelected.getListPagos().get(3).getMonto());
         }
-        persistOperation(PersistAction.UPDATE, "Opetatividad Finalizada");
+
+        //Aqui necesito la transaccion 
+        try {
+            ejbOperacion.edit(operacionSelected);
+            for (Pago p : detallesSelected.getListPagos()) {
+                p.setIdoperacion(operacionSelected);
+                ebjPagos.edit(p);
+            }
+            JsfUtil.addSuccessMessage("Operacion Finalizada");
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage("No se pudo finalizar la operacion");
+        }
     }
 
     public void calcularDetalles() {
@@ -294,6 +280,8 @@ public class ActividadDiariaController implements Serializable {
     }
 
     public void setAsignacionSelected(Asignacion asignacionSelected) {
+        this.motoristaSelected = asignacionSelected.getMotorista();
+        this.auxiliarSelected = asignacionSelected.getAyudante();
         this.asignacionSelected = asignacionSelected;
     }
 
@@ -313,20 +301,44 @@ public class ActividadDiariaController implements Serializable {
         this.actividad = actividad;
     }
 
-    public ActividadFinanciera getFinanzaInsert() {
-        return finanzaInsert;
-    }
-
-    public void setFinanzaInsert(ActividadFinanciera finanzaInsert) {
-        this.finanzaInsert = finanzaInsert;
-    }
-
     public List<Categoria> getListCategorias() {
         return listCategorias;
     }
 
     public void setListCategorias(List<Categoria> listCategorias) {
         this.listCategorias = listCategorias;
+    }
+
+    public List<Empleado> getListMotoristaDisp() {
+        return listMotoristaDisp;
+    }
+
+    public void setListMotoristaDisp(List<Empleado> listMotoristaDisp) {
+        this.listMotoristaDisp = listMotoristaDisp;
+    }
+
+    public List<Empleado> getListAuxliarDisp() {
+        return listAuxliarDisp;
+    }
+
+    public void setListAuxliarDisp(List<Empleado> listAuxliarDisp) {
+        this.listAuxliarDisp = listAuxliarDisp;
+    }
+
+    public Empleado getMotoristaSelected() {
+        return motoristaSelected;
+    }
+
+    public void setMotoristaSelected(Empleado motoristaSelected) {
+        this.motoristaSelected = motoristaSelected;
+    }
+
+    public Empleado getAuxiliarSelected() {
+        return auxiliarSelected;
+    }
+
+    public void setAuxiliarSelected(Empleado auxiliarSelected) {
+        this.auxiliarSelected = auxiliarSelected;
     }
 
 }

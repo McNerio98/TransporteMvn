@@ -70,6 +70,14 @@ public class EmpleadosFacade extends AbstractFacade<Empleado> {
         list = query.getResultList();
         return list.isEmpty() ? new ArrayList<>() : list;
     }
+    
+    public List<Empleado> EmpleadosDisponibles(String tipo){
+        List<Empleado> tmp;
+        String sql = "select * from empleados";
+        Query query = getEntityManager().createNativeQuery(sql,Empleado.class);
+        tmp = query.getResultList();
+        return tmp.isEmpty()?new ArrayList<Empleado>():tmp;
+    }
 
     /*
     private void InitializeComponents(){
