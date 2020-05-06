@@ -79,3 +79,16 @@ function ContratoError(data) {
         title: 'Hubo problemas al guardar los cambios' + data.status
     });
 }
+
+function displayRecordatorios(arr){
+    var array = [];
+    array = arr;
+    for(var i=0;i<array.length;i++){
+        if(i==(array.length-1)){
+            document.getElementById("reminders").innerHTML += array[i];
+        }else{
+            document.getElementById("reminders").innerHTML += array[i] + ", ";
+        }
+        
+    }
+}

@@ -30,6 +30,7 @@ public class RecordatiorioController implements Serializable {
 
     private List<Recordatorio> list;
     private Recordatorio selected;
+    private String datefrominput;
     @EJB
     private RecordatorioFacade ejbFacade;
 
@@ -37,9 +38,19 @@ public class RecordatiorioController implements Serializable {
         this.ejbFacade = new RecordatorioFacade();
         this.selected = new Recordatorio();
     }
+    
+    public void setDateInput(String i){
+        this.datefrominput = i;
+    }
+    
+    public String getDateInput(){
+        return this.datefrominput;
+    }
+    
     @PostConstruct
     public void init(){
         this.selected = new Recordatorio();
+        this.selected.setFechacreacion(new Date());
         this.setList(this.ejbFacade.findAll());
     }
 
@@ -67,10 +78,27 @@ public class RecordatiorioController implements Serializable {
     public List<Recordatorio> getRecordatorioList(){
         return this.list;
     }
+    
+    public List<Recordatorio> getTodayRecordatorios(){
+        return getFacade().getToday();
+    }
 
     public void save() {
+        /*Date date1 = new Date();
+        try{
+             date1 = new SimpleDateFormat("yyyy-mm-dd").parse(this.getDateInput());
+        }catch(Exception e){
+            System.out.print(e.getMessage());
+        }
+        this.selected.setFechacreacion(date1);
         this.selected.setDescripcion("Descripcion");
-        persist(JsfUtil.PersistAction.CREATE, "Recordatorio con exito");
+        System.out.print("FECHA1:: "+this.datefrominput);
+        System.out.print("FECHA:: "+this.selected.getFechacreacion());
+        
+        persist(JsfUtil.PersistAction.CREATE, "Recordatorio con exito");*/
+        this.selected.setDescripcion("Descripcion");
+        getFacade().insertRecordatorio(selected, datefrominput);
+        this.init();
     }
 
     private void persist(JsfUtil.PersistAction persistAction, String successMessage) {

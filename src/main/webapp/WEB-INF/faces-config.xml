@@ -28,6 +28,13 @@
     <navigation-rule>
         <from-view-id>*</from-view-id>
         <navigation-case>
+            <from-outcome>recordatorios</from-outcome>
+            <to-view-id>/reminders/recordatorios.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>*</from-view-id>
+        <navigation-case>
             <from-outcome>unidades/create</from-outcome>
             <to-view-id>/unidades/create.xhtml</to-view-id>
         </navigation-case>

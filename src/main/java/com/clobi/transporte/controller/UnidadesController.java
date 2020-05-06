@@ -60,6 +60,7 @@ public class UnidadesController {
         return this.ejbDocs;
     }
     public void create() {
+        this.selected.setEstadoregistro(true);
         persist(JsfUtil.PersistAction.CREATE, "Se guardo exitosamente");
 //        try {
 //            this.submit();
@@ -132,11 +133,11 @@ public class UnidadesController {
                 if (persistAction != PersistAction.DELETE) {
                     getFacade().edit(selected);
                     this.submit(getFacade().edit(selected));
-                    this.transferir();
                     this.selected = null;
                 } else {
                     getFacade().remove(selected);
                 }
+                this.transferir();
                 JsfUtil.addSuccessMessage(successMessage);
             } catch (EJBException ex) {
                 String msg = "";

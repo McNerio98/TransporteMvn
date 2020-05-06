@@ -48,11 +48,16 @@ public class UnidadFacade extends AbstractFacade<Unidad> {
         return list;
     }
     
-    public boolean setUnidadStatus(Unidad u){
-        Query query = getEntityManager().createNamedQuery("Unidad.ChangeEstadoregistro");
-        query.setParameter("placa", u.getPlaca());
-        int i = query.executeUpdate();
-        return i == 0 ? false : true;
+    public void setUnidadStatus(Unidad u){
+//        Query query = getEntityManager().createNamedQuery("Unidad.ChangeEstadoregistro", Unidad.class);
+//        query.setParameter("placa", u.getPlaca());
+//        int i = query.executeUpdate();
+          String sql = "update unidades set estadoregistro = :estado"
+                  + "where placa = :placa";
+          Query query = em.createNativeQuery(sql,Unidad.class);
+          query.setParameter("estado", false);
+          query.setParameter("placa", u.getPlaca());
+          query.executeUpdate();
     }
 
     public List<DocumentoByUnidad> getDocsByPlaca(Unidad u) {
