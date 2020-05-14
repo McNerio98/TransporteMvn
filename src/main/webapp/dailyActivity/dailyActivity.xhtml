@@ -45,14 +45,24 @@
                             <h4 class="text-center h1 text-muted d-block" style="width: 100%;"><i class="fas fa-cubes"></i></h4>
                             <h:form class="text-center col-12">
                                 <p:commandLink styleClass="text-center pl-md-3 pr-md-3 d-md-inline d-block"
+                                               rendered="#{ADController.actividad.estado == 1}"
                                                actionListener="#{ADController.prepareOperation}"
-                                               update=":pnlListAsignaciones"
+                                               update=":pnlListAsignaciones,:detailsAsignacion"
                                                a:data-toggle="modal" 
                                                a:data-target="#nuevaOpeUnidadModal">
                                     <u>Nuevo Registro</u>
                                 </p:commandLink>
-                                <a href="" class="text-center pl-md-3 pr-md-3 d-md-inline d-block"><u>Auditoria</u></a>
-                                <a href="" class="text-center text-pink pl-md-3 pr-md-3 d-md-inline d-block"><u>Finalizar AD</u></a>                                
+                                <h:link outcome="ADList" styleClass="text-center pl-md-3 pr-md-3 d-md-inline d-block">
+                                    <u>Registros Actividades</u>
+                                </h:link>
+                                <p:commandLink styleClass="text-center pl-md-3 pr-md-3 d-md-inline d-block"
+                                               actionListener="#{ADController.deadActivity}"
+                                               rendered="#{ADController.actividad.estado == 1}"
+                                               update=":pnlPrincipal,:pnlMessageJSF"
+                                               a:data-toggle="modal" 
+                                               a:data-target="#nuevaOpeUnidadModal">
+                                    <u>Finalizar</u>
+                                </p:commandLink>                                
                             </h:form>
                         </div>                        
                         <!--COMIENZA LA ITERACION-->
@@ -66,7 +76,7 @@
                             <div class="col-md-6 col-lg-3">
                                 <div class="card-custom border mt-2">
                                     <div class="header p-2 text-purple" style="background-color: #f5f6f7;">
-                                        <i class="fas fa-bus"></i><span> <b><h:outputText value="EQ#{i.placa.numerounidad}"/> </b>| <h:outputText value="#{i.placa.placa}"/></span>
+                                        <i class="fas fa-bus"></i><span> <b><h:outputText value="EQ#{i.placa.numerounidad}"/> </b>| <h:outputText value="AB#{i.placa.placa}"/></span>
                                         <c:choose>
                                             <c:when test="#{i.estado == 1}">
                                                 <span class="circle activeOpe" style="float: right; margin: 5px 0px;"></span>
@@ -81,14 +91,6 @@
                                             <c:choose>
                                                 <c:when test="#{i.estado == 1}">
                                                     <span class="d-block text-muted">Estado <b class="text-purple">Activo</b></span>
-                                                    <p:commandLink actionListener="#{ADController.setOperacionSelected(i)}"
-                                                                   a:data-toggle="modal" 
-                                                                   a:data-target="#modalConfirmNewViaje"
-                                                                   rendered="#{!(i.viajesrealizados == 11)}"
-                                                                   update=":pnlConfirmNewViaje"
-                                                                   styleClass="d-block text-success">
-                                                        <b><h:outputText value="#{bundle.NewTravel}"/></b>
-                                                    </p:commandLink>
                                                 </c:when>
                                                 <c:when test="#{i.estado == 2}">
                                                     <span class="d-block text-muted">Estado <b class="text-dark">Finalizado</b></span>
@@ -113,7 +115,7 @@
                                             <div class="row pl-2">
                                                 <div class="col-8 text-left">
                                                     <small>Auxiliar</small><br/>
-                                                    <h:outputText styleClass="text-muted" value="#{i.idauxiliar.nombres} #{i.idauxiliar.nombres}"/><br/>
+                                                    <h:outputText styleClass="text-muted" value="#{i.idauxiliar.nombres} #{i.idauxiliar.apellidos}"/><br/>
                                                 </div>
                                                 <div class="col-4 h5 p-md-2 text-muted">
                                                     <h:outputText value="$ #{i.pagoauxiliar}"/>
@@ -144,15 +146,15 @@
                                                            actionListener="#{ADController.showDetailsEnd(i)}"
                                                            styleClass="d-block col-md-6 text-center text-danger"
                                                            rendered="#{i.estado == 1}"
-                                                           update=":pnlDetallesFinalizar"
+                                                           update=":formDetallesFinalizar"
                                                            a:data-toggle="modal" 
                                                            a:data-target="#modalDetallesFinalizar"/>
 
                                             <p:commandLink value="#{bundle.Details}"
-                                                           actionListener="#{ADController.showDetailsEnd(i)}"
+                                                           actionListener="#{ADController.showDetalis(i)}"
                                                            styleClass="d-block col-md-6 text-center text-danger"
                                                            rendered="#{i.estado == 2}"
-                                                           update=":pnlDetallesFinalizar"
+                                                           update=":formDetallesFinalizar"
                                                            a:data-toggle="modal" 
                                                            a:data-target="#modalDetallesFinalizar"/>                                            
                                         </div>
@@ -175,5 +177,8 @@
             <ui:include src="ListAnticipos.xhtml"/>
             <ui:include src="DetallesFinalizar.xhtml"/>
         </ui:define>
+        <ui:define name="scriptsSpecifided">
+            <h:outputScript library="js" name="adsRegistros.js"/>
+        </ui:define>        
     </ui:composition>
 </html>

@@ -32,5 +32,15 @@ public class Enums {
     public static final class TIPO_DOC {
         public static final String LICENCIA = "lic";
         public static final String CARNET = "car";
-    }    
+    }
+
+    public static final class TIPO_EMPLEADO {
+        public static final String AYUDANTE = "ayu";
+        public static final String MOTORISTA = "mot";
+    }
+    
+    public static final class TIPO_ANTICIPO{
+        public static final int PROPIO = 1;
+        public static final int RECARGO = 2;
+    }
 }

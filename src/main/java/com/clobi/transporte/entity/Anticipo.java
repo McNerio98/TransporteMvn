@@ -7,6 +7,7 @@ package com.clobi.transporte.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -39,6 +40,11 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Anticipo.findByHora", query = "SELECT a FROM Anticipo a WHERE a.hora = :hora")})
 public class Anticipo implements Serializable {
 
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "anticipo")
+    private BigDecimal anticipo;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,13 +53,11 @@ public class Anticipo implements Serializable {
     private Integer idanticipo;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "anticipo", nullable = false)
-    private BigDecimal anticipo;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "hora", nullable = false)
-    @Temporal(TemporalType.TIME)
     private Date hora;
+    @NotNull
+    @Column(name = "tipoanticipo", nullable = false)
+    private short tipoanticipo;
     @JoinColumn(name = "idoperacion", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private OperacionUnidad idoperacion;
@@ -79,13 +83,6 @@ public class Anticipo implements Serializable {
         this.idanticipo = idanticipo;
     }
 
-    public BigDecimal getAnticipo() {
-        return anticipo;
-    }
-
-    public void setAnticipo(BigDecimal anticipo) {
-        this.anticipo = anticipo;
-    }
 
     public Date getHora() {
         return hora;
@@ -103,6 +100,14 @@ public class Anticipo implements Serializable {
         this.idoperacion = idoperacion;
     }
 
+    public short getTipoanticipo() {
+        return tipoanticipo;
+    }
+
+    public void setTipoanticipo(short tipoanticipo) {
+        this.tipoanticipo = tipoanticipo;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -127,5 +132,15 @@ public class Anticipo implements Serializable {
     public String toString() {
         return "com.clobi.transporte.entity.Anticipo[ idanticipo=" + idanticipo + " ]";
     }
+
+    public BigDecimal getAnticipo() {
+        return anticipo;
+    }
+
+    public void setAnticipo(BigDecimal anticipo) {
+        this.anticipo = anticipo;
+    }
+    
+    
 
 }

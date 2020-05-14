@@ -5,6 +5,7 @@
  */
 package com.clobi.transporte.facade;
 
+import com.clobi.transporte.controller.util.Enums;
 import com.clobi.transporte.entity.Empleado;
 import java.util.ArrayList;
 import java.util.List;
@@ -70,13 +71,22 @@ public class EmpleadosFacade extends AbstractFacade<Empleado> {
         list = query.getResultList();
         return list.isEmpty() ? new ArrayList<>() : list;
     }
-    
-    public List<Empleado> EmpleadosDisponibles(String tipo){
+
+    public List<Empleado> EmpleadosDisponibles(String tipo, Integer idAD) {
         List<Empleado> tmp;
-        String sql = "select * from empleados";
-        Query query = getEntityManager().createNativeQuery(sql,Empleado.class);
+        String sql = "";
+        if (tipo.equals(Enums.TIPO_EMPLEADO.AYUDANTE)) {
+            sql = "select * from empleados e where e.tipo=? and e.dui not in(select o.idauxiliar \n"
+                    + "from operacionesunidades o where idactividaddiaria = ?)";
+        } else {
+            sql = "select * from empleados e where e.tipo=? and e.dui not in(select o.idconductor \n"
+                    + "from operacionesunidades o where idactividaddiaria = ?)";
+        }
+        Query query = getEntityManager().createNativeQuery(sql, Empleado.class);
+        query.setParameter(1, tipo);
+        query.setParameter(2, idAD);
         tmp = query.getResultList();
-        return tmp.isEmpty()?new ArrayList<Empleado>():tmp;
+        return tmp.isEmpty() ? new ArrayList<Empleado>() : tmp;
     }
 
     /*

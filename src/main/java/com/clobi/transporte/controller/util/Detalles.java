@@ -15,7 +15,7 @@ import java.util.List;
  */
 
 public class Detalles {
-    private Integer viajesRealizados;
+    private int viajesRealizados;
     private BigDecimal precioPasaje;
     private Integer conteoActual;
     private Integer conteoAnterior;
@@ -31,6 +31,7 @@ public class Detalles {
     public Detalles() {
         this.viajesRealizados = 0;
         this.precioPasaje = new BigDecimal(0.23);
+        this.conteoActual = 0;
         this.conteoAnterior = 0;
         this.diferencia = 0;
         this.ingresoCalculado = new BigDecimal(0.0);
@@ -130,11 +131,11 @@ public class Detalles {
         this.descuentoAuxiliar = descuentoAuxiliar;
     }
 
-    public Integer getViajesRealizados() {
+    public int getViajesRealizados() {
         return viajesRealizados;
     }
 
-    public void setViajesRealizados(Integer viajesRealizados) {
+    public void setViajesRealizados(int viajesRealizados) {
         this.viajesRealizados = viajesRealizados;
     }
 

@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigDecimal;
 import java.math.BigDecimal;
+import java.math.BigDecimal;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -45,15 +46,15 @@ public class OperacionUnidad implements Serializable {
 
     @Basic(optional = false)
     @NotNull
-    @Column(name = "ingreso", nullable = false)
+    @Column(name = "ingreso")
     private BigDecimal ingreso;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "pagoconductor", nullable = false)
+    @Column(name = "pagoconductor")
     private BigDecimal pagoconductor;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "pagoauxiliar", nullable = false)
+    @Column(name = "pagoauxiliar")
     private BigDecimal pagoauxiliar;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idoperacion")
     private List<Pago> pagoList;
@@ -75,6 +76,8 @@ public class OperacionUnidad implements Serializable {
     private short viajesrealizados;
     @Column(name = "contador")
     private Integer contador;
+    @Column(name = "contadorold")
+    private Integer contadorold;
     @JoinColumn(name = "idactividaddiaria", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private ActividadDiaria idactividaddiaria;
@@ -209,6 +212,32 @@ public class OperacionUnidad implements Serializable {
         this.anticipoList = anticipoList;
     }
 
+
+    @XmlTransient
+    public List<Pago> getPagoList() {
+        return pagoList;
+    }
+
+    public void setPagoList(List<Pago> pagoList) {
+        this.pagoList = pagoList;
+    }
+
+    public boolean isAutocierre() {
+        return autocierre;
+    }
+
+    public void setAutocierre(boolean autocierre) {
+        this.autocierre = autocierre;
+    }
+
+    public Integer getContadorold() {
+        return contadorold;
+    }
+
+    public void setContadorold(Integer contadorold) {
+        this.contadorold = contadorold;
+    }
+
     public BigDecimal getIngreso() {
         return ingreso;
     }
@@ -231,23 +260,6 @@ public class OperacionUnidad implements Serializable {
 
     public void setPagoauxiliar(BigDecimal pagoauxiliar) {
         this.pagoauxiliar = pagoauxiliar;
-    }
-
-    @XmlTransient
-    public List<Pago> getPagoList() {
-        return pagoList;
-    }
-
-    public void setPagoList(List<Pago> pagoList) {
-        this.pagoList = pagoList;
-    }
-
-    public boolean isAutocierre() {
-        return autocierre;
-    }
-
-    public void setAutocierre(boolean autocierre) {
-        this.autocierre = autocierre;
     }
     
     

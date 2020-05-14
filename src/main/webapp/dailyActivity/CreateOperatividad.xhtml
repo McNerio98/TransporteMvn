@@ -50,14 +50,24 @@
                                 <h:link outcome="asignaciones">
                                     <u>Cambiar Asignaciones</u>
                                 </h:link>
+                                /
+                                <p:commandLink actionListener="#{ADController.removeHelpder}"
+                                               update="detailsAsignacion">
+                                    <u>Omitir ayudante</u>
+                                </p:commandLink>
                             </div>                            
                         </h:panelGroup>
                         <h:panelGroup layout="block" styleClass="col-md-7" id="pnlListAsignaciones">
-                            <h:panelGroup layout="block" id="contentTablesUEE" style="mt-2">
+                            <h:panelGroup layout="block" id="MsgCargosAnticipos" styleClass="row">
+                                <h:panelGroup layout="block" styleClass="col-12 text-center bg-warning mb-1 rounded-pill"  id="MsgCargosAnticiposChild" rendered="#{ADController.totalAnticipos > 0}">
+                                    <small class="">Esta Unidad contiene <span class="text-white text-bold">anticipos pendientes</span>, se cargaran al registro actual el monto total de <span class="text-bold h5">$ <h:outputText id="anticipoAnterior" value="#{ADController.totalAnticipos}"/></span></small>
+                                </h:panelGroup>                          
+                            </h:panelGroup>
+                            <h:panelGroup layout="block" id="contentTablesUEE">
                                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                                     <li class="nav-item">
                                         <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home"
-                                           role="tab" aria-controls="home" aria-selected="true">Asignaciones</a>
+                                           role="tab" aria-controls="home" aria-selected="true">Unidades</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile"
@@ -81,7 +91,8 @@
                                                          emptyMessage="Sin Asignaciones"
                                                          selection="#{ADController.asignacionSelected}"
                                                          >
-                                                <p:ajax event="rowSelect" update=":detailsAsignacion"/>
+                                                <p:ajax event="rowSelect" update=":detailsAsignacion,:MsgCargosAnticipos"/>
+                                                <p:ajax event="rowUnselect" update=":MsgCargosAnticipos"/>
                                                 <p:column>
                                                     <f:facet name="header">Unidad</f:facet>
                                                     <h:outputText value="EQ#{tc.unidad.numerounidad}"/>
@@ -159,12 +170,12 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <p:commandLink styleClass="btn btn-ct-success"
+                    <p:commandLink styleClass="btn-ct btn-ct-success"
                                    a:data-dismiss="modal"
                                    value="Crear"
                                    actionListener="#{ADController.createOperation}"
                                    update=":pnlMessageJSF,:listActivities"/>
-                    <a href="#" data-dismiss="modal" class="btn btn-ct-danger">Cancelar</a>
+                    <a href="#" data-dismiss="modal" class="btn-ct btn-ct-danger">Cancelar</a>
                 </div>
             </div>
         </div>

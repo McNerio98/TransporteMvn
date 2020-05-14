@@ -9,6 +9,7 @@ import com.clobi.transporte.controller.util.Detalles;
 import com.clobi.transporte.controller.util.Enums;
 import com.clobi.transporte.controller.util.JsfUtil;
 import com.clobi.transporte.controller.util.JsfUtil.PersistAction;
+import com.clobi.transporte.controller.util.PagosExtras;
 import com.clobi.transporte.entity.ActividadDiaria;
 import com.clobi.transporte.entity.Anticipo;
 import com.clobi.transporte.entity.Asignacion;
@@ -24,6 +25,9 @@ import com.clobi.transporte.facade.CategoriasFacade;
 import com.clobi.transporte.facade.EmpleadosFacade;
 import com.clobi.transporte.facade.OperationFacade;
 import com.clobi.transporte.facade.PagosFacade;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -35,6 +39,9 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIViewRoot;
+import javax.faces.context.FacesContext;
 
 /**
  *
@@ -48,6 +55,7 @@ public class ActividadDiariaController implements Serializable {
     private ActividadDiaria actividad; //Es la actividad Actual 
     private OperacionUnidad operacionSelected;
     private List<OperacionUnidad> listOperaciones;
+    private List<ActividadDiaria> listADs;
     private Anticipo anticipoInsert;
     private BigDecimal totalAnticipos;
     private List<Asignacion> listAsignaciones;
@@ -58,6 +66,7 @@ public class ActividadDiariaController implements Serializable {
     private List<Empleado> listAuxliarDisp;
     private Empleado motoristaSelected;
     private Empleado auxiliarSelected;
+    private String extraPay;
 
     @EJB
     private ADFacade ejbADFacade;
@@ -76,6 +85,7 @@ public class ActividadDiariaController implements Serializable {
 
     @PostConstruct
     public void init() {
+        extraPay = "";
         this.actividad = ejbADFacade.currentActivity();
         activityStatus = (actividad != null) ? true : false;
         if (activityStatus) {
@@ -85,25 +95,29 @@ public class ActividadDiariaController implements Serializable {
         this.listCategorias = ejbCategorias.listCategoriasAsc();
     }
 
+    public void removeHelpder() {
+        this.auxiliarSelected = null;
+    }
+
+    public void deadActivity() {
+        //verificar que las que se abrieron este cerradas 
+        this.actividad.setEstado(Enums.ESTADO_ACTIVIDAD.FINALIZADA);
+        persistActivity(PersistAction.UPDATE, "Se finalizo la Actividad");
+    }
+
     public void showAdvance(OperacionUnidad e) {
         this.operacionSelected = e;
         this.anticipoInsert = null;
         this.totalAnticipos = ejbAnticipos.totalAnticipos(e);
     }
 
+    //Solo seria pra finaliza 
     public void showDetailsEnd(OperacionUnidad e) {
         this.operacionSelected = e;
         this.detallesSelected = new Detalles();
-        //Aqui se hace una condicional, si los valores se cargaran desde la db 
-        //Se setean asumiento que todo esta en el proceso comun 
-        Integer valor = e.getContador();
-        if (valor != 0) {
-            this.detallesSelected.setConteoActual(valor);
-            this.detallesSelected.realizarCalculos();
-        }
         this.detallesSelected.setViajesRealizados((int) e.getViajesrealizados());
-        //Integer conteoAntetior = ejbOperacion.ContadorAnterior(e.getPlaca().getPlaca(), this.actividad.getFecha());
-        //this.detallesSelected.setConteoAnterior(conteoAntetior);
+        this.detallesSelected.setConteoAnterior(operacionSelected.getContadorold());
+        this.detallesSelected.setAnticipos(ejbAnticipos.totalAnticipos(e));
 
         for (Categoria c : listCategorias) {
             Pago p = new Pago();
@@ -111,6 +125,17 @@ public class ActividadDiariaController implements Serializable {
             p.setIdcategoria(c);
             detallesSelected.getListPagos().add(p);
         }
+    }
+
+    //Este para los detalles
+    public void showDetalis(OperacionUnidad e) {
+        this.operacionSelected = e;
+        this.detallesSelected = new Detalles();
+        detallesSelected.setViajesRealizados(e.getViajesrealizados());
+        detallesSelected.setConteoActual(e.getContador());
+        detallesSelected.setConteoAnterior(e.getContadorold());
+        detallesSelected.setListPagos(e.getPagoList());
+        detallesSelected.realizarCalculos();
     }
 
     public void prepareActivity() {
@@ -123,18 +148,37 @@ public class ActividadDiariaController implements Serializable {
     }
 
     public void prepareOperation() {
+        this.motoristaSelected = null;
+        this.auxiliarSelected = null;
+        this.asignacionSelected = null;
+        this.totalAnticipos = null;
+
         this.operacionSelected = new OperacionUnidad();
         this.operacionSelected.setEstado(Enums.ESTADO_ACTIVIDAD.EJECUCION);
-        this.operacionSelected.setViajesrealizados((short) 1);
+        this.operacionSelected.setViajesrealizados((short) 0);
         this.operacionSelected.setContador(0);
+        this.operacionSelected.setContadorold(0);
         this.operacionSelected.setIdactividaddiaria(this.actividad);
         this.operacionSelected.setPagoconductor(new BigDecimal(0.0));
         this.operacionSelected.setPagoauxiliar(new BigDecimal(0.0));
         this.operacionSelected.setIngreso(new BigDecimal(0.0));
         this.listAsignaciones = ebjAsignacion.unidadesDisponibles(actividad.getId());
-        this.listMotoristaDisp = ejbEmpleadosFacade.EmpleadosDisponibles("aux");
-        this.listAuxliarDisp = ejbEmpleadosFacade.EmpleadosDisponibles("aux");
-        
+        this.listMotoristaDisp = ejbEmpleadosFacade.EmpleadosDisponibles(Enums.TIPO_EMPLEADO.MOTORISTA, actividad.getId());
+        this.listAuxliarDisp = ejbEmpleadosFacade.EmpleadosDisponibles(Enums.TIPO_EMPLEADO.AYUDANTE, actividad.getId());
+
+    }
+
+    public void registroAnterior(Asignacion a) {
+        OperacionUnidad e = ejbOperacion.registroAnterior(a.getUnidad().getPlaca(), actividad.getFecha());
+        int contAnteior = 0;
+        this.totalAnticipos = BigDecimal.ZERO;
+        if (e != null) {
+            contAnteior = e.getContador();
+            if (e.isAutocierre()) {
+                this.totalAnticipos = ejbAnticipos.totalAnticipos(e);
+            }
+            operacionSelected.setContadorold(contAnteior);
+        }
     }
 
     public void prepareAnticipo() {
@@ -147,12 +191,11 @@ public class ActividadDiariaController implements Serializable {
         persistAnticipo(PersistAction.CREATE, "Anticipo Registrado!");
     }
 
-
     public void createOperation() {
         this.operacionSelected.setPlaca(this.asignacionSelected.getUnidad());
-        this.operacionSelected.setIdconductor(this.asignacionSelected.getMotorista());
-        if (this.asignacionSelected.getAyudante() != null) {
-            this.operacionSelected.setIdauxiliar(this.asignacionSelected.getAyudante());
+        this.operacionSelected.setIdconductor(this.motoristaSelected);
+        if (this.auxiliarSelected != null) {
+            this.operacionSelected.setIdauxiliar(auxiliarSelected);
         }
         persistOperation(PersistAction.CREATE, "Operacion Exitosa");
     }
@@ -160,7 +203,16 @@ public class ActividadDiariaController implements Serializable {
     public void persistOperation(PersistAction actionPersist, String infoResult) {
         try {
             if (actionPersist != PersistAction.DELETE) {
-                ejbOperacion.edit(operacionSelected);
+
+                OperacionUnidad aux = ejbOperacion.edit(operacionSelected);
+                if (!totalAnticipos.equals(BigDecimal.ZERO)) {
+                    Anticipo a = new Anticipo();
+                    a.setAnticipo(totalAnticipos);
+                    a.setIdoperacion(aux);
+                    a.setHora(new Date());
+                    a.setTipoanticipo((short) 2);
+                    ejbAnticipos.edit(a);
+                }
             }
             JsfUtil.addSuccessMessage(infoResult);
             this.listOperaciones = ejbOperacion.listOperaciones(this.actividad);
@@ -168,6 +220,8 @@ public class ActividadDiariaController implements Serializable {
             System.out.print("Error..");
             JsfUtil.addErrorMessage("Error al registrar Operacion");
         }
+        this.operacionSelected = null;
+        this.totalAnticipos = null;
     }
 
     public void createActivity() {
@@ -198,20 +252,34 @@ public class ActividadDiariaController implements Serializable {
         } catch (Exception e) {
             JsfUtil.addErrorMessage("Error en la Operacion 2");
         }
+        anticipoInsert = null;
     }
 
     //Transaction 
     public void finalizarOperacion() {
+        this.operacionSelected.setViajesrealizados((short) this.detallesSelected.getViajesRealizados());
         this.operacionSelected.setContador(this.detallesSelected.getConteoActual());
+        this.operacionSelected.setContadorold(this.detallesSelected.getConteoAnterior());
         this.operacionSelected.setEstado(Enums.ESTADO_ACTIVIDAD.FINALIZADA);
         this.operacionSelected.setIngreso(this.detallesSelected.getIngresoCalculado());
-        this.operacionSelected.setPagoconductor(detallesSelected.getListPagos().get(2).getMonto()); 
+        this.operacionSelected.setPagoconductor(detallesSelected.getListPagos().get(2).getMonto());
         if (this.operacionSelected.getIdauxiliar() != null) {
             this.operacionSelected.setPagoauxiliar(detallesSelected.getListPagos().get(3).getMonto());
         }
 
         //Aqui necesito la transaccion 
         try {
+            if (!this.extraPay.equals("") && !this.extraPay.equals("[]")) {
+                ObjectMapper objectMapper = new ObjectMapper();
+                objectMapper.configure(DeserializationFeature.USE_JAVA_ARRAY_FOR_JSON_ARRAY, true);
+                List<PagosExtras> listExtraPayAux = objectMapper.readValue(this.extraPay, new TypeReference<List<PagosExtras>>() {
+                });
+                
+                for(PagosExtras p : listExtraPayAux){
+                    System.out.println("Descript: "+ p.getDescripcion() +" Monto: " + p.getMonto());
+                }
+            }
+            
             ejbOperacion.edit(operacionSelected);
             for (Pago p : detallesSelected.getListPagos()) {
                 p.setIdoperacion(operacionSelected);
@@ -280,9 +348,10 @@ public class ActividadDiariaController implements Serializable {
     }
 
     public void setAsignacionSelected(Asignacion asignacionSelected) {
+        registroAnterior(asignacionSelected);
+        this.asignacionSelected = asignacionSelected;
         this.motoristaSelected = asignacionSelected.getMotorista();
         this.auxiliarSelected = asignacionSelected.getAyudante();
-        this.asignacionSelected = asignacionSelected;
     }
 
     public Detalles getDetallesSelected() {
@@ -298,7 +367,12 @@ public class ActividadDiariaController implements Serializable {
     }
 
     public void setActividad(ActividadDiaria actividad) {
+        System.out.print(actividad.toString());
         this.actividad = actividad;
+    }
+
+    public void testingA() {
+        System.out.print("Hola mundo entre aqui");
     }
 
     public List<Categoria> getListCategorias() {
@@ -339,6 +413,23 @@ public class ActividadDiariaController implements Serializable {
 
     public void setAuxiliarSelected(Empleado auxiliarSelected) {
         this.auxiliarSelected = auxiliarSelected;
+    }
+
+    public List<ActividadDiaria> getListADs() {
+        this.listADs = ejbADFacade.findAll();
+        return listADs;
+    }
+
+    public void setListADs(List<ActividadDiaria> listADs) {
+        this.listADs = listADs;
+    }
+
+    public String getExtraPay() {
+        return extraPay;
+    }
+
+    public void setExtraPay(String extraPay) {
+        this.extraPay = extraPay;
     }
 
 }

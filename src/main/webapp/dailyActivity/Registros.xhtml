@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <ui:composition template="/template1.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value=":.: Registros"></h:outputText>
+        </ui:define>
+
+        <ui:define name="encabezado">
+            <h:outputText value="Registros Actividad Diarias"></h:outputText>
+        </ui:define>
+
+        <ui:define name="contenido">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card col-12">
+                    </div>
+                </div>
+            </div>
+            <div class="card-header">
+                <div class="form-group col-12 col-lg-6 col-md-6">
+                    <input 
+                        type="text" 
+                        class="form-control float-left" 
+                        id="myInput1" 
+                        placeholder="Buscar Actividad"/>            
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="col-md-12 table-responsive">
+                    <h:form id="listFormEmployees">
+                        <p:dataTable id="lstEmployees"
+                                     value="#{ADController.listADs}"
+                                     var="item"
+                                     selectionMode="single"
+                                     tableStyleClass="table"
+                                     rowKey="#{item}"
+                                     emptyMessage="Sin registro de Empleados"
+                                     selection="#{ADController.actividad}"
+                                     >
+                            <p:ajax event="rowSelect"/>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Viajes"/>
+                                </f:facet>
+                                <h:outputText value="#{item.totalviajes}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Total Ingreso"/>
+                                </f:facet>
+                                <h:outputText value="#{item.ingresototal}"/>
+                            </p:column>                            
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Fecha"/>
+                                </f:facet>
+                                <h:outputText value="#{item.fecha}">
+                                    <f:convertDateTime pattern = "dd-mm-yyyy"/>
+                                </h:outputText>
+                            </p:column>                                      
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Estado"/>
+                                </f:facet>
+                                <h:outputText value="#{item.estado}"/>
+                            </p:column>                                                                  
+                        </p:dataTable>                            
+                    </h:form>                    
+                </div>
+            </div>
+        </ui:define>
+
+    </ui:composition>
+</html>
+

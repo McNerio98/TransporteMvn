@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 import java.math.BigDecimal;
 import java.math.BigDecimal;
 import java.math.BigDecimal;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -50,7 +51,7 @@ public class ActividadDiaria implements Serializable {
 
     @Basic(optional = false)
     @NotNull
-    @Column(name = "ingresototal", nullable = false)
+    @Column(name = "ingresototal")
     private BigDecimal ingresototal;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idactividaddiaria")
     private List<OperacionUnidad> operacionUnidadList;
@@ -163,13 +164,6 @@ public class ActividadDiaria implements Serializable {
 
 
 
-    public BigDecimal getIngresototal() {
-        return ingresototal;
-    }
-
-    public void setIngresototal(BigDecimal ingresototal) {
-        this.ingresototal = ingresototal;
-    }
 
     public boolean isAutocierre() {
         return autocierre;
@@ -177,5 +171,13 @@ public class ActividadDiaria implements Serializable {
 
     public void setAutocierre(boolean autocierre) {
         this.autocierre = autocierre;
+    }
+
+    public BigDecimal getIngresototal() {
+        return ingresototal;
+    }
+
+    public void setIngresototal(BigDecimal ingresototal) {
+        this.ingresototal = ingresototal;
     }
 }

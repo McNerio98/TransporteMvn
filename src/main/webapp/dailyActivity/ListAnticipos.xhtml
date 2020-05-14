@@ -59,9 +59,16 @@
                             </h:column>
                             <h:column>
                                 <f:facet name="header">Hora</f:facet>
-                                <h:outputText value="#{t.hora.time}">
-                                    <f:convertDateTime dateStyle="full" pattern="h:mm a"/>
-                                </h:outputText>
+                                <c:choose>
+                                    <c:when test="#{t.tipoanticipo == 2}">
+                                        Recargo
+                                    </c:when>
+                                    <c:when test="#{t.tipoanticipo == 1}">
+                                        <h:outputText value="#{t.hora.time}">
+                                            <f:convertDateTime dateStyle="full" pattern="HH:mm:ss"/>
+                                        </h:outputText>                                                        
+                                    </c:when>
+                                </c:choose>
                             </h:column>                            
                             <c:set var="cn" value="#{cn+1}"/>
                         </h:dataTable>                        

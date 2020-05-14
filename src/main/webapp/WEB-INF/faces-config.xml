@@ -42,6 +42,13 @@
     <navigation-rule>
         <from-view-id>*</from-view-id>
         <navigation-case>
+            <from-outcome>ADList</from-outcome>
+            <to-view-id>/dailyActivity/Registros.xhtml</to-view-id>
+        </navigation-case>        
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>*</from-view-id>
+        <navigation-case>
             <from-outcome>asignaciones/create</from-outcome>
             <to-view-id>/asignaciones/create.xhtml</to-view-id>
         </navigation-case>

@@ -36,10 +36,12 @@ public class AnticiposFacade extends AbstractFacade<Anticipo> {
     }
 
     public BigDecimal totalAnticipos(OperacionUnidad o) {
-        BigDecimal sum = null;
+        BigDecimal sum = BigDecimal.ZERO;
         Query query = getEntityManager().createNamedQuery("Anticipo.sumAnticipos");
         query.setParameter("idoperacion", o);
         List<BigDecimal> tmp = query.getResultList();
         return (tmp.isEmpty())?sum:tmp.get(0);
     }
+    
+
 }

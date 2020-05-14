@@ -38,9 +38,6 @@ $(document).ready(function () {
 
     refreshEventsButtons();
     $('#pnlButtons').on('DOMSubtreeModified', refreshEventsButtons);
-
-
-
 });
 
 
@@ -78,4 +75,28 @@ function ContratoError(data) {
         type: 'error',
         title: 'Hubo problemas al guardar los cambios' + data.status
     });
+}
+
+
+
+function showEmptyForms() {
+
+};
+
+function ValidateFieldText(idparent) {
+    var correcto = true;
+    var countEmpty = 0;
+    let nodeParentString = "#" + idparent + " input[type='text'],#" + idparent + " input[type='email']";
+    $(nodeParentString).removeClass("is-invalid");
+    $(nodeParentString).each(function (e) {
+
+        if (!$(this).is(":disabled")) {
+            if ($(this).val().length == 0) {
+                $(this).addClass("is-invalid");
+                countEmpty++;
+            }
+        }
+        correcto = (countEmpty > 0) ? false : true;
+    });
+    return correcto;
 }

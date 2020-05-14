@@ -20,9 +20,9 @@ import javax.persistence.Query;
  *
  * @author Tinkpad PC
  */
-
 @Stateless
 public class OperationFacade extends AbstractFacade<OperacionUnidad> {
+
     @PersistenceContext(unitName = "transportePU")
     private EntityManager em;
 
@@ -30,39 +30,45 @@ public class OperationFacade extends AbstractFacade<OperacionUnidad> {
     protected EntityManager getEntityManager() {
         return em;
     }
-    
-    public OperationFacade(){
+
+    public OperationFacade() {
         super(OperacionUnidad.class);
     }
-    
-    public List<OperacionUnidad> listOperaciones(ActividadDiaria actividad){
+
+    public List<OperacionUnidad> listOperaciones(ActividadDiaria actividad) {
         List<OperacionUnidad> tmp;
-        
+
         Query query = getEntityManager().createNamedQuery("OperacionUnidad.findByActividad", OperacionUnidad.class);
         query.setParameter("actividad", actividad);
         tmp = query.getResultList();
         return tmp.isEmpty() ? new ArrayList<OperacionUnidad>() : tmp;
     }
-    
-    public Integer ContadorAnterior(String placa, Date todayActivity){
-        Integer contador = 0;
+/*
+    public Integer ContadorAnterior(String placa, Date todayActivity) { // Esta se eliminara 
+        List<OperacionUnidad> tmp;
         SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
-        
-        String sql = "SELECT o.contador FROM operacionesunidades o \n"
-                +"WHERE placa = '"+placa+"' and o.idactividaddiaria = \n" 
-                +"(SELECT a.id FROM actividadesdiarias a \n"
-                +"WHERE a.fecha = date('"+formater.format(todayActivity)+"')-1)";
-        
-        try{
-            Query query = getEntityManager().createNativeQuery(sql);
-            contador = (Integer)query.getSingleResult();
-        }catch(Exception e){
-            System.out.print("Error..");
-        }
-        
-        return contador;
-    }
-    
-    
-}
 
+        String sql = "select * from operacionesunidades o where o.idactividaddiaria = \n"
+                + "(select a.id from actividadesdiarias a where \n"
+                + "a.fecha = date('" + formater.format(todayActivity) + "')-1) and o.placa = '" + placa + "'";
+        Query query = getEntityManager().createNativeQuery(sql, OperacionUnidad.class);
+        tmp = query.getResultList();
+
+        return tmp.isEmpty() ? 0 : tmp.get(0).getContador();
+    }
+*/
+
+    public OperacionUnidad registroAnterior(String placa, Date actual) {
+        List<OperacionUnidad> tmp;
+        SimpleDateFormat formateador = new SimpleDateFormat("yyyy-MM-dd");
+        String sql = "select * from operacionesunidades o2 where o2.placa = ? and o2.idactividaddiaria = \n"
+                + "(select a2.id from actividadesdiarias a2 where a2.fecha = date(?)-1)";
+        System.out.print("Esta es la query "+sql);
+        Query query = getEntityManager().createNativeQuery(sql,OperacionUnidad.class);
+        query.setParameter(1, placa);
+        query.setParameter(2, formateador.format(actual));
+        tmp = query.getResultList();
+        return tmp.isEmpty() ? null:tmp.get(0);
+    }
+
+}
