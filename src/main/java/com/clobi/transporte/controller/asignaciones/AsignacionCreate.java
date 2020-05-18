@@ -66,7 +66,16 @@ public class AsignacionCreate {
     }
     
     public void create(){
-        persist(JsfUtil.PersistAction.CREATE, "Asignacion exitosa");
+        System.out.print("HEY" + this.selected);
+        System.out.print("HEY" + this.selected.getUnidad());
+        System.out.print("HEY" + this.selected.getMotorista());
+        System.out.print("HEY" + this.selected.getAyudante());
+        if(this.selected.getUnidad() == null || this.selected.getMotorista() == null){
+            JsfUtil.addErrorMessage("Debes seleccionar una unidad, motorista y auxiliar");
+        }else{
+           persist(JsfUtil.PersistAction.CREATE, "Asignacion exitosa"); 
+        }
+        
     }
     
     public void transferir() {
@@ -77,7 +86,7 @@ public class AsignacionCreate {
     
     public List<Empleado> getMotoristas(){
         List<Empleado> list;
-        if(getFacade().findAll().isEmpty()){
+        if(getEmpleadoFacade().findAll().isEmpty()){
             list = getEmpleadoFacade().getEmpleadosByTipo("mot");
         }else{
             list = getEmpleadoFacade().getEmpleados("mot");
@@ -87,7 +96,8 @@ public class AsignacionCreate {
     
     public List<Empleado> getAuxiliares(){
         List<Empleado> list;
-        if(getFacade().findAll().isEmpty()){
+        System.out.print("ESTAMOS  " + getEmpleadoFacade().findAll().isEmpty());
+        if(getEmpleadoFacade().findAll().isEmpty()){
             list = getEmpleadoFacade().getEmpleadosByTipo("ayu");
         }else{
             list = getEmpleadoFacade().getEmpleados("ayu");

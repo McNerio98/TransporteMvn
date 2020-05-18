@@ -84,18 +84,6 @@ public class RecordatiorioController implements Serializable {
     }
 
     public void save() {
-        /*Date date1 = new Date();
-        try{
-             date1 = new SimpleDateFormat("yyyy-mm-dd").parse(this.getDateInput());
-        }catch(Exception e){
-            System.out.print(e.getMessage());
-        }
-        this.selected.setFechacreacion(date1);
-        this.selected.setDescripcion("Descripcion");
-        System.out.print("FECHA1:: "+this.datefrominput);
-        System.out.print("FECHA:: "+this.selected.getFechacreacion());
-        
-        persist(JsfUtil.PersistAction.CREATE, "Recordatorio con exito");*/
         this.selected.setDescripcion("Descripcion");
         getFacade().insertRecordatorio(selected, datefrominput);
         this.init();

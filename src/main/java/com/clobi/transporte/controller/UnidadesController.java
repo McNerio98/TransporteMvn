@@ -41,6 +41,7 @@ public class UnidadesController {
 
     private Part file;
     private Unidad selected;
+    private String datefrominput;
     @EJB
     private UnidadFacade ejbUnidad;
     @EJB
@@ -56,18 +57,35 @@ public class UnidadesController {
         return this.ejbUnidad;
     }
 
+    public void setDateInput(String i){
+        this.datefrominput = i;
+    }
+    
+    public String getDateInput(){
+        return this.datefrominput;
+    }
+    
     public DocumentoByUnidadFacade getFacadeDocs() {
         return this.ejbDocs;
     }
     public void create() {
         this.selected.setEstadoregistro(true);
-        persist(JsfUtil.PersistAction.CREATE, "Se guardo exitosamente");
-//        try {
-//            this.submit();
-//        } catch (Exception e) {
-//            JsfUtil.addErrorMessage("Error al cargar elemento 1");
-//        }
-
+        //persist(JsfUtil.PersistAction.CREATE, "Se guardo exitosamente");
+        if(getFacade().insertUnidad(selected, datefrominput)){
+            JsfUtil.addSuccessMessage("Se guardo exitosamente");
+            
+            try{
+                this.submit(selected);
+                this.datefrominput = "";
+                this.selected = null;
+            }catch(Exception e){
+                JsfUtil.addErrorMessage(e.getMessage());
+            }
+            
+        }else{
+            JsfUtil.addErrorMessage("Ocurrio un error al regitrar la unidad");
+        }
+        this.transferir();
     }
 
     public void submit(Unidad u) throws ServletException, IOException {

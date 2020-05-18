@@ -118,19 +118,14 @@
                                                      disabled="#{!(empty unidadesController.unidades.chasis)}"/>
                                     </div>
                                     <div class="form-group col-md-12">
-                                        <div class="ui-fluid">
-                                            
-                                                <small id="emailHelp" class="form-text text-muted">#{bundle.UnidadesFV}</small>
-                                                <p:datePicker id="popup"
-                                                              styleClass="form-control form-control-sm"
-                                                              value="#{unidadesController.unidades.fechavencimiento}" 
-                                                              a:placeholder="yyyy/mm/dd"
-                                                              pattern="yyyy/mm/dd"
-                                                              >
-                                                    <f:convertDateTime pattern = "yyyy/mm/dd"/>
-                                                </p:datePicker>
-                                        </div>
-
+                                        <div id="datepicker-group" class="input-group date" data-date-format="dd-mm-yyyy">
+                                            <h:inputText styleClass="form-control form-control-sm"
+                                                         value="#{unidadesController.dateInput}"
+                                                         a:placeholder="DD-MM-YYYY" id="auxDate2">
+                                            </h:inputText>
+                                            <input type="hidden" value="" id="dateFechaFinal" name="dateFechaFinal"/>
+                                            <span class="input-group-addon"></span>
+                                        </div>  
                                     </div>
                                 </div>
 

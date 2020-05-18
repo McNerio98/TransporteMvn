@@ -4,7 +4,7 @@ $(document).ready(function () {
     //LLAMADO Y CARGA DE FUNCIONES O METODOS
 
     $('#datepicker-group').datepicker({
-        format: "dd/mm/yyyy",
+        format: "yyyy-mm-dd",
         todayHighlight: true,
         autoclose: true,
         clearBtn: true

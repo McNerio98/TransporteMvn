@@ -48,12 +48,13 @@ public class EmpleadosFacade extends AbstractFacade<Empleado> {
                     + "    SELECT DISTINCT p.motorista FROM asignaciones p\n"
                     + ");";
         } else {
-            sql = "select e.dui , e.nombres, e.apellidos, e.fechanacimiento, e.estadocivil, \n"
-                    + "e.telefono, e.tipo \n"
-                    + "from empleados e\n"
-                    + "where e.tipo = ? and e.dui not in (\n"
-                    + "    SELECT DISTINCT p.ayudante FROM asignaciones p\n"
-                    + ");";
+            sql = "select e.dui , e.nombres, e.apellidos, e.fechanacimiento, e.estadocivil, \n" +
+"                    e.telefono, e.tipo \n" +
+"                    from empleados e\n" +
+"                    where e.tipo = 'ayu' and e.dui not in (\n" +
+"                      SELECT DISTINCT p.ayudante FROM asignaciones p\n" +
+"                      where p.ayudante != ''\n" +
+"                    );";
         }
         Query query = em.createNativeQuery(sql, Empleado.class);
         query.setParameter(1, tipo);
