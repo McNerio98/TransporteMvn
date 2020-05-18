@@ -364,3 +364,11 @@ table.pth-0 th, table.pth-0 td{
 table.th-custom3 td{
 	padding: 0.4rem !important;
 }
+
+
+.dataTables_wrapper .dataTables_filter {
+    float: right;
+    text-align: right;
+    visibility: hidden;
+    display: none;
+}

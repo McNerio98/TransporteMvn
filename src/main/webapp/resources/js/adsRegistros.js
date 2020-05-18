@@ -10,7 +10,7 @@ function validar(parent) {
             title: 'No se permiten campos vacios',
             text: 'Debe llenar todos los campos!'
         });
-    }else{
+    } else {
         $('.modal').modal('hide');
     }
     return correcto;
@@ -67,10 +67,27 @@ function createJsonExtraPay() {
         }
     }
     let cadena = JSON.stringify(jsonMtx);
-    
-    if(cadena == "[]"){
+
+    if (cadena == "[]") {
         return "";
-    }else{
-        return cadena;    
+    } else {
+        return cadena;
     }
 }
+
+
+var table = $("#listFormEmployees\\:lstEmployees table").DataTable({
+    responsive: true,
+    "autoWidth": true,
+    "bPaginate": true,
+    "bLengthChange": true,
+    "processing": true,
+    "bFilter": true,
+    "bInfo": false,
+    "bAutoWidth": true
+});
+
+    $('#myInput2').on('keyup', function () {
+        table.search(this.value).draw();
+    });
+    

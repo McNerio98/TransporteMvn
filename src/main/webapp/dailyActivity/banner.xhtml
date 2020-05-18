@@ -8,14 +8,13 @@
         <div class="col-md-6">
             <h1 class="m-0 text-dark h4 text-center">TransporteMvn</h1>
             <p class="text-muted text-center">Bienvenido! a continuacion le presentamos algunas datos de
-                ahora! <b class="text-pink">Viernes 10 de abril de 2020</b>, o ver los registros pasados
+                ! <b class="text-pink">#{ADController.ADHistory.fechareg}</b>, o ver los registros pasados
                 en <h:link outcome="ADList" styleClass="text-warning">Ver registros</h:link></p>
-                <a href="employees/FormPrueba.xhtml">Ir</a>
             <div class="row">
                 <div class="col-sm-4">
                     <div class="small-box-custom1 bg-warning">
                         <div class="inner">
-                            <h3 class="mb-0">11</h3>
+                            <h3 class="mb-0">#{ADController.ADHistory.uniactivas}</h3>
                             <p class="mb-0">Unidades Activas</p>
                         </div>
                         <div class="icon">
@@ -26,8 +25,8 @@
                 <div class="col-sm-4">
                     <div class="small-box-custom1 bg-warning">
                         <div class="inner">
-                            <h3 class="mb-0">23</h3>
-                            <p class="mb-0">Total viajes</p>
+                            <h3 class="mb-0">#{ADController.ADHistory.totalviajes}</h3>
+                            <p class="mb-0">Viajes</p>
                         </div>
                         <div class="icon">
                             <i class="fas fa-play"></i>
@@ -37,8 +36,8 @@
                 <div class="col-sm-4">
                     <div class="small-box-custom1 bg-warning">
                         <div class="inner">
-                            <h3 class="mb-0">$ 226.56</h3>
-                            <p class="mb-0">Ingreso total</p>
+                            <h3 class="mb-0">#{ADController.ADHistory.ingresototal}</h3>
+                            <p class="mb-0">Ingreso</p>
                         </div>
                         <div class="icon">
                             <i class="fas fa-business-time"></i>

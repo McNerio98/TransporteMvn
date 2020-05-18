@@ -5,19 +5,17 @@
  */
 package com.clobi.transporte.entity;
 
+import com.clobi.transporte.controller.util.ADRegistrosPOJO;
+import com.clobi.transporte.controller.util.MyPOJO;
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.math.BigDecimal;
-import java.math.BigDecimal;
-import java.math.BigDecimal;
-import java.math.BigDecimal;
-import java.math.BigDecimal;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ColumnResult;
+import javax.persistence.ConstructorResult;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,6 +23,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.SqlResultSetMapping;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -38,6 +37,18 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "actividadesdiarias")
+@SqlResultSetMapping(
+        name = "ADMapping",
+        classes = @ConstructorResult(
+                targetClass = ADRegistrosPOJO.class,
+                columns = {
+                    @ColumnResult(name = "id", type = Integer.class),
+                    @ColumnResult(name = "tipoestado", type = String.class),
+                    @ColumnResult(name = "totalviajes", type = Integer.class),
+                    @ColumnResult(name = "ingresototal", type = BigDecimal.class),
+                    @ColumnResult(name = "fechareg", type = String.class),
+                    @ColumnResult(name = "uniactivas", type = Integer.class),
+                    @ColumnResult(name = "totalpagos", type = BigDecimal.class)}))
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "ActividadDiaria.findAll", query = "SELECT a FROM ActividadDiaria a")

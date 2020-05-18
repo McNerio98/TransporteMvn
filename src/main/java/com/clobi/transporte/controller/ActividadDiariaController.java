@@ -5,6 +5,7 @@
  */
 package com.clobi.transporte.controller;
 
+import com.clobi.transporte.controller.util.ADRegistrosPOJO;
 import com.clobi.transporte.controller.util.Detalles;
 import com.clobi.transporte.controller.util.Enums;
 import com.clobi.transporte.controller.util.JsfUtil;
@@ -17,6 +18,7 @@ import com.clobi.transporte.entity.Categoria;
 import com.clobi.transporte.entity.Empleado;
 import com.clobi.transporte.entity.OperacionUnidad;
 import com.clobi.transporte.entity.Pago;
+import com.clobi.transporte.entity.PagoExtra;
 import com.clobi.transporte.entity.Unidad;
 import com.clobi.transporte.facade.ADFacade;
 import com.clobi.transporte.facade.AnticiposFacade;
@@ -24,6 +26,7 @@ import com.clobi.transporte.facade.AsignacionFacade;
 import com.clobi.transporte.facade.CategoriasFacade;
 import com.clobi.transporte.facade.EmpleadosFacade;
 import com.clobi.transporte.facade.OperationFacade;
+import com.clobi.transporte.facade.PagoExtraFacade;
 import com.clobi.transporte.facade.PagosFacade;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -34,6 +37,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -42,6 +46,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
+import org.primefaces.PrimeFaces;
 
 /**
  *
@@ -52,7 +57,8 @@ import javax.faces.context.FacesContext;
 public class ActividadDiariaController implements Serializable {
 
     private boolean activityStatus;
-    private ActividadDiaria actividad; //Es la actividad Actual 
+    private ActividadDiaria actividad; //Es la actividad Actual
+    private ActividadDiaria auxAD; //entidad AD auxiliar
     private OperacionUnidad operacionSelected;
     private List<OperacionUnidad> listOperaciones;
     private List<ActividadDiaria> listADs;
@@ -66,7 +72,10 @@ public class ActividadDiariaController implements Serializable {
     private List<Empleado> listAuxliarDisp;
     private Empleado motoristaSelected;
     private Empleado auxiliarSelected;
-    private String extraPay;
+    private String extraPay; // es la cadena con el json 
+    private boolean todayAD;
+    //Se utiliza para representar los calculos
+    private ADRegistrosPOJO ADHistory;
 
     @EJB
     private ADFacade ejbADFacade;
@@ -82,16 +91,27 @@ public class ActividadDiariaController implements Serializable {
     private CategoriasFacade ejbCategorias;
     @EJB
     private PagosFacade ebjPagos;
+    @EJB
+    private PagoExtraFacade ejbExtraPay;
 
     @PostConstruct
     public void init() {
+        this.todayAD = true;
         extraPay = "";
         this.actividad = ejbADFacade.currentActivity();
         activityStatus = (actividad != null) ? true : false;
         if (activityStatus) {
             this.listOperaciones = ejbOperacion.listOperaciones(this.actividad);
+            this.ADHistory = ejbADFacade.ADRegistroActual(this.actividad.getId());
+        }else{
+            ADRegistrosPOJO ad = new ADRegistrosPOJO();
+            SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+            ad.setFechareg(formateador.format(new Date()));
+            ad.setIngresototal(BigDecimal.ZERO);
+            ad.setTotalpagos(BigDecimal.ZERO);
+            ad.setTotalviajes(0);
+            this.ADHistory = ad;            
         }
-
         this.listCategorias = ejbCategorias.listCategoriasAsc();
     }
 
@@ -113,6 +133,7 @@ public class ActividadDiariaController implements Serializable {
 
     //Solo seria pra finaliza 
     public void showDetailsEnd(OperacionUnidad e) {
+        this.extraPay = "";
         this.operacionSelected = e;
         this.detallesSelected = new Detalles();
         this.detallesSelected.setViajesRealizados((int) e.getViajesrealizados());
@@ -127,7 +148,6 @@ public class ActividadDiariaController implements Serializable {
         }
     }
 
-    //Este para los detalles
     public void showDetalis(OperacionUnidad e) {
         this.operacionSelected = e;
         this.detallesSelected = new Detalles();
@@ -269,17 +289,22 @@ public class ActividadDiariaController implements Serializable {
 
         //Aqui necesito la transaccion 
         try {
+            System.out.println("El valor del json en cadena antes del jackson es: " + extraPay);
             if (!this.extraPay.equals("") && !this.extraPay.equals("[]")) {
                 ObjectMapper objectMapper = new ObjectMapper();
                 objectMapper.configure(DeserializationFeature.USE_JAVA_ARRAY_FOR_JSON_ARRAY, true);
                 List<PagosExtras> listExtraPayAux = objectMapper.readValue(this.extraPay, new TypeReference<List<PagosExtras>>() {
                 });
-                
-                for(PagosExtras p : listExtraPayAux){
-                    System.out.println("Descript: "+ p.getDescripcion() +" Monto: " + p.getMonto());
+
+                PagoExtra pe = new PagoExtra();
+                for (PagosExtras p : listExtraPayAux) {
+                    pe.setDescripcion(p.getDescripcion());
+                    pe.setMonto(p.getMonto());
+                    pe.setIdoperacion(operacionSelected);
+                    ejbExtraPay.edit(pe);
                 }
             }
-            
+
             ejbOperacion.edit(operacionSelected);
             for (Pago p : detallesSelected.getListPagos()) {
                 p.setIdoperacion(operacionSelected);
@@ -367,8 +392,9 @@ public class ActividadDiariaController implements Serializable {
     }
 
     public void setActividad(ActividadDiaria actividad) {
-        System.out.print(actividad.toString());
+        this.listOperaciones = ejbOperacion.listOperaciones(this.actividad);
         this.actividad = actividad;
+        System.out.println("Se ejecuto y se asigno");
     }
 
     public void testingA() {
@@ -430,6 +456,57 @@ public class ActividadDiariaController implements Serializable {
 
     public void setExtraPay(String extraPay) {
         this.extraPay = extraPay;
+    }
+
+    public boolean isTodayAD() {
+        return todayAD;
+    }
+
+    public void setTodayAD(boolean todayAD) {
+        this.todayAD = todayAD;
+    }
+
+    public ActividadDiaria getAuxAD() {
+        return auxAD;
+    }
+
+    public void setAuxAD(ActividadDiaria auxAD) {
+        this.auxAD = auxAD;
+    }
+
+    // Estos son metodos de prueva 
+    public String ADSelecionado(ADRegistrosPOJO adr) {
+
+        ActividadDiaria a = ejbADFacade.find(adr.getId());
+
+        if (a.getId() != null) {
+            this.auxAD = this.actividad;
+            this.actividad = a;
+            this.ADHistory = adr;
+            this.listOperaciones = ejbOperacion.listOperaciones(this.actividad);
+            this.setTodayAD(false);
+            JsfUtil.addSuccessMessage("Se encontro la actividad");
+        } else {
+            JsfUtil.addErrorMessage("Error al cargar el Registro");
+        }
+        //PrimeFaces.current().ajax().update("listActivities");
+        return "home";
+    }
+
+    public ADRegistrosPOJO getADHistory() {
+        return ADHistory;
+    }
+
+    public void setADHistory(ADRegistrosPOJO ADHistory) {
+        this.ADHistory = ADHistory;
+    }
+
+    public void goBackADToday() {
+        this.actividad = this.auxAD;
+        this.auxAD = null;
+        this.listOperaciones = ejbOperacion.listOperaciones(this.actividad);
+        this.ADHistory = ejbADFacade.ADRegistroActual(this.actividad.getId());
+        this.setTodayAD(true);
     }
 
 }

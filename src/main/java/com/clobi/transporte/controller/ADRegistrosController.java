@@ -6,67 +6,35 @@
 package com.clobi.transporte.controller;
 
 import com.clobi.transporte.controller.util.ADRegistrosPOJO;
-import com.clobi.transporte.controller.util.MyPOJO;
 import com.clobi.transporte.facade.ADFacade;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.Dependent;
-import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 
 /**
  *
  * @author Tinkpad PC
  */
-@Named(value = "TControl")
+@Named(value = "ADRegistros")
 @SessionScoped
-public class TestingController implements Serializable {
-
-    private String json;
-    private String nombre;
+public class ADRegistrosController implements Serializable{
     private List<ADRegistrosPOJO> listData;
 
     @EJB
     private ADFacade ejbADFacade;
-
+    
     @PostConstruct
-    public void init() {
-        
-    }
-
-    public void changeValue(){
-        this.nombre = "Cambie de Nombre desde form 2";
+    public void init(){
+        List<ADRegistrosPOJO> aux = new ArrayList<ADRegistrosPOJO>();
+        aux = ejbADFacade.listADRegistros();
+        this.listData = aux;
     }
     
-    public String getJson() {
-        return json;
-    }
-
-    public void setJson(String json) {
-        this.json = json;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public void procesar() {
-        System.out.print("varNombre: " + this.nombre);
-    }
-
-    public void doNothing() {
-        System.out.print("varNombre: " + this.nombre);
-    }
-
     public List<ADRegistrosPOJO> getListData() {
         return listData;
     }
@@ -75,4 +43,7 @@ public class TestingController implements Serializable {
         this.listData = listData;
     }
 
+
+    
+    
 }

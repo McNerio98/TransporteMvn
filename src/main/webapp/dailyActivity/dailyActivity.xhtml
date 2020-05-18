@@ -37,13 +37,14 @@
                             </p:commandLink>                                                    
                         </h:form>
                     </h:panelGroup>
-                    <!--Panel Principal-->
+                    <!--Panel Principal List Operaciones-->
                     <h:panelGroup layout="block"
                                   rendered="#{ADController.activityStatus}"
                                   id="listActivities">
                         <div class="row border-bottom pb-lg-3 mb-md-1 mb-lg-3 ">
                             <h4 class="text-center h1 text-muted d-block" style="width: 100%;"><i class="fas fa-cubes"></i></h4>
-                            <h:form class="text-center col-12">
+                            <h:form class="text-center col-12"
+                                    rendered="#{ADController.todayAD == true}">
                                 <p:commandLink styleClass="text-center pl-md-3 pr-md-3 d-md-inline d-block"
                                                rendered="#{ADController.actividad.estado == 1}"
                                                actionListener="#{ADController.prepareOperation}"
@@ -63,6 +64,13 @@
                                                a:data-target="#nuevaOpeUnidadModal">
                                     <u>Finalizar</u>
                                 </p:commandLink>                                
+                            </h:form>
+                            <h:form rendered="#{ADController.todayAD == false}" class="text-center col-12">
+                                <p:commandLink styleClass="text-center pl-md-3 pr-md-3 d-md-inline d-block"
+                                               actionListener="#{ADController.goBackADToday}"
+                                               update=":pnlPrincipal">
+                                    <u>Regresar a Actual</u>
+                                </p:commandLink>
                             </h:form>
                         </div>                        
                         <!--COMIENZA LA ITERACION-->

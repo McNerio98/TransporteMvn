@@ -6,10 +6,7 @@
 package com.clobi.transporte.entity;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.math.BigDecimal;
-import java.math.BigDecimal;
-import java.math.BigDecimal;
+import java.math.BigDecimal;;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -56,6 +53,8 @@ public class OperacionUnidad implements Serializable {
     @NotNull
     @Column(name = "pagoauxiliar")
     private BigDecimal pagoauxiliar;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idoperacion")
+    private List<PagoExtra> pagoExtraList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idoperacion")
     private List<Pago> pagoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idoperacion")
@@ -260,6 +259,15 @@ public class OperacionUnidad implements Serializable {
 
     public void setPagoauxiliar(BigDecimal pagoauxiliar) {
         this.pagoauxiliar = pagoauxiliar;
+    }
+
+    @XmlTransient
+    public List<PagoExtra> getPagoExtraList() {
+        return pagoExtraList;
+    }
+
+    public void setPagoExtraList(List<PagoExtra> pagoExtraList) {
+        this.pagoExtraList = pagoExtraList;
     }
     
     

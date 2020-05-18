@@ -278,10 +278,31 @@
                             </div>
                             <div id="bodyExtraPay">
                             </div>
-                            <div class="footer text-center">
+                            <h:panelGroup layout="block"
+                                          rendered="#{(ADController.operacionSelected.estado == 2) and (!empty ADController.operacionSelected.pagoExtraList)}">
+                                <c:forEach var="i" items="#{ADController.operacionSelected.pagoExtraList}">
+                                    <div class="row pb-2 registrosExtraPay">
+                                        <div class="input-group pnlinputTextCustom1 col-md-8">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-angle-right"></i></span>
+                                            </div>
+                                            <input type="text" value="#{i.descripcion}" class="form-control inputTextCustom1 txtDescripcion" placeholder="Descripcion" disabled="true"/>
+                                        </div>
+                                        <div class="input-group pnlinputTextCustom1 col-md-4">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                                            </div>
+                                            <input type="text" value="#{i.monto}" class="form-control  inputTextCustom1 txtMonto" placeholder="Cantidad" disabled="true"/>
+                                        </div>
+                                    </div>                                
+                                </c:forEach>
+                            </h:panelGroup>
+                            <h:panelGroup layout="block" 
+                                          rendered="#{ADController.operacionSelected.estado == 1}"
+                                          class="footer text-center">
                                 <a href="#" class="btn btn-warning" onclick="addNewExtraPay();">+Agregar Pago</a>
-                                <a href="#" class="btn btn-dark" onclick="deleteRecord();">- Quitar Pago</a>
-                            </div>
+                                <a href="#" class="btn btn-dark" onclick="deleteRecord();">- Quitar Pago</a>                                
+                            </h:panelGroup>
                         </div>                            
                     </div>
                     <div class="modal-footer">
