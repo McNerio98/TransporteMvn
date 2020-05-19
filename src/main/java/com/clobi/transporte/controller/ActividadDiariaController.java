@@ -241,6 +241,7 @@ public class ActividadDiariaController implements Serializable {
             System.out.print("Error..");
             JsfUtil.addErrorMessage("Error al registrar Operacion");
         }
+        this.ADHistory = ejbADFacade.ADRegistroActual(this.actividad.getId());        
         this.operacionSelected = null;
         this.totalAnticipos = null;
     }
@@ -291,6 +292,7 @@ public class ActividadDiariaController implements Serializable {
         //Aqui necesito la transaccion 
         try {
             System.out.println("El valor del json en cadena antes del jackson es: " + extraPay);
+            
             if (!this.extraPay.equals("") && !this.extraPay.equals("[]")) {
                 ObjectMapper objectMapper = new ObjectMapper();
                 objectMapper.configure(DeserializationFeature.USE_JAVA_ARRAY_FOR_JSON_ARRAY, true);
@@ -315,6 +317,8 @@ public class ActividadDiariaController implements Serializable {
         } catch (Exception e) {
             JsfUtil.addErrorMessage("No se pudo finalizar la operacion");
         }
+        
+        this.ADHistory = ejbADFacade.ADRegistroActual(this.actividad.getId());        
     }
 
     public void calcularDetalles() {

@@ -311,7 +311,7 @@
                         <p:commandButton styleClass="btn-ct btn-ct-success"
                                          actionListener="#{ADController.finalizarOperacion}"
                                          onclick="return validar('formDetallesFinalizar');"
-                                         update=":listActivities, :pnlMessageJSF"
+                                         update=":listActivities, :pnlMessageJSF,:pnlBanner"
                                          rendered="#{(ADController.detallesSelected.conteoActual != 0) and (ADController.operacionSelected.estado == 1)}"
                                          value="#{bundle.EndProcess}"/>
                     </div>                        

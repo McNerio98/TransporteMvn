@@ -182,7 +182,7 @@ public class EmpleadosController implements Serializable {
             if (persistAction != PersistAction.DELETE) {
                 Empleado p = getFacade().edit(selected);
                 //Si esta creando es obligacion subir los archivos 
-                if (persistAction == PersistAction.CREATE) {
+                if (actionUpdate == false) {
                     this.licencia.setIdempleado(p);
                     this.carnet.setIdempleado(p);
                     if (!UploadDocuments()) {

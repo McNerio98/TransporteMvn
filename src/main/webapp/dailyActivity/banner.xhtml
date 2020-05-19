@@ -4,7 +4,7 @@
                 xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui">
-    <div class="row bg-white pt-md-4 pb-md-4 mb-3">
+    <h:panelGroup styleClass="row bg-white pt-md-4 pb-md-4 mb-3" id="pnlBanner">
         <div class="col-md-6">
             <h1 class="m-0 text-dark h4 text-center">TransporteMvn</h1>
             <p class="text-muted text-center">Bienvenido! a continuacion le presentamos algunas datos de
@@ -56,12 +56,13 @@
                         <p>Gestione u <h:link class="text-warning" outcome="employees"><b>Agrege trabajadores</b></h:link> a
                             su lista de empledos, tambien podra 
                             <h:link class="text-warning" outcome="unidades"><b>Registrar Unidades</b></h:link>
-                            </p>
+                        </p>
                         <small>Descargue la guia del usuario <cite title="Source Title"
                                                                    class="text-primary">Click aqui</cite></small>
                     </blockquote>
                 </div>
             </div>
         </div>
-    </div>                    
+
+    </h:panelGroup>
 </ui:composition>
