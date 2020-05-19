@@ -25,80 +25,24 @@
                     <div class="card-header text-muted h5">
                         Gestione y Configure el personal
                     </div>
-                    <h:panelGroup layout="block" styleClass="card-body" id="viewEmployee">
-                        <h:panelGroup styleClass="row" layout="block" rendered="#{empleadosControl.selected != null}">
-                            <div class="col-md-4">
-                                <img src="#{facesContext.externalContext.requestContextPath}/resources/img#{empleadosControl.selected.avatarPath}" alt="" class="img-center-round"/>
-                                <div class="text-center border-bottom pt-3">
-                                    <label for="" class="text-muted font-weight-normal">
-                                        Tipo Empleado /
-                                    </label>
-                                    <span><h:outputText value="#{empleadosControl.selected.tipoEmpleadoCase()}"/></span>
-                                </div>
-                            </div>
-                            <div class="col-md-8">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <p class="text-muted font-weight-bolder m-none">Informacion Empleado
-                                        </p>
-                                        <p class="text-muted font-weight-normal"><h:outputText value="#{empleadosControl.selected.nombres} #{empleadosControl.selected.apellidos}"/></p>
-                                        <div>
-                                            <p class="text-muted mt-custom1">DUI: <h:outputText styleClass="text-primary" value="#{empleadosControl.selected.dui}"/></p>
-                                            <p class="text-muted mt-custom1">Fecha de Nacimiento: 
-                                                <h:outputText value="#{empleadosControl.selected.fechaNacimiento}" styleClass="text-primary">
-                                                        <f:convertDateTime type="date" parent="dd/MM/yyyy"/>
-                                                </h:outputText>                                                        
-                                            </p>
-                                            <p class="text-muted mt-custom1">Edad: <h:outputText styleClass="text-primary" value="32a"/> </p>
-                                            <p class="text-muted mt-custom1">Contacto: <h:outputText styleClass="text-primary" value="#{empleadosControl.selected.telefono}"/></p>
-                                            <p class="text-muted mt-custom1">Estado Civil: <h:outputText styleClass="text-primary" value="#{empleadosControl.selected.estadoCivilCase()}"/></p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="rounded border border-info row p-2 text-info mb-2">
-                                            <div class="h3 m-none">
-                                                <i class="fas fa-file-pdf"></i>
-                                            </div>
-                                            <div class="ml-2">
-                                                3 Documentos Adjuntos
-                                            </div>
-                                        </div>
-                                        <div class="rounded border border-danger row p-2 text-danger mb-2">
-                                            <div class="h3 m-none">
-                                                <i class="far fa-bell"></i>
-                                            </div>
-                                            <div class="ml-2">
-                                                2 Alertas
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>                            
-                        </h:panelGroup>
-                    </h:panelGroup>
 
                     <div class="row text-right">
+                        <div class="form-group col-12 col-lg-6 col-md-6 mt-2">
+                            <input 
+                                type="text" 
+                                class="form-control float-left" 
+                                id="myInput2" 
+                                placeholder="Buscar Empleado"/>            
+                        </div>                        
                         <div class="col-12 mb-2" id="pnlButtons">
                             <h:form id="formButtons">
                                 <p:commandButton actionListener="#{empleadosControl.prepareCreate}"
                                                  styleClass="btn-ct btn-ct-success d-inline-block ml-1"
                                                  a:data-toggle="modal"
                                                  a:data-target="#modalEmploye"
-                                                 update=":listFormEmployees:lstEmployees, :frmEmployees"
+                                                 update=":frmEmployees,:listFormEmployees"
+                                                 oncomplete="refreshEventRowSelect()"
                                                  value="+ #{bundle.Create}"/> 
-                                <p:commandButton styleClass="btn-ct btn-ct-warning d-inline-block ml-1"
-                                                 a:data-toggle="modal"
-                                                 a:data-target="#modalEmploye"
-                                                 update=":frmEmployees"
-                                                 id="btnUpdate"
-                                                 disabled="#{empty empleadosControl.selected}"
-                                                 value="#{bundle.Edit}"/>
-                                <p:commandButton styleClass="btn-ct btn-ct-danger d-inline-block m-1"
-                                                 a:data-toggle="modal"
-                                                 a:data-target="#modalConfirmEmploye"
-                                                 id="btnDelete"
-                                                 disabled="#{empty empleadosControl.selected}"
-                                                 value="#{bundle.Delete}"/>
                             </h:form>                                    
                         </div>
                     </div>                           
@@ -113,7 +57,6 @@
                                      emptyMessage="Sin registro de Empleados"
                                      selection="#{empleadosControl.selected}"
                                      >
-                            <p:ajax event="rowSelect"   update=":formButtons :viewEmployee"/>
                             <p:column>
                                 <f:facet name="header">
                                     <h:outputText value="#{bundle.DUI}"/>
@@ -137,6 +80,24 @@
                                     <h:outputText value="#{bundle.TypeEmployee}"/>
                                 </f:facet>
                                 <h:outputText value="#{item.tipoEmpleadoCase()}"/>
+                            </p:column>                                        
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Opciones"/>
+                                </f:facet>
+                                <p:commandButton value="Editar" 
+                                                 actionListener="#{empleadosControl.actionUpdate(item)}"
+                                                 styleClass="btn-ct btn-ct-warning d-inline-block m-1"
+                                                 a:data-toggle="modal"
+                                                 a:data-target="#modalEmploye"
+                                                 oncomplete="EVENTS_FORM_EMPLOYEES()"
+                                                 update=":frmEmployees"/>
+                                <p:commandButton value="Eliminar"
+                                                 actionListener="#{empleadosControl.setSelected(item)}"
+                                                 a:data-toggle="modal"
+                                                 a:data-target="#modalConfirmEmploye"
+                                                 id="btnDelete"
+                                                 styleClass="btn-ct btn-ct-danger d-inline-block m-1"/>                                
                             </p:column>                                        
                         </p:dataTable>                            
                     </h:form>

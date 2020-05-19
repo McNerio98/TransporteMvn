@@ -52,14 +52,14 @@
                                     </div>
                                     <br/>
                                     <div class="input-group">
-                                        <p:datePicker id="popup"
-                                                      styleClass="form-control form-control-sm"
-                                                      value="#{recordatior.recordatorio.fechacreacion}" 
-                                                      a:placeholder="yyyy-mm-dd"
-                                                      pattern="yyyy-mm-dd"
-                                                      >
-                                            <f:convertDateTime pattern = "yyyy-mm-dd"/>
-                                        </p:datePicker>
+                                        <div id="datepicker-group" class="input-group date" data-date-format="dd-mm-yyyy">
+                                            <h:inputText styleClass="form-control form-control-sm"
+                                                         value="#{recordatior.dateInput}"
+                                                         a:placeholder="DD-MM-YYYY" id="auxDate2">
+                                            </h:inputText>
+                                            <input type="hidden" value="" id="dateFechaFinal" name="dateFechaFinal"/>
+                                            <span class="input-group-addon"></span>
+                                        </div>  
                                     </div>
                                     <br/><br/>
                                     <div class="input-group">

@@ -41,7 +41,7 @@
                                     <span class="text-muted titleCnk">Crear</span><br/>
                                     <small class="float-md-right text-muted">
                                         Para asignar, selecciona un motorista y un auxiliar 
-                                        a la u. 
+                                        a la unidad. 
                                     </small>
                                 </p>
                                 <h:commandButton
@@ -54,7 +54,7 @@
 
 
                                 <div class="form-row">
-                                    <div class="form-group col-md-4">
+                                    <div class="form-group col-md-6 col-lg-4">
                                         <div class="card col-12">
                                             <div class="card-body">
                                                 <div class="col-md-12 text-center">
@@ -70,30 +70,31 @@
 
 
                                                 </div>
+                                                <div class="container-fluid overflow-auto" style="height: 250px;">
+                                                    <p:dataTable
 
-                                                <p:dataTable
-
-                                                    value="#{asignacionCreate.unidades}"
-                                                    var="item"
-                                                    selectionMode="single"
-                                                    rowKey="#{item}"
-                                                    emptyMessage="Sin unidades para asignar"
-                                                    selection="#{asignacionCreate.asignacion.unidad}"
-                                                    >
-                                                    <p:ajax event="rowSelect" update="form:btnCreate" listener="#{asignacionCreate.uSelected(event)}" />
-                                                    <p:column>
-                                                        <f:facet name="header">
-                                                            <h:outputText value="EQ"/>
-                                                        </f:facet>
-                                                        <h:outputText value="EQ-#{item.numerounidad}"/>
-                                                    </p:column>
-                                                    <p:column>
-                                                        <f:facet name="header">
-                                                            <h:outputText value="PLACA"/>
-                                                        </f:facet>
-                                                        <h:outputText value="AB#{item.placa}"/>
-                                                    </p:column>
-                                                </p:dataTable>
+                                                        value="#{asignacionCreate.unidades}"
+                                                        var="item"
+                                                        selectionMode="single"
+                                                        rowKey="#{item}"
+                                                        emptyMessage="Sin unidades para asignar"
+                                                        selection="#{asignacionCreate.asignacion.unidad}"
+                                                        >
+                                                        <p:ajax event="rowSelect" update="form:btnCreate" listener="#{asignacionCreate.uSelected(event)}" />
+                                                        <p:column>
+                                                            <f:facet name="header">
+                                                                <h:outputText value="EQ"/>
+                                                            </f:facet>
+                                                            <h:outputText value="EQ-#{item.numerounidad}"/>
+                                                        </p:column>
+                                                        <p:column>
+                                                            <f:facet name="header">
+                                                                <h:outputText value="PLACA"/>
+                                                            </f:facet>
+                                                            <h:outputText value="AB#{item.placa}"/>
+                                                        </p:column>
+                                                    </p:dataTable>
+                                                </div>
                                             </div>
                                         </div>
 
@@ -101,7 +102,7 @@
                                     </div>
 
 
-                                    <div class="form-group col-md-4">
+                                    <div class="form-group col-md-6 col-lg-4">
                                         <div class="card col-12">
                                             <div class="card-body">
                                                 <div class="col-md-12 text-center">
@@ -129,11 +130,12 @@
                                                                 style="font-size: 30px; 
                                                                 cursor: pointer" 
                                                                 class="fas fa-cog">
-                                                                    
+
                                                             </i>
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <div class="container overflow-auto" style="height: 250px">
                                                 <p:dataTable
 
                                                     value="#{asignacionCreate.motoristas}"
@@ -157,10 +159,11 @@
                                                         <h:outputText value="#{item.nombres} #{item.apellidos}"/>
                                                     </p:column>
                                                 </p:dataTable>
+                                                </div>
                                             </div>
                                         </div>
                                     </div> 
-                                    <div class="form-group col-md-4">
+                                    <div class="form-group col-md-12 col-lg-4">
                                         <div class="card col-12">
                                             <div class="card-body">
                                                 <div class="col-md-12 text-center">
@@ -187,13 +190,13 @@
                                                                 style="font-size: 30px; 
                                                                 cursor: pointer" 
                                                                 class="fas fa-cog">
-                                                                    
+
                                                             </i>
                                                         </div>
                                                     </div>
 
                                                 </div>
-
+                                                <div class="container overflow-auto" style="height: 250px">
                                                 <p:dataTable
 
                                                     value="#{asignacionCreate.auxiliares}"
@@ -217,6 +220,7 @@
                                                         <h:outputText value="#{item.nombres} #{item.apellidos}"/>
                                                     </p:column>
                                                 </p:dataTable>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

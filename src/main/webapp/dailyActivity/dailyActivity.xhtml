@@ -55,15 +55,7 @@
                                 </p:commandLink>
                                 <h:link outcome="ADList" styleClass="text-center pl-md-3 pr-md-3 d-md-inline d-block">
                                     <u>Registros Actividades</u>
-                                </h:link>
-                                <p:commandLink styleClass="text-center pl-md-3 pr-md-3 d-md-inline d-block"
-                                               actionListener="#{ADController.deadActivity}"
-                                               rendered="#{ADController.actividad.estado == 1}"
-                                               update=":pnlPrincipal,:pnlMessageJSF"
-                                               a:data-toggle="modal" 
-                                               a:data-target="#nuevaOpeUnidadModal">
-                                    <u>Finalizar</u>
-                                </p:commandLink>                                
+                                </h:link>                             
                             </h:form>
                             <h:form rendered="#{ADController.todayAD == false}" class="text-center col-12">
                                 <p:commandLink styleClass="text-center pl-md-3 pr-md-3 d-md-inline d-block"

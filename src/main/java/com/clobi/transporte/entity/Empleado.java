@@ -35,21 +35,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "empleados", catalog = "transporte", schema = "public")
 @XmlRootElement
-//    @SqlResultSetMapping(
-//        name = "EmpleadoMapping",
-//        classes = @ConstructorResult(
-//                targetClass = Empleado.class,
-//                columns = {
-//                    @ColumnResult(name = "dui", type = Long.class),
-//                    @ColumnResult(name = "nombres"),
-//                    @ColumnResult(name = "apellidos"),
-//                    @ColumnResult(name = "fechanacimiento"),
-//                    @ColumnResult(name = "estadocivil"),
-//                    @ColumnResult(name = "telefono"),
-//                    @ColumnResult(name = "tipo")
-//}))
 @NamedQueries({
-    @NamedQuery(name = "Empleado.findAll", query = "SELECT e FROM Empleado e")
+    @NamedQuery(name = "Empleado.findAll", query = "SELECT e FROM Empleado e WHERE e.estadoregistro = :r_estado")
     , @NamedQuery(name = "Empleado.findByDui", query = "SELECT e FROM Empleado e WHERE e.dui = :dui")
     , @NamedQuery(name = "Empleado.findByNombres", query = "SELECT e FROM Empleado e WHERE e.nombres = :nombres")
     , @NamedQuery(name = "Empleado.findByApellidos", query = "SELECT e FROM Empleado e WHERE e.apellidos = :apellidos")
@@ -57,6 +44,11 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Empleado.findByTelefono", query = "SELECT e FROM Empleado e WHERE e.telefono = :telefono")
     , @NamedQuery(name = "Empleado.findByTipo", query = "SELECT e FROM Empleado e WHERE e.tipo = :tipo")})
 public class Empleado implements Serializable {
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "estadoregistro")
+    private boolean estadoregistro;
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "empleado1")
     private EmpleadosContrato empleadosContrato;
@@ -337,6 +329,14 @@ public class Empleado implements Serializable {
 
     public void setAvatarPath(String avatarPath) {
         this.avatarPath = avatarPath;
+    }
+
+    public boolean getEstadoregistro() {
+        return estadoregistro;
+    }
+
+    public void setEstadoregistro(boolean estadoregistro) {
+        this.estadoregistro = estadoregistro;
     }
 
 }

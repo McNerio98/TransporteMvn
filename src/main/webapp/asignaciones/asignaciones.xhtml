@@ -80,10 +80,10 @@
                                             selectionMode="single"
                                             rowKey="#{item.id}"
                                             rowStyleClass="myownclass"
-                                            emptyMessage="Sin registro de Unidades"
+                                            emptyMessage="Sin asignaciones"
                                             selection="#{asignacionesList.asignacion}"
                                             >
-                                            <p:ajax event="rowSelect" update="perfiles perfiles2"  listener="#{asignacionesList.rowSelected(event)}"  />
+                                            <p:ajax event="rowSelect" update="perfiles perfiles2 motoristaList ayudanteList"  listener="#{asignacionesList.rowSelected(event)}"  />
                                             <p:column>
                                                 <f:facet name="header">
                                                     <h:outputText value="ID"/>
@@ -221,7 +221,7 @@
                                                 </div>
                                             </div>
                                             <div class="container overflow-auto" style="height: 150px">
-                                                <h:form>
+                                                <h:form id="motoristaList">
                                                     <p:dataTable
                                                         id="tablaM"
                                                         value="#{asignacionesList.getListEmpleado(1)}"
@@ -289,7 +289,7 @@
 
                                             </div>
                                             <div class="container overflow-auto" style="height: 150px">
-                                                <h:form>
+                                                <h:form id="ayudanteList">
                                                     <p:dataTable
                                                         id="tablaA"
                                                         value="#{asignacionesList.getListEmpleado(2)}"

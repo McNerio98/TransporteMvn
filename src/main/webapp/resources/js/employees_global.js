@@ -4,32 +4,25 @@
  * and open the template in the editor.
  */
 
+function EVENTS_FORM_EMPLOYEES(){};
 
-
-$(document).ready(function () {
-    //VARIABLES GLOBALES
-
-    //Inicializacion de widget
-    bsCustomFileInput.init();
-    
-    $('#datepicker-group').datepicker({
-        format: "yyyy/mm/dd",
-        todayHighlight: true,
-        autoclose: true,
-        clearBtn: true
-    });
-
-
-    //DECLARACION DE FUNCIONES
-
-    function addEventSelect() {
-        $('table.clobi-style tr').removeClass('selected');
-        $(this).addClass('selected');
-    }
-    ;
     function refreshEventRowSelect() {
-        $('table.clobi-style tbody tr').off('click');
-        $('table.clobi-style tbody tr').on('click', addEventSelect);
+        EVENTS_FORM_EMPLOYEES();
+        var table = $("#listFormEmployees table").DataTable({
+            responsive: true,
+            "autoWidth": true,
+            "bPaginate": true,
+            "bLengthChange": true,
+            "processing": true,
+            "bFilter": true,
+            "bInfo": false,
+            "bAutoWidth": true
+        });
+
+        $('#myInput2').on('keyup', function () {
+            table.search(this.value).draw();
+        });
+
     }
     ;
     function verificarAvatar() {
@@ -45,26 +38,41 @@ $(document).ready(function () {
     }
     //FUNCIONES DE ASIGNACIONES DE EVENTOS A NODOS RECARGABLES  
     function EVENTS_FORM_EMPLOYEES() {
-        console.log('Entro aqui..');
+        bsCustomFileInput.init();
+        verificarAvatar()
         $('#profilesAvatarPanel img').off('click');
         $('#profilesAvatarPanel img').click(function () {
             $('#profilesAvatarPanel img').removeClass('selected');
             $(this).addClass('selected');
             $('#frmEmployees\\:avatarValueHidden').val($(this).attr('avatarname'));
         });
+
+        $('.input-group.date').datepicker({
+            format: "yyyy/mm/dd",
+            todayHighlight: true,
+            autoclose: true,
+            clearBtn: true
+        });
     }
-    //LLAMADO Y CARGA DE FUNCIONES O METODOS
-    refreshEventRowSelect();
+    
+$(document).ready(function () {
     verificarAvatar();
     EVENTS_FORM_EMPLOYEES();
+    refreshEventRowSelect();
 
-    //ASIGNACION DE FUNCIONES A EVENTOS DE NODOS
-
-
-    //NODOS RECARGADOS 
-    $('#frmEmployees').on('DOMSubtreeModified', EVENTS_FORM_EMPLOYEES);
-    $('#listFormEmployees').on('DOMSubtreeModified', refreshEventRowSelect);
-
-    //NOTA: Los nodos recargables son componentes que se actualizan mediante ajax y es necesario
-    //asignar nuevamente los eventos que estos tienen 
 });
+
+
+function validarFrmEmployee(parent){
+    let correcto = ValidateFieldText(parent);
+    if (!correcto) {
+        Swal.fire({
+            icon: 'error',
+            title: 'No se permiten campos vacios',
+            text: 'Debe llenar todos los campos!'
+        });
+    } else {
+        $('.modal').modal('hide');
+    }
+    return correcto;    
+}

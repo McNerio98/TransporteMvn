@@ -56,7 +56,8 @@ public class UnidadesListController implements Serializable {
     }
 
     public void deleteRegistry() {
-        persist(JsfUtil.PersistAction.DELETE, "Accion exitosas");
+        this.selected.setEstadoregistro(false);
+        persist(JsfUtil.PersistAction.UPDATE, "Accion exitosa");
     }
 
     public List<DocumentoByUnidad> getAllDocs() {
@@ -109,8 +110,8 @@ public class UnidadesListController implements Serializable {
                 } else {
                     //getFacade().remove(selected);
                     getFacade().setUnidadStatus(selected);
-                    this.init();
                 }
+                this.init();
                 JsfUtil.addSuccessMessage(successMessage);
             } catch (EJBException ex) {
                 String msg = "";

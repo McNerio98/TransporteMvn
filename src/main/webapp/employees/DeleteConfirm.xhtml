@@ -19,8 +19,9 @@
                     <p:commandLink styleClass="btn btn-danger"
                                    actionListener="#{empleadosControl.destroy}"
                                    value="#{bundle.Delete}"
-                                   update=":listFormEmployees, :viewEmployee, :pnlMessageJSF"
-                                   oncomplete="closeModal('#modalConfirmEmploye')"/>
+                                   update=":listFormEmployees,:pnlMessageJSF"
+                                   oncomplete="refreshEventRowSelect()"
+                                   a:data-dismiss="modal"/>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">#{bundle.Close}</button>
                 </div>
             </div>

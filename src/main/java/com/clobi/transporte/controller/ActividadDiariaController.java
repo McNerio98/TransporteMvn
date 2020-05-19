@@ -110,6 +110,7 @@ public class ActividadDiariaController implements Serializable {
             ad.setIngresototal(BigDecimal.ZERO);
             ad.setTotalpagos(BigDecimal.ZERO);
             ad.setTotalviajes(0);
+            ad.setUniactivas(0);
             this.ADHistory = ad;            
         }
         this.listCategorias = ejbCategorias.listCategoriasAsc();

@@ -7,7 +7,9 @@ package com.clobi.transporte.facade;
 
 import com.clobi.transporte.entity.DocumentoByUnidad;
 import com.clobi.transporte.entity.Unidad;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -48,11 +50,16 @@ public class UnidadFacade extends AbstractFacade<Unidad> {
         return list;
     }
     
-    public boolean setUnidadStatus(Unidad u){
-        Query query = getEntityManager().createNamedQuery("Unidad.ChangeEstadoregistro");
-        query.setParameter("placa", u.getPlaca());
-        int i = query.executeUpdate();
-        return i == 0 ? false : true;
+    public void setUnidadStatus(Unidad u){
+//        Query query = getEntityManager().createNamedQuery("Unidad.ChangeEstadoregistro", Unidad.class);
+//        query.setParameter("placa", u.getPlaca());
+//        int i = query.executeUpdate();
+          String sql = "update unidades set estadoregistro = :estado"
+                  + "where placa = :placa";
+          Query query = em.createNativeQuery(sql,Unidad.class);
+          query.setParameter("estado", false);
+          query.setParameter("placa", u.getPlaca());
+          query.executeUpdate();
     }
 
     public List<DocumentoByUnidad> getDocsByPlaca(Unidad u) {
@@ -71,4 +78,26 @@ public class UnidadFacade extends AbstractFacade<Unidad> {
         return list.isEmpty() ? new ArrayList<>() : list;
     }
 
+    public boolean insertUnidad(Unidad u, String f){
+        String sql = "insert into unidades(placa,numerounidad,modelo,ye_ar,motor,chasis,marca,fechavencimiento,estadoregistro) values "
+                + "(?,?,?,?,?,?,?,?,?)";
+        Query query = em.createNativeQuery(sql);
+        query.setParameter(1, u.getPlaca());
+        query.setParameter(2, u.getNumerounidad());
+        query.setParameter(3, u.getModelo());
+        query.setParameter(4, u.getYeAr());
+        query.setParameter(5, u.getMotor());
+        query.setParameter(6, u.getChasis());
+        query.setParameter(7, u.getMarca());
+        Date date1 = new Date();
+        try{
+             date1 = new SimpleDateFormat("yyyy-MM-dd").parse(f);
+        }catch(Exception e){
+            System.out.print(e.getMessage());
+        }
+        query.setParameter(8,date1);
+        query.setParameter(9, u.getEstadoregistro());
+        int val = query.executeUpdate();
+        return val > 0 ? true : false;
+    }
 }

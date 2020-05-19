@@ -50,16 +50,16 @@ public class EmpleadosController implements Serializable {
     private DocumentoByEmpleado carnet;
     private Part licenciaFile;
     private Part carnetFile;
+    private boolean actionUpdate; 
 
     @PostConstruct
     public void init() {
-        this.setLstEmpleados(ejbEmpleado.findAll());
+        this.setLstEmpleados(ejbEmpleado.ALL_EMPLADOS());
     }
 
     //Creando empleado 
     public void create() {
-        UploadDocuments();
-        //this.persist(PersistAction.CREATE, "Se Registro exitosamente...");
+        this.persist(PersistAction.CREATE, "Se Registro exitosamente...");
     }
 
     public void saveDocument() {
@@ -120,6 +120,9 @@ public class EmpleadosController implements Serializable {
         this.licencia = new DocumentoByEmpleado();
         this.carnet = new DocumentoByEmpleado();
         this.selected = new Empleado();
+        this.selected.setEstadoregistro(true);
+        this.selected.setAvatarPath("any.jpg");
+        this.setActionUpdate(false);
         return this.selected;
     }
 
@@ -181,27 +184,24 @@ public class EmpleadosController implements Serializable {
                 //Si esta creando es obligacion subir los archivos 
                 if (persistAction == PersistAction.CREATE) {
                     this.licencia.setIdempleado(p);
-                    this.carnet.setIdempleado(selected);
+                    this.carnet.setIdempleado(p);
                     if (!UploadDocuments()) {
                         throw new Exception("Error al subir archivos");
                     }
                 }
             } else {
-                getFacade().remove(selected);
+                this.selected.setEstadoregistro(false);
+                getFacade().edit(selected);
             }
-            this.setLstEmpleados(ejbEmpleado.findAll());
+            this.setLstEmpleados(ejbEmpleado.ALL_EMPLADOS());
             JsfUtil.addSuccessMessage(infoResult);
             //ejbEmpleado.commit();
-        } catch (EJBException ex) {
+        } catch (Exception e) {
             String msg = "Error en la operacion";
-            Throwable cause = ex.getCause();
+            Throwable cause = e.getCause();
             JsfUtil.addErrorMessage(msg);
             //ejbEmpleado.rollback();
-        } catch (Exception e) {
-            JsfUtil.addErrorMessage("Error de persistencia");
-            //ejbEmpleado.rollback();
         }
-
         this.selected = null;
     }
 
@@ -245,4 +245,16 @@ public class EmpleadosController implements Serializable {
         this.carnet = carnet;
     }
 
+    public boolean isActionUpdate() {
+        return actionUpdate;
+    }
+
+    public void setActionUpdate(boolean actionUpdate) {
+        this.actionUpdate = actionUpdate;
+    }
+    
+    public void actionUpdate(Empleado e){
+        this.setActionUpdate(true);
+        this.setSelected(e);
+    }
 }

@@ -62,6 +62,7 @@ public class AsignacionesList implements Serializable {
 
     public void rowSelected(SelectEvent event) {
         System.out.println("Asignado a " + selected.getMotorista());
+        this.selected = getFacade().find(this.selected.getId());
         this.setAsignacion(selected);
     }
 

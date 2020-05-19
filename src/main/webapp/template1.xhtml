@@ -29,7 +29,6 @@
     </h:head>
     <h:body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed">
         <div class="wrapper">
-
             <ui:include src="_nav.xhtml"/>
             <ui:include src="_aside.xhtml"/>
             <!-- Main content -->
@@ -108,6 +107,22 @@
                 </div>
 
                 <!-- Content Header (Page header) -->
+
+
+                <c:if test="#{recordatior.todayRecordatorios != null}">
+                    <div class="alert alert-warning" role="alert">
+                        <script>
+                            var myarray = [];
+                        </script>
+                        Este dia programaste un recordatorio: 
+                        <strong id="reminders"></strong>
+                    </div>
+                    <c:forEach id="list" var="item" items="#{recordatior.todayRecordatorios}">
+                        <script>
+                            myarray.push('#{item.titulo}');
+                        </script>
+                    </c:forEach>
+                </c:if>
                 <div class="content-header">
                     <div class="container-fluid">
                         <div class="row mb-2">
@@ -132,11 +147,9 @@
                     </div><!-- /.container-fluid -->
                 </div>
 
+
                 <section class="content">
                     <div class="container-fluid">
-                        
-                        <p:growl id="growl" life="3000" />
-
                         <ui:insert name="contenido">contenido</ui:insert>
                     </div>
                 </section>
@@ -146,9 +159,9 @@
                 <h:outputScript library="js" name="jquery.overlayScrollbars.min.js"/>
                 <h:outputScript library="js" name="adminlte.js"/>
                 <h:outputScript library="js" name="dataTable.min.js"/>
-                
-                <h:outputScript library="js" name="bootstrap-datepicker.js"/>
                 <h:outputScript library="js" name="globalScript1.js"/>
+                <h:outputScript library="js" name="bootstrap-datepicker.js"/>
+
                 <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
                 <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
 
@@ -159,6 +172,9 @@
 
 
                 <script type="text/javascript" src="https://cdn.datatables.net/fixedheader/3.1.5/js/dataTables.fixedHeader.min.js"></script>
+                <script>
+                            displayRecordatorios(myarray);
+                </script>
                 <ui:insert name="scriptsSpecifided"></ui:insert>
             </div>
             <footer class="main-footer">
