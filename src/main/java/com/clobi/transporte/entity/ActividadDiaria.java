@@ -5,83 +5,113 @@
  */
 package com.clobi.transporte.entity;
 
+import com.clobi.transporte.controller.util.ADRegistrosPOJO;
+import com.clobi.transporte.controller.util.MyPOJO;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ColumnResult;
+import javax.persistence.ConstructorResult;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.SqlResultSetMapping;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author desarrollo
+ * @author Tinkpad PC
  */
 @Entity
-@Table(name = "actividadesdiarias", catalog = "transporte", schema = "public")
+@Table(name = "actividadesdiarias")
+@SqlResultSetMapping(
+        name = "ADMapping",
+        classes = @ConstructorResult(
+                targetClass = ADRegistrosPOJO.class,
+                columns = {
+                    @ColumnResult(name = "id", type = Integer.class),
+                    @ColumnResult(name = "tipoestado", type = String.class),
+                    @ColumnResult(name = "totalviajes", type = Integer.class),
+                    @ColumnResult(name = "ingresototal", type = BigDecimal.class),
+                    @ColumnResult(name = "fechareg", type = String.class),
+                    @ColumnResult(name = "uniactivas", type = Integer.class),
+                    @ColumnResult(name = "totalpagos", type = BigDecimal.class)}))
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "ActividadDiaria.findAll", query = "SELECT a FROM ActividadDiaria a")
-    , @NamedQuery(name = "ActividadDiaria.findByIdactividad", query = "SELECT a FROM ActividadDiaria a WHERE a.idactividad = :idactividad")
+    , @NamedQuery(name = "ActividadDiaria.findById", query = "SELECT a FROM ActividadDiaria a WHERE a.id = :id")
     , @NamedQuery(name = "ActividadDiaria.findByTotalviajes", query = "SELECT a FROM ActividadDiaria a WHERE a.totalviajes = :totalviajes")
-    , @NamedQuery(name = "ActividadDiaria.findByContador", query = "SELECT a FROM ActividadDiaria a WHERE a.contador = :contador")
-    , @NamedQuery(name = "ActividadDiaria.findByIngresototal", query = "SELECT a FROM ActividadDiaria a WHERE a.ingresototal = :ingresototal")})
+    , @NamedQuery(name = "ActividadDiaria.findByIngresototal", query = "SELECT a FROM ActividadDiaria a WHERE a.ingresototal = :ingresototal")
+    , @NamedQuery(name = "ActividadDiaria.countToday", query = "SELECT count(a) from ActividadDiaria a")
+    , @NamedQuery(name = "ActividadDiaria.findByFecha", query = "SELECT a FROM ActividadDiaria a WHERE a.fecha = :fecha")
+    , @NamedQuery(name = "ActividadDiaria.findByEstado", query = "SELECT a FROM ActividadDiaria a WHERE a.estado = :estado")})
 public class ActividadDiaria implements Serializable {
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "ingresototal")
+    private BigDecimal ingresototal;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idactividaddiaria")
+    private List<OperacionUnidad> operacionUnidadList;
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "idactividad")
-    private Integer idactividad;
+    @Column(name = "id")
+    private Integer id;
     @Basic(optional = false)
     @NotNull
     @Column(name = "totalviajes")
     private int totalviajes;
-    @Column(name = "contador")
-    private Integer contador;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "ingresototal")
-    private Double ingresototal;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idactividad")
-    private List<Nota> notaList;
-    @JoinColumn(name = "placa", referencedColumnName = "placa")
-    @ManyToOne(optional = false)
-    private Unidad placa;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idactividad")
-    private List<AnticiposByActividad> anticiposByActividadList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idactividad")
-    private List<PagosEmpleado> pagosEmpleadoList;
-
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "fecha")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fecha;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "estado")
+    private short estado;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "autocierre")    
+    private boolean autocierre;
+    
     public ActividadDiaria() {
     }
 
-    public ActividadDiaria(Integer idactividad) {
-        this.idactividad = idactividad;
+    public ActividadDiaria(Integer id) {
+        this.id = id;
     }
 
-    public ActividadDiaria(Integer idactividad, int totalviajes) {
-        this.idactividad = idactividad;
+    public ActividadDiaria(Integer id, int totalviajes, BigDecimal ingresototal, Date fecha, short estado) {
+        this.id = id;
         this.totalviajes = totalviajes;
+        this.ingresototal = ingresototal;
+        this.fecha = fecha;
+        this.estado = estado;
     }
 
-    public Integer getIdactividad() {
-        return idactividad;
+    public Integer getId() {
+        return id;
     }
 
-    public void setIdactividad(Integer idactividad) {
-        this.idactividad = idactividad;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public int getTotalviajes() {
@@ -92,61 +122,26 @@ public class ActividadDiaria implements Serializable {
         this.totalviajes = totalviajes;
     }
 
-    public Integer getContador() {
-        return contador;
+    public Date getFecha() {
+        return fecha;
     }
 
-    public void setContador(Integer contador) {
-        this.contador = contador;
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
     }
 
-    public Double getIngresototal() {
-        return ingresototal;
+    public short getEstado() {
+        return estado;
     }
 
-    public void setIngresototal(Double ingresototal) {
-        this.ingresototal = ingresototal;
-    }
-
-    @XmlTransient
-    public List<Nota> getNotaList() {
-        return notaList;
-    }
-
-    public void setNotaList(List<Nota> notaList) {
-        this.notaList = notaList;
-    }
-
-    public Unidad getPlaca() {
-        return placa;
-    }
-
-    public void setPlaca(Unidad placa) {
-        this.placa = placa;
-    }
-
-    @XmlTransient
-    public List<AnticiposByActividad> getAnticiposByActividadList() {
-        return anticiposByActividadList;
-    }
-
-    public void setAnticiposByActividadList(List<AnticiposByActividad> anticiposByActividadList) {
-        this.anticiposByActividadList = anticiposByActividadList;
-    }
-
-    @XmlTransient
-    public List<PagosEmpleado> getPagosEmpleadoList() {
-        return pagosEmpleadoList;
-    }
-
-    public void setPagosEmpleadoList(List<PagosEmpleado> pagosEmpleadoList) {
-        this.pagosEmpleadoList = pagosEmpleadoList;
+    public void setEstado(short estado) {
+        this.estado = estado;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idactividad != null ? idactividad.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -157,7 +152,7 @@ public class ActividadDiaria implements Serializable {
             return false;
         }
         ActividadDiaria other = (ActividadDiaria) object;
-        if ((this.idactividad == null && other.idactividad != null) || (this.idactividad != null && !this.idactividad.equals(other.idactividad))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -165,7 +160,35 @@ public class ActividadDiaria implements Serializable {
 
     @Override
     public String toString() {
-        return "com.clobi.transporte.entity.ActividadDiaria[ idactividad=" + idactividad + " ]";
+        return "com.clobi.transporte.entity.ActividadDiaria[ id=" + id + " ]";
     }
-    
+
+
+    @XmlTransient
+    public List<OperacionUnidad> getOperacionUnidadList() {
+        return operacionUnidadList;
+    }
+
+    public void setOperacionUnidadList(List<OperacionUnidad> operacionUnidadList) {
+        this.operacionUnidadList = operacionUnidadList;
+    }
+
+
+
+
+    public boolean isAutocierre() {
+        return autocierre;
+    }
+
+    public void setAutocierre(boolean autocierre) {
+        this.autocierre = autocierre;
+    }
+
+    public BigDecimal getIngresototal() {
+        return ingresototal;
+    }
+
+    public void setIngresototal(BigDecimal ingresototal) {
+        this.ingresototal = ingresototal;
+    }
 }

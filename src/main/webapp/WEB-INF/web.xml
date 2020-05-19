@@ -12,13 +12,30 @@
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.xhtml</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping>		
+    <context-param>
+        <param-name>primefaces.THEME</param-name>
+        <param-value>none</param-value>
+    </context-param>    
+    <context-param>
+        <param-name>primefaces.FONT_AWESOME</param-name>
+        <param-value>false</param-value>
+    </context-param>
+    <context-param>
+        <param-name>primefaces.THEME_FORMS</param-name>
+        <param-value>none</param-value>
+    </context-param>
+    <context-param>
+        <param-name>javax.faces.DATETIMECONVERTER_DEFAULT_TIMEZONE_IS_SYSTEM_TIMEZONE</param-name>
+        <param-value>true</param-value>
+    </context-param>
+        
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>views/index.xhtml</welcome-file>
+        <welcome-file>dailyActivity/dailyActivity.xhtml</welcome-file>
     </welcome-file-list>
 </web-app>

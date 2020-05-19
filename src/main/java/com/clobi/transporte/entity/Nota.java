@@ -51,7 +51,7 @@ public class Nota implements Serializable {
     @Size(min = 1, max = 3)
     @Column(name = "tipo")
     private String tipo;
-    @JoinColumn(name = "idactividad", referencedColumnName = "idactividad")
+    @JoinColumn(name = "idactividad", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private ActividadDiaria idactividad;
 

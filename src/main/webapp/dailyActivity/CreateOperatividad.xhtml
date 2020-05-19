@@ -1,0 +1,184 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="nuevaOpeUnidadModal" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content br-none">
+                <div class="modal-body">
+                    <div class="row">
+                        <h:panelGroup styleClass="col-md-5" id="detailsAsignacion" layout="block">
+                            <div class="row mb-md-2">
+                                <div class="col-md-12">
+                                    <div class="text-muted"><i class="fas fa-bus"></i>
+                                        <h:outputText rendered="#{!(empty ADController.asignacionSelected)}"
+                                                      value=" EQ#{ADController.asignacionSelected.unidad.numerounidad} | AB#{ADController.asignacionSelected.unidad.placa}"/>
+                                        <h:outputText rendered="#{empty ADController.asignacionSelected}"
+                                                      value=" Ninguna Unidad Selecionada"/>
+                                    </div>
+                                    <div class="p-md-1 p-lg-2 bg-success mt-md-2">
+                                        Estado: En Ejecucion
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-md-2 mt-md-3 border-top">
+                                <div class="col-12">
+                                    <h:outputText styleClass="text-center d-block text-pink" value="Motorista"/>
+                                    <h:outputText styleClass="text-center d-block"
+                                                  rendered="#{!(empty ADController.motoristaSelected)}"
+                                                  value="#{ADController.motoristaSelected.nombres} #{ADController.motoristaSelected.apellidos}"/>
+                                    <h:outputText styleClass="text-center d-block"
+                                                  rendered="#{empty ADController.motoristaSelected}"
+                                                  value="--No Asignado--"/>                                    
+                                </div>
+                                <div class="col-12">
+                                    <h:outputText styleClass="text-center d-block text-pink" value="Auxiliar"/>
+
+                                    <h:outputText styleClass="text-center d-block" 
+                                                  rendered="#{!(empty ADController.auxiliarSelected)}"
+                                                  value="#{ADController.auxiliarSelected.nombres} #{ADController.auxiliarSelected.apellidos}"/>                                    
+
+                                    <h:outputText styleClass="text-center d-block"
+                                                  rendered="#{empty ADController.auxiliarSelected}"
+                                                  value="--No Asignado--"/>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <h:link outcome="asignaciones">
+                                    <u>Cambiar Asignaciones</u>
+                                </h:link>
+                                /
+                                <p:commandLink actionListener="#{ADController.removeHelpder}"
+                                               update="detailsAsignacion">
+                                    <u>Omitir ayudante</u>
+                                </p:commandLink>
+                            </div>                            
+                        </h:panelGroup>
+                        <h:panelGroup layout="block" styleClass="col-md-7" id="pnlListAsignaciones">
+                            <h:panelGroup layout="block" id="MsgCargosAnticipos" styleClass="row">
+                                <h:panelGroup layout="block" styleClass="col-12 text-center bg-warning mb-1 rounded-pill"  id="MsgCargosAnticiposChild" rendered="#{ADController.totalAnticipos > 0}">
+                                    <small class="">Esta Unidad contiene <span class="text-white text-bold">anticipos pendientes</span>, se cargaran al registro actual el monto total de <span class="text-bold h5">$ <h:outputText id="anticipoAnterior" value="#{ADController.totalAnticipos}"/></span></small>
+                                </h:panelGroup>                          
+                            </h:panelGroup>
+                            <h:panelGroup layout="block" id="contentTablesUEE">
+                                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home"
+                                           role="tab" aria-controls="home" aria-selected="true">Unidades</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile"
+                                           role="tab" aria-controls="profile" aria-selected="false">Motoristas</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact"
+                                           role="tab" aria-controls="contact" aria-selected="false">Auxiliares</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content" id="myTabContent">
+                                    <div class="tab-pane fade show active" id="home" role="tabpanel"
+                                         aria-labelledby="home-tab" style="overflow-y: auto; max-height: 150px;">
+                                        <h:form styleClass="table-responsive">
+                                            <p:dataTable id="listAsignaciones"
+                                                         value="#{ADController.listAsignaciones}"
+                                                         var="tc"
+                                                         selectionMode="single"
+                                                         tableStyleClass="table table-striped pth-0"
+                                                         rowKey="#{tc.id}"
+                                                         emptyMessage="Sin Asignaciones"
+                                                         selection="#{ADController.asignacionSelected}"
+                                                         >
+                                                <p:ajax event="rowSelect" update=":detailsAsignacion,:MsgCargosAnticipos"/>
+                                                <p:ajax event="rowUnselect" update=":MsgCargosAnticipos"/>
+                                                <p:column>
+                                                    <f:facet name="header">Unidad</f:facet>
+                                                    <h:outputText value="EQ#{tc.unidad.numerounidad}"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <f:facet name="header">Placa</f:facet>
+                                                    <h:outputText value="AB#{tc.unidad.placa}"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <f:facet name="header">Chasis</f:facet>
+                                                    <h:outputText value="#{tc.unidad.chasis}"/>
+                                                </p:column>                                                
+                                            </p:dataTable>
+                                        </h:form>
+                                    </div>
+                                    <div class="tab-pane fade" id="profile" role="tabpanel"
+                                         aria-labelledby="profile-tab" style="overflow-y: auto; max-height: 150px;">
+                                        <h:form styleClass="table-responsive">
+                                            <p:dataTable id="listMotoristasDisp"
+                                                         value="#{ADController.listMotoristaDisp}"
+                                                         var="mt"
+                                                         selectionMode="single"
+                                                         tableStyleClass="table table-striped pth-0"
+                                                         rowKey="#{mt}"
+                                                         emptyMessage="No hay Motoristas Disponibles"
+                                                         selection="#{ADController.motoristaSelected}"
+                                                         >
+                                                <p:ajax event="rowSelect"   update=":detailsAsignacion"/>
+                                                <p:column>
+                                                    <f:facet name="header">Nombres</f:facet>
+                                                    <h:outputText value="#{mt.nombres}"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <f:facet name="header">Apellidos</f:facet>
+                                                    <h:outputText value="#{mt.apellidos}"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <f:facet name="header">Tipo</f:facet>
+                                                    <h:outputText value="#{mt.tipo}"/>
+                                                </p:column>                                              
+                                            </p:dataTable>
+                                        </h:form>
+                                    </div>
+                                    <div class="tab-pane fade" id="contact" role="tabpanel"
+                                         aria-labelledby="contact-tab" style="overflow-y: auto; max-height: 150px;">
+                                        <h:form styleClass="table-responsive">
+                                            <p:dataTable id="listAuxiliarDisp"
+                                                         value="#{ADController.listAuxliarDisp}"
+                                                         var="aux"
+                                                         selectionMode="single"
+                                                         tableStyleClass="table table-striped pth-0"
+                                                         rowKey="#{aux}"
+                                                         emptyMessage="No hay Ayudantes Disponibles"
+                                                         selection="#{ADController.auxiliarSelected}"
+                                                         >
+                                                <p:ajax event="rowSelect"   update=":detailsAsignacion"/>
+                                                <p:column>
+                                                    <f:facet name="header">Nombres</f:facet>
+                                                    <h:outputText value="#{aux.nombres}"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <f:facet name="header">Apellidos</f:facet>
+                                                    <h:outputText value="#{aux.apellidos}"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <f:facet name="header">Tipo</f:facet>
+                                                    <h:outputText value="#{aux.tipo}"/>
+                                                </p:column>                                                
+                                            </p:dataTable>
+                                        </h:form>
+                                    </div>
+                                </div>                                
+                            </h:panelGroup>
+                        </h:panelGroup>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <p:commandLink styleClass="btn-ct btn-ct-success"
+                                   a:data-dismiss="modal"
+                                   value="Crear"
+                                   actionListener="#{ADController.createOperation}"
+                                   update=":pnlMessageJSF,:listActivities,:pnlBanner"/>
+                    <a href="#" data-dismiss="modal" class="btn-ct btn-ct-danger">Cancelar</a>
+                </div>
+            </div>
+        </div>
+    </div>    
+</ui:composition>
+

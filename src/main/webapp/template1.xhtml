@@ -3,61 +3,187 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!--        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css" />-->
         <title><ui:insert name="title">Default Title</ui:insert></title>
+        <h:outputStylesheet library="css" name="bootstrap-Sweetalert-4.min.css"/>
+        <h:outputStylesheet library="css" name="toastr.css"/>
         <h:outputStylesheet library="css" name="OverlayScrollbars.min.css"/>
         <h:outputStylesheet library="css" name="adminlte.css"/>
-        <link rel="stylesheet" href="#{request.contextPath}/resources/css/fontawesome-free/css/all.min.css"/>
         <h:outputStylesheet library="css" name="custom1.css"/>
+        <h:outputStylesheet library="css" name="themeCustom.css"/>
+        <h:outputStylesheet library="css" name="jquery.dataTables.min.css"/>
+        <h:outputStylesheet library="css" name="datatableResponsive.css"/>
+        <h:outputStylesheet library="css" name="adminLTEAlters.css"/>
+        <h:outputStylesheet library="primefaces" name="components.css"/>
+        <h:outputStylesheet library="webjars" name="font-awesome/5.12.0/css/all.min-jsf.css" />
+        <h:outputStylesheet library="webjars" name="font-awesome/5.12.0/css/v4-shims.min-jsf.css" />
+        <ui:insert name="stylesSpecifided"></ui:insert>
     </h:head>
-    <h:body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+    <h:body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed">
         <div class="wrapper">
-
             <ui:include src="_nav.xhtml"/>
             <ui:include src="_aside.xhtml"/>
             <!-- Main content -->
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
+                <!-- Modal para actualizar el tipo de contrato de un empleado -->
+                <div class="modal fade" id="modalTipoContrato" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalCenterTitle">Configurar tipo de contrato</h5>
+                                <p:commandLink actionListener="#{empleadosContrato.prepareCreate}"
+                                               styleClass="close"
+                                               a:data-dismiss="modal"
+                                               a:aria-label="Close"
+                                               update="formContrato"
+                                               value="">
+                                    <span aria-hidden="true">&times;</span>
+                                </p:commandLink> 
+                            </div>                           
+                            <h:form id="formContrato">
+                                <div class="modal-body">
+                                    <c:if test="#{empleadosContrato.empleadoContrato.empleado != null}">
+                                        Cambia el tipo de contrato para:<br/>
+                                        <h:inputText value="#{empleadosContrato.empleadoContrato.empleado}" 
+                                                     maxlength="9" 
+                                                     required="true" 
+                                                     styleClass="form-control form-control-sm" 
+                                                     disabled="true"/> <br/> 
+                                        <h:inputText value="#{empleadosContrato.empleadoContrato.empleado1.nombres}" 
+                                                     maxlength="9" 
+                                                     required="true" 
+                                                     styleClass="form-control form-control-sm" 
+                                                     disabled="true"/> <br/> 
+                                        <h:inputText value="#{empleadosContrato.empleadoContrato.empleado1.apellidos}" 
+                                                     maxlength="9" 
+                                                     required="true" 
+                                                     styleClass="form-control form-control-sm" 
+                                                     disabled="true"/> <br/> 
+                                        <h:selectOneMenu 
+                                            converter="javax.faces.Integer"
+                                            class="custom-select" 
+                                            id="next" 
+                                            value = "#{empleadosContrato.empleadoContrato.tipocontrato}"
+                                            disabled="#{empty empleadosContrato.empleadoContrato}"> 
+                                            <f:selectItem itemValue ="1" itemLabel = "Permanente" /> 
+                                            <f:selectItem itemValue ="2" itemLabel = "Por Dia" /> 
+                                        </h:selectOneMenu> 
+                                    </c:if>
+                                    <c:if test="#{empleadosContrato.empleadoContrato.empleado == null}">
+                                        Selecciona un empleado
+                                    </c:if>
+                                </div>
+                                <div class="modal-footer">
+                                    <c:if test="#{empleadosContrato.empleadoContrato.empleado != null}">
+                                        <p:commandButton actionListener="#{empleadosContrato.prepareCreate}"
+                                                         styleClass="btn btn-secondary"
+                                                         a:data-dismiss="modal"
+                                                         update="formContrato"
+                                                         value="Cancelar"/> 
+                                        <p:commandButton 
+                                            disabled="#{empty empleadosContrato.empleadoContrato}"
+                                            action="#{empleadosContrato.update()}"
+                                            styleClass="btn btn-primary"
+                                            value="Guardar Cambios">
+                                            <f:ajax  onevent="ContratoSuccess"  onerror="ContratoError" />
+                                        </p:commandButton>
+                                    </c:if>
+
+
+
+                                </div>
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- Content Header (Page header) -->
+
+
+                <c:if test="#{recordatior.todayRecordatorios != null}">
+                    <div class="alert alert-warning" role="alert">
+                        <script>
+                            var myarray = [];
+                        </script>
+                        Este dia programaste un recordatorio: 
+                        <strong id="reminders"></strong>
+                    </div>
+                    <c:forEach id="list" var="item" items="#{recordatior.todayRecordatorios}">
+                        <script>
+                            myarray.push('#{item.titulo}');
+                        </script>
+                    </c:forEach>
+                </c:if>
                 <div class="content-header">
                     <div class="container-fluid">
                         <div class="row mb-2">
                             <div class="col-sm-6">
-                                <h1 class="m-0 text-dark">
+                                <h2 class="m-0 text-dark h4">
                                     <ui:insert name="encabezado">Default Title</ui:insert>
-                                </h1>
+                                    <h:panelGroup id="pnlMessageJSFParent" style="display: none;">
+                                        <h:messages id="pnlMessageJSF" 
+                                                    errorClass="MessageError nodeMsg" 
+                                                    infoClass="MessageSuccess nodeMsg"
+                                                    globalOnly="true"
+                                                    />                                        
+                                    </h:panelGroup>
+
+
+                                </h2>
                             </div><!-- /.col -->
                             <div class="col-sm-6">
-                                <ol class="breadcrumb float-sm-right">
-                                    <li class="breadcrumb-item">
-                                        <h:link outcome="home" value="Home"/>
-                                    </li>
-                                    <li class="breadcrumb-item active">Dashboard</li>
-                                </ol>
+
                             </div><!-- /.col -->
                         </div><!-- /.row -->
                     </div><!-- /.container-fluid -->
                 </div>
 
+
                 <section class="content">
                     <div class="container-fluid">
-                        
                         <ui:insert name="contenido">contenido</ui:insert>
                     </div>
                 </section>
-
-
-                <h:outputScript library="js" name="jquery.min.js"/>      
                 <h:outputScript library="js" name="bootstrap.bundle.js"/>
+                <h:outputScript library="js" name="sweetalert2.min.js"/>
+                <h:outputScript library="js" name="toastr.min.js"/>
                 <h:outputScript library="js" name="jquery.overlayScrollbars.min.js"/>
                 <h:outputScript library="js" name="adminlte.js"/>
+                <h:outputScript library="js" name="dataTable.min.js"/>
+                <h:outputScript library="js" name="globalScript1.js"/>
+                <h:outputScript library="js" name="bootstrap-datepicker.js"/>
 
+                <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+                <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+
+                <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+                <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap4.min.js"></script>
+
+                <script type="text/javascript" src="https://cdn.datatables.net/rowgroup/1.0.3/js/dataTables.rowGroup.min.js"></script>
+
+
+                <script type="text/javascript" src="https://cdn.datatables.net/fixedheader/3.1.5/js/dataTables.fixedHeader.min.js"></script>
+                <script>
+                            displayRecordatorios(myarray);
+                </script>
+                <ui:insert name="scriptsSpecifided"></ui:insert>
             </div>
+            <footer class="main-footer">
+                <strong>Copyright &copy; 2014-2019 <a href="http://adminlte.io">Transporte.Mvn</a>.</strong>
+                All rights reserved.
+                <div class="float-right d-none d-sm-inline-block">
+                    <b>Version</b> Debug
+                </div>
+            </footer>
         </div>
     </h:body>
 

@@ -1,0 +1,117 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template1.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Empleados"></h:outputText>
+        </ui:define>
+        <ui:define name="stylesSpecifided">
+            <h:outputStylesheet library="css" name="datepicker.css"/>
+        </ui:define>
+        <ui:define name="encabezado">
+            <h:outputText value="Empleados Registrados"></h:outputText>
+        </ui:define>
+        <ui:define name="contenido">
+            <div class="card">
+                <div class="m-auto p-md-2" style="width: 100%; max-width: 1024px;">
+                    <div class="card-header text-muted h5">
+                        Gestione y Configure el personal
+                    </div>
+
+                    <div class="row text-right">
+                        <div class="form-group col-12 col-lg-6 col-md-6 mt-2">
+                            <input 
+                                type="text" 
+                                class="form-control float-left" 
+                                id="myInput2" 
+                                placeholder="Buscar Empleado"/>            
+                        </div>                        
+                        <div class="col-12 mb-2" id="pnlButtons">
+                            <h:form id="formButtons">
+                                <p:commandButton actionListener="#{empleadosControl.prepareCreate}"
+                                                 styleClass="btn-ct btn-ct-success d-inline-block ml-1"
+                                                 a:data-toggle="modal"
+                                                 a:data-target="#modalEmploye"
+                                                 update=":frmEmployees,:listFormEmployees"
+                                                 oncomplete="refreshEventRowSelect()"
+                                                 value="+ #{bundle.Create}"/> 
+                            </h:form>                                    
+                        </div>
+                    </div>                           
+
+                    <h:form id="listFormEmployees">
+                        <p:dataTable id="lstEmployees"
+                                     value="#{empleadosControl.lstEmpleados}"
+                                     var="item"
+                                     selectionMode="single"
+                                     tableStyleClass="table"
+                                     rowKey="#{item}"
+                                     emptyMessage="Sin registro de Empleados"
+                                     selection="#{empleadosControl.selected}"
+                                     >
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="#{bundle.DUI}"/>
+                                </f:facet>
+                                <h:outputText value="#{item.dui}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="#{bundle.FullName}"/>
+                                </f:facet>
+                                <h:outputText value="#{item.nombres} #{item.apellidos}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="#{bundle.Telephone}"/>
+                                </f:facet>
+                                <h:outputText value="#{item.telefono}"/>
+                            </p:column>                    
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="#{bundle.TypeEmployee}"/>
+                                </f:facet>
+                                <h:outputText value="#{item.tipoEmpleadoCase()}"/>
+                            </p:column>                                        
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Opciones"/>
+                                </f:facet>
+                                <p:commandButton value="Editar" 
+                                                 actionListener="#{empleadosControl.actionUpdate(item)}"
+                                                 styleClass="btn-ct btn-ct-warning d-inline-block m-1"
+                                                 a:data-toggle="modal"
+                                                 a:data-target="#modalEmploye"
+                                                 oncomplete="EVENTS_FORM_EMPLOYEES()"
+                                                 update=":frmEmployees"/>
+                                <p:commandButton value="Eliminar"
+                                                 actionListener="#{empleadosControl.setSelected(item)}"
+                                                 a:data-toggle="modal"
+                                                 a:data-target="#modalConfirmEmploye"
+                                                 id="btnDelete"
+                                                 styleClass="btn-ct btn-ct-danger d-inline-block m-1"/>                                
+                            </p:column>                                        
+                        </p:dataTable>                            
+                    </h:form>
+                </div>
+            </div>
+            <ui:include src="Create.xhtml"/>
+            <ui:include src="DeleteConfirm.xhtml"/>
+        </ui:define>
+        <ui:define name="scriptsSpecifided">
+            <h:outputScript library="js" name="bs-custom-file-input.min.js"/>
+            <h:outputScript library="js" name="employees_global.js"/>
+        </ui:define>
+
+    </ui:composition>
+</html>
+
+

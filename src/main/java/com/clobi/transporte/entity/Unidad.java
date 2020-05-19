@@ -6,18 +6,19 @@
 package com.clobi.transporte.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -25,16 +26,29 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author desarrollo
+ * @author ALEX
  */
 @Entity
-@Table(name = "unidades", catalog = "transporte", schema = "public")
+@Table(name = "unidades")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Unidad.findAll", query = "SELECT u FROM Unidad u")
     , @NamedQuery(name = "Unidad.findByPlaca", query = "SELECT u FROM Unidad u WHERE u.placa = :placa")
-    , @NamedQuery(name = "Unidad.findByNumerounidad", query = "SELECT u FROM Unidad u WHERE u.numerounidad = :numerounidad")})
+    , @NamedQuery(name = "Unidad.findByNumerounidad", query = "SELECT u FROM Unidad u WHERE u.numerounidad = :numerounidad")
+    , @NamedQuery(name = "Unidad.findByModelo", query = "SELECT u FROM Unidad u WHERE u.modelo = :modelo")
+    , @NamedQuery(name = "Unidad.findByYeAr", query = "SELECT u FROM Unidad u WHERE u.yeAr = :yeAr")
+    , @NamedQuery(name = "Unidad.findByMotor", query = "SELECT u FROM Unidad u WHERE u.motor = :motor")
+    , @NamedQuery(name = "Unidad.findByChasis", query = "SELECT u FROM Unidad u WHERE u.chasis = :chasis")
+    , @NamedQuery(name = "Unidad.findByMarca", query = "SELECT u FROM Unidad u WHERE u.marca = :marca")
+    , @NamedQuery(name = "Unidad.findByFechavencimiento", query = "SELECT u FROM Unidad u WHERE u.fechavencimiento = :fechavencimiento")
+    , @NamedQuery(name = "Unidad.findByEstadoregistro", query = "SELECT u FROM Unidad u WHERE u.estadoregistro = :estadoregistro")
+    , @NamedQuery(name = "Unidad.ChangeEstadoregistro", query = "UPDATE Unidad u SET u.estadoregistro = false WHERE u.placa = :placa")
+    , @NamedQuery(name = "Unidad.getDocsByPlaca", query = "SELECT u FROM DocumentoByUnidad u WHERE u.placa.placa = :placa")
+})
 public class Unidad implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "placa")
+    private List<OperacionUnidad> operacionUnidadList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -47,15 +61,40 @@ public class Unidad implements Serializable {
     @NotNull
     @Column(name = "numerounidad")
     private int numerounidad;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "placa")
-    private List<ActividadDiaria> actividadDiariaList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "placa")
-    private List<UnidadByEmpleado> unidadByEmpleadoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "placa")
-    private List<DocumentoByUnidad> documentoByUnidadList;
-    @JoinColumn(name = "idtarjetacirculacion", referencedColumnName = "idtarjeta")
-    @ManyToOne(optional = false)
-    private TarjetaCirculacion idtarjetacirculacion;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 20)
+    @Column(name = "modelo")
+    private String modelo;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 20)
+    @Column(name = "ye_ar")
+    private String yeAr;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 20)
+    @Column(name = "motor")
+    private String motor;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 20)
+    @Column(name = "chasis")
+    private String chasis;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 20)
+    @Column(name = "marca")
+    private String marca;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "fechavencimiento")
+    @Temporal(TemporalType.DATE)
+    private Date fechavencimiento;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "estadoregistro")
+    private boolean estadoregistro;
 
     public Unidad() {
     }
@@ -64,9 +103,16 @@ public class Unidad implements Serializable {
         this.placa = placa;
     }
 
-    public Unidad(String placa, int numerounidad) {
+    public Unidad(String placa, int numerounidad, String modelo, String yeAr, String motor, String chasis, String marca, Date fechavencimiento, boolean estadoregistro) {
         this.placa = placa;
         this.numerounidad = numerounidad;
+        this.modelo = modelo;
+        this.yeAr = yeAr;
+        this.motor = motor;
+        this.chasis = chasis;
+        this.marca = marca;
+        this.fechavencimiento = fechavencimiento;
+        this.estadoregistro = estadoregistro;
     }
 
     public String getPlaca() {
@@ -85,39 +131,60 @@ public class Unidad implements Serializable {
         this.numerounidad = numerounidad;
     }
 
-    @XmlTransient
-    public List<ActividadDiaria> getActividadDiariaList() {
-        return actividadDiariaList;
+    public String getModelo() {
+        return modelo;
     }
 
-    public void setActividadDiariaList(List<ActividadDiaria> actividadDiariaList) {
-        this.actividadDiariaList = actividadDiariaList;
+    public void setModelo(String modelo) {
+        this.modelo = modelo;
     }
 
-    @XmlTransient
-    public List<UnidadByEmpleado> getUnidadByEmpleadoList() {
-        return unidadByEmpleadoList;
+    public String getYeAr() {
+        return yeAr;
     }
 
-    public void setUnidadByEmpleadoList(List<UnidadByEmpleado> unidadByEmpleadoList) {
-        this.unidadByEmpleadoList = unidadByEmpleadoList;
+    public void setYeAr(String yeAr) {
+        this.yeAr = yeAr;
     }
 
-    @XmlTransient
-    public List<DocumentoByUnidad> getDocumentoByUnidadList() {
-        return documentoByUnidadList;
+    public String getMotor() {
+        return motor;
     }
 
-    public void setDocumentoByUnidadList(List<DocumentoByUnidad> documentoByUnidadList) {
-        this.documentoByUnidadList = documentoByUnidadList;
+    public void setMotor(String motor) {
+        this.motor = motor;
     }
 
-    public TarjetaCirculacion getIdtarjetacirculacion() {
-        return idtarjetacirculacion;
+    public String getChasis() {
+        return chasis;
     }
 
-    public void setIdtarjetacirculacion(TarjetaCirculacion idtarjetacirculacion) {
-        this.idtarjetacirculacion = idtarjetacirculacion;
+    public void setChasis(String chasis) {
+        this.chasis = chasis;
+    }
+
+    public String getMarca() {
+        return marca;
+    }
+
+    public void setMarca(String marca) {
+        this.marca = marca;
+    }
+
+    public Date getFechavencimiento() {
+        return fechavencimiento;
+    }
+
+    public void setFechavencimiento(Date fechavencimiento) {
+        this.fechavencimiento = fechavencimiento;
+    }
+
+    public boolean getEstadoregistro() {
+        return estadoregistro;
+    }
+
+    public void setEstadoregistro(boolean estadoregistro) {
+        this.estadoregistro = estadoregistro;
     }
 
     @Override
@@ -143,6 +210,15 @@ public class Unidad implements Serializable {
     @Override
     public String toString() {
         return "com.clobi.transporte.entity.Unidad[ placa=" + placa + " ]";
+    }
+
+    @XmlTransient
+    public List<OperacionUnidad> getOperacionUnidadList() {
+        return operacionUnidadList;
+    }
+
+    public void setOperacionUnidadList(List<OperacionUnidad> operacionUnidadList) {
+        this.operacionUnidadList = operacionUnidadList;
     }
     
 }

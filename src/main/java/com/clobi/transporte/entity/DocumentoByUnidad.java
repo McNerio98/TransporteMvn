@@ -32,7 +32,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "DocumentoByUnidad.findAll", query = "SELECT d FROM DocumentoByUnidad d")
     , @NamedQuery(name = "DocumentoByUnidad.findByIddu", query = "SELECT d FROM DocumentoByUnidad d WHERE d.iddu = :iddu")
     , @NamedQuery(name = "DocumentoByUnidad.findByFilepath", query = "SELECT d FROM DocumentoByUnidad d WHERE d.filepath = :filepath")
-    , @NamedQuery(name = "DocumentoByUnidad.findByEspecificacion", query = "SELECT d FROM DocumentoByUnidad d WHERE d.especificacion = :especificacion")})
+    , @NamedQuery(name = "DocumentoByUnidad.findByEspecificacion", query = "SELECT d FROM DocumentoByUnidad d WHERE d.especificacion = :especificacion")
+    ,@NamedQuery(name = "DocumentoByUnidad.findByPlaca", query = "SELECT d FROM DocumentoByUnidad d WHERE d.placa.placa = :placa")})
 public class DocumentoByUnidad implements Serializable {
 
     private static final long serialVersionUID = 1L;

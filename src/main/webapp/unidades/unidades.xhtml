@@ -1,0 +1,450 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template1.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="Unidades"></h:outputText>
+        </ui:define>
+
+
+        <ui:define name="stylesSpecifided">
+            <h:outputStylesheet library="css" name="datepicker.css"/>
+            <h:outputStylesheet library="css" name="unidades.css"/>
+            <h:outputStylesheet library="css" name="floatingBtn.css"/>
+        </ui:define>
+
+        <ui:define name="encabezado">
+
+        </ui:define>
+
+        <ui:define name="actual">
+            <h:link outcome="unidades" value="Unidades"/>
+        </ui:define>
+
+        <ui:define name="contenido">
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card col-12">
+                        <h:link class="float d-block d-sm-none d-none d-sm-block d-md-none"  outcome="unidades/create">
+                            <i class="fa fa-plus my-float"></i>
+                        </h:link>
+                        <div class="card-header">
+                            <p class="float-left text-muted titleCnk">#{bundle.Unidades}</p>
+                            <div class="form-group col-12 col-lg-6 col-md-6">
+
+                                <input 
+                                    type="text" 
+                                    class="form-control float-left" 
+                                    id="myInput1" 
+                                    placeholder="Buscar equipo" />
+
+
+                            </div><br/>
+                            <button type="button" 
+                                    class="btn btn-primary float-right d-none d-md-block d-lg-none d-lg-block d-xl-none d-xl-block">
+                                <h:link class="text-white mr-1"  outcome="unidades/create" value="Nueva Unidad"/>
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-body">
+                                <!--Table-->
+                                <div class="col-md-12 table-responsive">
+                                    <h:form id="formUnidades">
+                                        <p:dataTable
+                                            value="#{unidadesListController.unidadesList}"
+                                            var="item"
+                                            selectionMode="single"
+                                            rowKey="#{item}"
+                                            emptyMessage="Sin registro de Unidades"
+                                            selection="#{unidadesListController.unidad}"
+                                            >
+                                            <p:ajax event="rowSelect" listener="#{unidadesListController.rowSelected}" update="formUpdate" />
+                                            <p:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="Numero Unidad"/>
+                                                </f:facet>
+                                                <h:outputText value="#{item.numerounidad}"/>
+                                            </p:column>
+                                            <p:column a:data-priority="1">
+                                                <f:facet name="header">
+                                                    <h:outputText value="Placa"/>
+                                                </f:facet>
+                                                <h:outputText value="AB#{item.placa}"/>
+                                            </p:column>
+                                            <p:column  a:data-priority="2">
+                                                <f:facet name="header">
+                                                    <h:outputText value="Marca"/>
+                                                </f:facet>
+                                                <h:outputText value="#{item.marca}"/>
+                                            </p:column>
+                                            <p:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="Modelo"/>
+                                                </f:facet>
+                                                <h:outputText value="#{item.modelo}"/>
+                                            </p:column>
+                                            <p:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="Año de Unidad"/>
+                                                </f:facet>
+                                                <h:outputText value="#{item.yeAr}"/>
+                                            </p:column>
+                                            <p:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="Motor"/>
+                                                </f:facet>
+                                                <h:outputText value="#{item.motor}"/>
+                                            </p:column>
+                                            <p:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="Chasis"/>
+                                                </f:facet>
+                                                <h:outputText value="#{item.chasis}"/>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </h:form>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Eliminar Registro</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            ¿Esta seguro de borrar este registro?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <h:form>
+                                <h:commandButton class="btn btn-primary" action="#{unidadesListController.deleteRegistry()}"  value="#{bundle.Delete}"/>
+                            </h:form>
+                        </div>
+                    </div> 
+                </div>
+            </div>
+
+
+            <!-- Modal -->
+            <div class="modal fade" id="openModalOne" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <h:form id="formUpdate">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalCenterTitle">Registro</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <nav>
+                                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                                <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Detalles</a>
+                                                <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">attachments</a>
+                                            </div>
+                                        </nav>
+                                    </div>
+                                </div>
+                                <div style="height: 300px;overflow-x: hidden" class="container overflow-auto">
+                                    <div class="tab-content" id="nav-tabContent">
+                                        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                                            <div class="form-row">
+                                                <div class="form-group col-md-6">
+                                                    <h:outputLabel class="text-muted text-" for="placa">Placa</h:outputLabel> 
+                                                    <h:inputText 
+                                                        id="placa"
+                                                        value="#{unidadesListController.unidad.placa}" 
+                                                        maxlength="5" 
+                                                        required="true" 
+                                                        styleClass="form-control form-control-sm" 
+                                                        disabled="true"
+                                                        />
+
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <h:outputLabel class="text-muted text-" for="marca">Marca</h:outputLabel> 
+                                                    <h:inputText 
+                                                        id="marca"
+                                                        value="#{unidadesListController.unidad.marca}" 
+                                                        maxlength="20" 
+                                                        required="true" 
+                                                        styleClass="form-control form-control-sm" 
+
+                                                        />
+
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group col-md-6">
+                                                    <h:outputLabel class="text-muted text-" for="modelo">Modelo</h:outputLabel> 
+                                                    <h:inputText 
+                                                        id="modelo"
+                                                        value="#{unidadesListController.unidad.modelo}" 
+                                                        maxlength="20" 
+                                                        required="true" 
+                                                        styleClass="form-control form-control-sm" 
+
+                                                        />
+
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <h:outputLabel class="text-muted text-" for="year">Año de la unidad</h:outputLabel> 
+                                                    <h:inputText 
+                                                        id="year"
+                                                        value="#{unidadesListController.unidad.yeAr}" 
+                                                        maxlength="20" 
+                                                        required="true" 
+                                                        styleClass="form-control form-control-sm" 
+
+                                                        />
+
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group col-md-6">
+                                                    <h:outputLabel class="text-muted text-" for="motor">Motor</h:outputLabel> 
+                                                    <h:inputText 
+                                                        id="motor"
+                                                        value="#{unidadesListController.unidad.motor}" 
+                                                        maxlength="20" 
+                                                        required="true" 
+                                                        styleClass="form-control form-control-sm" 
+
+                                                        />
+
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <h:outputLabel class="text-muted text-" for="chasis">Chasis</h:outputLabel> 
+                                                    <h:inputText 
+                                                        id="chasis"
+                                                        value="#{unidadesListController.unidad.chasis}" 
+                                                        maxlength="20" 
+                                                        required="true" 
+                                                        styleClass="form-control form-control-sm" 
+
+                                                        />
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+
+                                            <p:dataTable
+                                                id="dtDocs"
+                                                value="#{unidadesListController.docsList}"
+                                                var="item"
+                                                selectionMode="single"
+                                                rowKey="#{item}"
+                                                emptyMessage="No se encontro ningun documento"
+                                                >
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <h:outputText value="Nombre Documento"/>
+                                                    </f:facet>
+                                                    <h:outputText value="#{item.filepath}"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <h:outputText value="Link"/>
+                                                    </f:facet>
+                                                    <a 
+                                                        href="#{facesContext.externalContext.requestContextPath}/documentsSaved/#{item.filepath}">
+                                                        Ver</a>
+
+                                                </p:column>
+                                            </p:dataTable>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal" data-dismiss="modal">Borrar registro</button>
+                                <h:commandButton class="btn btn-primary" action="#{unidadesListController.savechanges()}"  value="Guardar"/>
+                            </div>
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+
+
+            <!--            <aside style="width: 300px" class="control-sidebar  control-sidebar-light">
+                            <div class="card cardside" style="height: 100vh">
+                                <div class="card-header">
+                                    <button id="btnCloseR"  style="cursor:pointer" type="button" class="close" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="col-12">
+                                                <h5>Registro</h5>
+                                            </div>
+                                        </div>
+                                    </div><br/>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <nav>
+                                                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                                    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Detalles</a>
+                                                    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">attachments</a>
+                                                </div>
+                                            </nav>
+                                        </div>
+                                    </div>
+                                </div> 
+                                <div class="card-body">
+                                    <div style="height: 430px;overflow-x: hidden" class="container overflow-auto">
+                                        <h:form id="formUpdate">
+                                            <div class="tab-content" id="nav-tabContent">
+                                                <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-12">
+                                                            <h:outputLabel class="text-muted text-" for="placa">Placa</h:outputLabel> 
+                                                            <h:inputText 
+                                                                id="placa"
+                                                                value="#{unidadesListController.unidad.placa}" 
+                                                                maxlength="5" 
+                                                                required="true" 
+                                                                styleClass="form-control form-control-sm" 
+                                                                disabled="true"
+                                                                />
+            
+                                                        </div>
+                                                        <div class="form-group col-md-12">
+                                                            <h:outputLabel class="text-muted text-" for="marca">Marca</h:outputLabel> 
+                                                            <h:inputText 
+                                                                id="marca"
+                                                                value="#{unidadesListController.unidad.marca}" 
+                                                                maxlength="20" 
+                                                                required="true" 
+                                                                styleClass="form-control form-control-sm" 
+            
+                                                                />
+            
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-12">
+                                                            <h:outputLabel class="text-muted text-" for="modelo">Modelo</h:outputLabel> 
+                                                            <h:inputText 
+                                                                id="modelo"
+                                                                value="#{unidadesListController.unidad.modelo}" 
+                                                                maxlength="20" 
+                                                                required="true" 
+                                                                styleClass="form-control form-control-sm" 
+            
+                                                                />
+            
+                                                        </div>
+                                                        <div class="form-group col-md-12">
+                                                            <h:outputLabel class="text-muted text-" for="year">Año de la unidad</h:outputLabel> 
+                                                            <h:inputText 
+                                                                id="year"
+                                                                value="#{unidadesListController.unidad.yeAr}" 
+                                                                maxlength="20" 
+                                                                required="true" 
+                                                                styleClass="form-control form-control-sm" 
+            
+                                                                />
+            
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-12">
+                                                            <h:outputLabel class="text-muted text-" for="motor">Motor</h:outputLabel> 
+                                                            <h:inputText 
+                                                                id="motor"
+                                                                value="#{unidadesListController.unidad.motor}" 
+                                                                maxlength="20" 
+                                                                required="true" 
+                                                                styleClass="form-control form-control-sm" 
+            
+                                                                />
+            
+                                                        </div>
+                                                        <div class="form-group col-md-12">
+                                                            <h:outputLabel class="text-muted text-" for="chasis">Chasis</h:outputLabel> 
+                                                            <h:inputText 
+                                                                id="chasis"
+                                                                value="#{unidadesListController.unidad.chasis}" 
+                                                                maxlength="20" 
+                                                                required="true" 
+                                                                styleClass="form-control form-control-sm" 
+            
+                                                                />
+            
+                                                        </div>
+                                                    </div>
+                                                    <h:commandButton class="btn btn-primary" action="#{unidadesListController.savechanges()}"  value="Guardar"/>
+                                                </div>
+                                                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+            
+                                                    <p:dataTable
+                                                        id="dtDocs"
+                                                        value="#{unidadesListController.docsList}"
+                                                        var="item"
+                                                        selectionMode="single"
+                                                        rowKey="#{item}"
+                                                        emptyMessage="No se encontro ningun documento"
+                                                        >
+                                                        <p:column>
+                                                            <f:facet name="header">
+                                                                <h:outputText value="Nombre Documento"/>
+                                                            </f:facet>
+                                                            <h:outputText value="#{item.filepath}"/>
+                                                        </p:column>
+                                                        <p:column>
+                                                            <f:facet name="header">
+                                                                <h:outputText value="Link"/>
+                                                            </f:facet>
+                                                            <a 
+                                                                href="#{facesContext.externalContext.requestContextPath}/documentsSaved/#{item.filepath}">
+                                                                Ver</a>
+            
+                                                        </p:column>
+                                                    </p:dataTable>
+            
+                                                </div>
+                                            </div>
+            
+                                        </h:form>
+                                    </div>
+                                </div>
+                                <div class="card-footer text-muted">
+                                    2 days ago
+                                </div>
+                            </div>
+                        </aside>-->
+
+
+
+        </ui:define>
+        <ui:define name="scriptsSpecifided">
+            <h:outputScript library="js" name="unidades.js"/>
+        </ui:define>
+
+    </ui:composition>
+</html>
+
+

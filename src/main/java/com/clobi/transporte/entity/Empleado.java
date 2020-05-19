@@ -11,11 +11,15 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ColumnResult;
+import javax.persistence.ConstructorResult;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.SqlResultSetMapping;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -32,15 +36,32 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "empleados", catalog = "transporte", schema = "public")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Empleado.findAll", query = "SELECT e FROM Empleado e")
+    @NamedQuery(name = "Empleado.findAll", query = "SELECT e FROM Empleado e WHERE e.estadoregistro = :r_estado")
     , @NamedQuery(name = "Empleado.findByDui", query = "SELECT e FROM Empleado e WHERE e.dui = :dui")
     , @NamedQuery(name = "Empleado.findByNombres", query = "SELECT e FROM Empleado e WHERE e.nombres = :nombres")
     , @NamedQuery(name = "Empleado.findByApellidos", query = "SELECT e FROM Empleado e WHERE e.apellidos = :apellidos")
-    , @NamedQuery(name = "Empleado.findByEdad", query = "SELECT e FROM Empleado e WHERE e.edad = :edad")
     , @NamedQuery(name = "Empleado.findByEstadocivil", query = "SELECT e FROM Empleado e WHERE e.estadocivil = :estadocivil")
     , @NamedQuery(name = "Empleado.findByTelefono", query = "SELECT e FROM Empleado e WHERE e.telefono = :telefono")
     , @NamedQuery(name = "Empleado.findByTipo", query = "SELECT e FROM Empleado e WHERE e.tipo = :tipo")})
 public class Empleado implements Serializable {
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "estadoregistro")
+    private boolean estadoregistro;
+
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "empleado1")
+    private EmpleadosContrato empleadosContrato;
+
+    @OneToMany(mappedBy = "ayudante")
+    private List<Asignacion> asignacionList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "motorista")
+    private List<Asignacion> asignacionList1;
+
+    @OneToMany(mappedBy = "idauxiliar")
+    private List<OperacionUnidad> operacionUnidadList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idconductor")
+    private List<OperacionUnidad> operacionUnidadList1;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -59,11 +80,14 @@ public class Empleado implements Serializable {
     @Size(min = 1, max = 15)
     @Column(name = "apellidos")
     private String apellidos;
+    @NotNull
+    @Column(name = "avatarpath")
+    private String avatarPath;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "edad")
+    @Column(name = "fechanacimiento")
     @Temporal(TemporalType.DATE)
-    private Date edad;
+    private Date fechaNacimiento;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 3)
@@ -95,11 +119,11 @@ public class Empleado implements Serializable {
         this.dui = dui;
     }
 
-    public Empleado(String dui, String nombres, String apellidos, Date edad, String estadocivil, String telefono, String tipo) {
+    public Empleado(String dui, String nombres, String apellidos, Date fechaNacimiento, String estadocivil, String telefono, String tipo) {
         this.dui = dui;
         this.nombres = nombres;
         this.apellidos = apellidos;
-        this.edad = edad;
+        this.fechaNacimiento = fechaNacimiento;
         this.estadocivil = estadocivil;
         this.telefono = telefono;
         this.tipo = tipo;
@@ -129,12 +153,12 @@ public class Empleado implements Serializable {
         this.apellidos = apellidos;
     }
 
-    public Date getEdad() {
-        return edad;
+    public Date getFechaNacimiento() {
+        return fechaNacimiento;
     }
 
-    public void setEdad(Date edad) {
-        this.edad = edad;
+    public void setFechaNacimiento(Date fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
     }
 
     public String getEstadocivil() {
@@ -217,9 +241,102 @@ public class Empleado implements Serializable {
         return true;
     }
 
+    public String estadoCivilCase() {
+        String estado = "none";
+        if (this.estadocivil != null) {
+            switch (this.estadocivil) {
+                case "sol":
+                    estado = "Soltero";
+                    break;
+                case "aco":
+                    estado = "Acompaniado";
+                    break;
+                case "cas":
+                    estado = "Casado";
+                    break;
+            }
+        }
+        return estado;
+    }
+
+    public String tipoEmpleadoCase() {
+        String tipo = "none";
+        if (this.tipo != null) {
+            switch (this.tipo) {
+                case "mot":
+                    tipo = "Motorista";
+                    break;
+                case "ayu":
+                    tipo = "Auxiliar Motorista";
+                    break;
+            }
+        }
+        return tipo;
+    }
+
     @Override
     public String toString() {
         return "com.clobi.transporte.entity.Empleado[ dui=" + dui + " ]";
     }
-    
+
+    @XmlTransient
+    public List<OperacionUnidad> getOperacionUnidadList() {
+        return operacionUnidadList;
+    }
+
+    public void setOperacionUnidadList(List<OperacionUnidad> operacionUnidadList) {
+        this.operacionUnidadList = operacionUnidadList;
+    }
+
+    @XmlTransient
+    public List<OperacionUnidad> getOperacionUnidadList1() {
+        return operacionUnidadList1;
+    }
+
+    public void setOperacionUnidadList1(List<OperacionUnidad> operacionUnidadList1) {
+        this.operacionUnidadList1 = operacionUnidadList1;
+    }
+
+    @XmlTransient
+    public List<Asignacion> getAsignacionList() {
+        return asignacionList;
+    }
+
+    public void setAsignacionList(List<Asignacion> asignacionList) {
+        this.asignacionList = asignacionList;
+    }
+
+    @XmlTransient
+    public List<Asignacion> getAsignacionList1() {
+        return asignacionList1;
+    }
+
+    public void setAsignacionList1(List<Asignacion> asignacionList1) {
+        this.asignacionList1 = asignacionList1;
+    }
+
+    public EmpleadosContrato getEmpleadosContrato() {
+        return empleadosContrato;
+    }
+
+    public void setEmpleadosContrato(EmpleadosContrato empleadosContrato) {
+        this.empleadosContrato = empleadosContrato;
+    }
+
+    public String getAvatarPath() {
+        return avatarPath;
+    }
+
+    public void setAvatarPath(String avatarPath) {
+        this.avatarPath = avatarPath;
+    }
+
+    public boolean getEstadoregistro() {
+        return estadoregistro;
+    }
+
+    public void setEstadoregistro(boolean estadoregistro) {
+        this.estadoregistro = estadoregistro;
+    }
+
 }

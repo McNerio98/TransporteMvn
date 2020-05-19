@@ -1,0 +1,254 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+
+
+    <ui:composition template="/template1.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="Nueva Asignacion"></h:outputText>
+        </ui:define>
+
+
+        <ui:define name="stylesSpecifided">
+            <h:outputStylesheet library="css" name="asignaciones.css"/>
+        </ui:define>
+
+        <ui:define name="encabezado">
+
+        </ui:define>
+
+        <ui:define name="actual">
+            <h:link outcome="asignaciones" value="Asignaciones"/>
+            / Crear
+        </ui:define>
+
+        <ui:define name="contenido">
+            <h:form id="form">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card col-12">
+                            <div class="card-header">
+                                <p class="float-left" 
+                                   style="font-size: 20px; font-weight: bold">
+                                    <span class="text-muted titleCnk">Crear</span><br/>
+                                    <small class="float-md-right text-muted">
+                                        Para asignar, selecciona un motorista y un auxiliar 
+                                        a la unidad. 
+                                    </small>
+                                </p>
+                                <h:commandButton
+                                    id="btnCreate"
+                                    class="btn btn-primary float-md-right" 
+                                    action="#{asignacionCreate.create()}"  value="Crear Asignacion"/>
+                            </div>
+                            <div class="card-body">
+                                <h:head></h:head>
+
+
+                                <div class="form-row">
+                                    <div class="form-group col-md-6 col-lg-4">
+                                        <div class="card col-12">
+                                            <div class="card-body">
+                                                <div class="col-md-12 text-center">
+                                                    <h:graphicImage library="img" name="bus02.png" style="width: 170px; height: 194px;"/>
+                                                </div>
+                                                <div class="form-group">
+
+                                                    <input 
+                                                        type="text" 
+                                                        class="form-control" 
+                                                        id="myInput1" 
+                                                        placeholder="Buscar EQ" />
+
+
+                                                </div>
+                                                <div class="container-fluid overflow-auto" style="height: 250px;">
+                                                    <p:dataTable
+
+                                                        value="#{asignacionCreate.unidades}"
+                                                        var="item"
+                                                        selectionMode="single"
+                                                        rowKey="#{item}"
+                                                        emptyMessage="Sin unidades para asignar"
+                                                        selection="#{asignacionCreate.asignacion.unidad}"
+                                                        >
+                                                        <p:ajax event="rowSelect" update="form:btnCreate" listener="#{asignacionCreate.uSelected(event)}" />
+                                                        <p:column>
+                                                            <f:facet name="header">
+                                                                <h:outputText value="EQ"/>
+                                                            </f:facet>
+                                                            <h:outputText value="EQ-#{item.numerounidad}"/>
+                                                        </p:column>
+                                                        <p:column>
+                                                            <f:facet name="header">
+                                                                <h:outputText value="PLACA"/>
+                                                            </f:facet>
+                                                            <h:outputText value="AB#{item.placa}"/>
+                                                        </p:column>
+                                                    </p:dataTable>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+
+                                    <div class="form-group col-md-6 col-lg-4">
+                                        <div class="card col-12">
+                                            <div class="card-body">
+                                                <div class="col-md-12 text-center">
+                                                    <h:graphicImage library="img" name="motorista.png" style="width: 170px; height: 170px;"/>
+                                                </div>
+                                                <br/>
+                                                <div class="form-group">
+                                                    <div class="row">
+                                                        <div class="col-md-9 col-9 text-center">
+                                                            <input 
+                                                                type="text" 
+                                                                class="form-control" 
+                                                                id="myInput2" 
+                                                                placeholder="Buscar motorista" /> 
+                                                        </div>
+                                                        <div
+                                                            data-target="#modalTipoContrato"
+                                                            data-toggle="tooltip" 
+                                                            data-placement="top" 
+                                                            title="Configurar tipo de contrato" 
+                                                            class="col-md-3 col-3 text-center">
+                                                            <i 
+                                                                data-target="#modalTipoContrato"
+                                                                data-toggle="modal"
+                                                                style="font-size: 30px; 
+                                                                cursor: pointer" 
+                                                                class="fas fa-cog">
+
+                                                            </i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="container overflow-auto" style="height: 250px">
+                                                <p:dataTable
+
+                                                    value="#{asignacionCreate.motoristas}"
+                                                    var="item"
+                                                    selectionMode="single"
+                                                    rowKey="#{item}"
+                                                    emptyMessage="Sin motorista para asignar"
+                                                    selection="#{asignacionCreate.asignacion.motorista}"
+                                                    >
+                                                    <p:ajax event="rowSelect" update="formContrato  form:btnCreate" listener="#{asignacionCreate.mSelected(event)}" />
+                                                    <p:column>
+                                                        <f:facet name="header">
+                                                            <h:outputText value="DUI"/>
+                                                        </f:facet>
+                                                        <h:outputText value="#{item.dui}"/>
+                                                    </p:column>
+                                                    <p:column>
+                                                        <f:facet name="header">
+                                                            <h:outputText value="NOMBRE Y APELLIDO"/>
+                                                        </f:facet>
+                                                        <h:outputText value="#{item.nombres} #{item.apellidos}"/>
+                                                    </p:column>
+                                                </p:dataTable>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> 
+                                    <div class="form-group col-md-12 col-lg-4">
+                                        <div class="card col-12">
+                                            <div class="card-body">
+                                                <div class="col-md-12 text-center">
+                                                    <h:graphicImage library="img" name="auxiliar.png" style="width: 170px; height: 170px;"/>
+                                                </div>
+                                                <br/>
+                                                <div class="form-group">
+                                                    <div class="row">
+                                                        <div class="col-md-9 col-9 text-center">
+                                                            <input 
+                                                                type="text" 
+                                                                class="form-control" 
+                                                                id="myInput3" 
+                                                                placeholder="Buscar auxiliar" /> 
+                                                        </div>
+                                                        <div 
+                                                            data-toggle="tooltip" 
+                                                            data-placement="top" 
+                                                            title="Configurar tipo de contrato" 
+                                                            class="col-md-3 col-3 text-center">
+                                                            <i 
+                                                                data-target="#modalTipoContrato"
+                                                                data-toggle="modal"
+                                                                style="font-size: 30px; 
+                                                                cursor: pointer" 
+                                                                class="fas fa-cog">
+
+                                                            </i>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="container overflow-auto" style="height: 250px">
+                                                <p:dataTable
+
+                                                    value="#{asignacionCreate.auxiliares}"
+                                                    var="item"
+                                                    selectionMode="single"
+                                                    rowKey="#{item}"
+                                                    emptyMessage="Sin auxiliar para asignar"
+                                                    selection="#{asignacionCreate.asignacion.ayudante}"
+                                                    >
+                                                    <p:ajax event="rowSelect" update="formContrato form:btnCreate" listener="#{asignacionCreate.aSelected(event)}" />
+                                                    <p:column>
+                                                        <f:facet name="header">
+                                                            <h:outputText value="DUI"/>
+                                                        </f:facet>
+                                                        <h:outputText value="#{item.dui}"/>
+                                                    </p:column>
+                                                    <p:column>
+                                                        <f:facet name="header">
+                                                            <h:outputText value="NOMBRE Y APELLIDO"/>
+                                                        </f:facet>
+                                                        <h:outputText value="#{item.nombres} #{item.apellidos}"/>
+                                                    </p:column>
+                                                </p:dataTable>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+
+                </div>
+
+
+            </h:form>
+        </ui:define>
+        <ui:define name="scriptsSpecifided">
+            <h:outputScript library="js" name="asignacionesCreate.js"/>
+        </ui:define>
+
+
+
+    </ui:composition>
+
+
+
+</html>
+
+
+

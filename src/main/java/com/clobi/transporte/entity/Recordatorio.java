@@ -19,6 +19,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -46,7 +47,7 @@ public class Recordatorio implements Serializable {
     private Integer idrecordatorio;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 20)
+    @Size(min = 1, max = 50)
     @Column(name = "titulo")
     private String titulo;
     @Basic(optional = false)
@@ -57,7 +58,7 @@ public class Recordatorio implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "fechacreacion")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date fechacreacion;
     @Basic(optional = false)
     @NotNull

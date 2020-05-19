@@ -1,0 +1,189 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:composition>
+        <div class="modal fade" id="modalEmploye" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog  modal-dialog-centered modal-dialog-scrollable" role="document">
+                <h:form class="modal-content br-none" id="frmEmployees" enctype="multipart/form-data">
+                    <div class="modal-header bg-dark br-none">
+                        <h5 class="modal-title  text-warning" id="exampleModalCenterTitle">Empleado</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <p class="m-0 h5 text-center text-secondary">SELECIONAR AVATAR</p>
+                            </div>
+                            <div class="col-12 text-center" id="profilesAvatarPanel">
+                                <img src="#{facesContext.externalContext.requestContextPath}/resources/img/avatar.png" alt=""  avatarname="/avatar.png"/>
+                                <img src="#{facesContext.externalContext.requestContextPath}/resources/img/avatar2.png" alt="" avatarname="/avatar2.png"/>
+                                <img src="#{facesContext.externalContext.requestContextPath}/resources/img/avatar3.png" alt="" avatarname="/avatar3.png"/>
+                                <img src="#{facesContext.externalContext.requestContextPath}/resources/img/avatar4.png" alt="" avatarname="/avatar4.png"/>
+                                <img src="#{facesContext.externalContext.requestContextPath}/resources/img/avatar5.png" alt="" avatarname="/avatar5.png"/>
+                                <h:inputHidden id="avatarValueHidden" value="/avatar4.png"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-group col-12 mb-2">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-id-badge"></i>
+                                    </span>
+                                </div>
+                                <h:inputText value="#{empleadosControl.selected.dui}" 
+                                             maxlength="9"
+                                             required="true" 
+                                             styleClass="form-control form-control-sm" 
+                                             id="txtDUI" 
+                                             a:placeholder="Digite Numero de DUI"
+                                             disabled="#{!(empty empleadosControl.selected.dui)}"/>                                    
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <h:inputText value = "#{empleadosControl.selected.nombres}" a:placeholder="Nombres" styleClass="form-control form-control-sm" maxlength="15"/>
+                            </div>
+                            <div class="col-sm-6">
+                                <h:inputText value = "#{empleadosControl.selected.apellidos}" a:placeholder="Apellidos" styleClass="form-control form-control-sm" maxlength="15"/>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-sm-6">
+                                <label for="inputEmail4">Estado Civil</label>
+                                <h:selectOneMenu value="#{empleadosControl.selected.estadocivil}" styleClass="form-control form-control-sm">
+                                    <f:selectItem itemValue="sol" itemLabel="Soltero/a"/>
+                                    <f:selectItem itemValue="cas" itemLabel="Casado/a"/>
+                                    <f:selectItem itemValue="aco" itemLabel="Acompañado/a"/>
+                                </h:selectOneMenu>   
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Fecha Nacimiento</label><br/>
+                                    <div id="datepicker-group" class="input-group date" data-date-format="dd-mm-yyyy">
+                                        <h:inputText styleClass="form-control form-control-sm" 
+                                                     value="#{empleadosControl.selected.fechaNacimiento}"
+                                                     a:placeholder="DD/MM/YYYY" id="auxDate">
+                                            <f:convertDateTime pattern = "yyyy/mm/dd"/>
+                                        </h:inputText>
+                                        <input type="hidden" value="" id="dateFechaFinal" name="dateFechaFinal"/>
+                                        <span class="input-group-addon"></span>
+                                    </div>                                                                            
+                                </div>                                 
+                            </div>
+                        </div>                        
+                        <div class="form-row">
+                            <div class="form-group col-sm-6">
+                                <label for="inputEmail4">Tipo de Empleado</label>
+                                <h:selectOneMenu value="#{empleadosControl.selected.tipo}" styleClass="form-control form-control-sm">
+                                    <f:selectItem itemValue="mot" itemLabel="Motorista"/>
+                                    <f:selectItem itemValue="ayu" itemLabel="Auxiliar Motorista"/>
+                                </h:selectOneMenu>   
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="inputPassword4">Numero de Telefono</label>
+                                <h:inputText value="${empleadosControl.selected.telefono}" maxlength="8" styleClass="form-control form-control-sm"/>
+                            </div>
+                        </div>                        
+                        <h:panelGroup layout="block" rendered="#{empleadosControl.actionUpdate == false}">                             
+                            <div class="form-group">
+                                <label for="exampleInputFile">Subir PDF Licencia</label>
+                                <div class="input-group">
+                                    <div class="custom-file">
+                                        <h:inputFile value="#{empleadosControl.licenciaFile}" styleClass="custom-file-input" id="licInputFile"/>
+                                        <label class="custom-file-label" for="licInputFile">Choose file</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row border-bottom">
+                                <div class="col-sm-6">
+
+                                    <div class="form-group">
+                                        <label class="m-0">Numero Documento</label>
+                                        <h:inputText styleClass="form-control form-control-sm" 
+                                                     value="#{empleadosControl.licencia.numero}"
+                                                     maxlength="13"
+                                                     required="true"
+                                                     a:placeholder="Enter ..."/>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="m-0" for="exampleInputEmail1">Fecha Expiracion</label><br/>
+                                        <div id="datepickerLic" class="input-group date" data-date-format="dd-mm-yyyy">
+                                            <h:inputText styleClass="form-control form-control-sm"
+                                                         value="#{empleadosControl.licencia.expiracion}"
+                                                         a:placeholder="DD/MM/YYYY" id="auxDate1">
+                                                <f:convertDateTime pattern = "yyyy/mm/dd"/>
+                                            </h:inputText>
+                                            <input type="hidden" value="" id="dateFechaFinal" name="dateFechaFinal"/>
+                                            <span class="input-group-addon"></span>
+                                        </div>                                                                            
+                                    </div>                                    
+                                </div>
+                            </div>
+                            
+                            
+                            
+                            
+                            <div class="form-group">
+                                <label for="exampleInputFile">Subir PDF Carnet</label>
+                                <div class="input-group">
+                                    <div class="custom-file">
+                                        <h:inputFile value="#{empleadosControl.carnetFile}" styleClass="custom-file-input" id="CarInputFile"/>
+                                        <label class="custom-file-label" for="licInputFile">Choose file</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row border-bottom">
+                                <div class="col-sm-6">
+
+                                    <div class="form-group">
+                                        <label class="m-0">Numero Documento</label>
+                                        <h:inputText styleClass="form-control form-control-sm" 
+                                                     value="#{empleadosControl.carnet.numero}"
+                                                     required="true"
+                                                     maxlength="12"
+                                                     a:placeholder="Enter ..."/>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="m-0" for="exampleInputEmail1">Fecha Expiracion</label><br/>
+                                        <div id="datepickerLic" class="input-group date" data-date-format="dd-mm-yyyy">
+                                            <h:inputText styleClass="form-control form-control-sm"
+                                                         value="#{empleadosControl.carnet.expiracion}"
+                                                         a:placeholder="DD/MM/YYYY" id="auxDate2">
+                                                <f:convertDateTime pattern = "yyyy/mm/dd"/>
+                                            </h:inputText>
+                                            <input type="hidden" value="" id="dateFechaFinal" name="dateFechaFinal"/>
+                                            <span class="input-group-addon"></span>
+                                        </div>                                                                            
+                                    </div>                                    
+                                </div>
+                            </div>                              
+                        </h:panelGroup>                       
+                    </div>
+                    <div class="modal-footer">
+                        <h:commandButton value="Cerrar"
+                                         a:data-dismiss="modal"
+                                         styleClass="btn-ct btn-ct-secondary"/>                        
+                        <h:commandButton actionListener="#{empleadosControl.create}"
+                                         value="#{bundle.Save}"
+                                         onclick="return validarFrmEmployee('frmEmployees');"
+                                         styleClass="btn-ct btn-ct-success"/>                        
+                    </div>
+                </h:form>
+            </div>
+        </div>
+    </ui:composition>
+</html>
+

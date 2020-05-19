@@ -1,0 +1,68 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+    <h:panelGroup styleClass="row bg-white pt-md-4 pb-md-4 mb-3" id="pnlBanner">
+        <div class="col-md-6">
+            <h1 class="m-0 text-dark h4 text-center">TransporteMvn</h1>
+            <p class="text-muted text-center">Bienvenido! a continuacion le presentamos algunas datos de
+                ! <b class="text-pink">#{ADController.ADHistory.fechareg}</b>, o ver los registros pasados
+                en <h:link outcome="ADList" styleClass="text-warning">Ver registros</h:link></p>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="small-box-custom1 bg-warning">
+                        <div class="inner">
+                            <h3 class="mb-0">#{ADController.ADHistory.uniactivas}</h3>
+                            <p class="mb-0">Unidades Activas</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-bus"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="small-box-custom1 bg-warning">
+                        <div class="inner">
+                            <h3 class="mb-0">#{ADController.ADHistory.totalviajes}</h3>
+                            <p class="mb-0">Viajes</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="small-box-custom1 bg-warning">
+                        <div class="inner">
+                            <h3 class="mb-0">#{ADController.ADHistory.ingresototal}</h3>
+                            <p class="mb-0">Ingreso</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-business-time"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-6 col-lg-4 text-center">
+                    <h:graphicImage library="img" name="bus02.png" style="width: 170px; height: auto;"/>
+                </div>
+                <div class="col-md-6 col-lg-8">
+                    <blockquote class="quote-secondary">
+                        <p>Gestione u <h:link class="text-warning" outcome="employees"><b>Agrege trabajadores</b></h:link> a
+                            su lista de empledos, tambien podra 
+                            <h:link class="text-warning" outcome="unidades"><b>Registrar Unidades</b></h:link>
+                        </p>
+                        <small>Descargue la guia del usuario <cite title="Source Title"
+                                                                   class="text-primary">Click aqui</cite></small>
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+
+    </h:panelGroup>
+</ui:composition>

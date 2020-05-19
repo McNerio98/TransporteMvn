@@ -1,0 +1,89 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" id="modalListAnticipos"
+         aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <h:form styleClass="modal-content br-none" id="pnlListAnticipos">
+                <div class="bg-success">
+                    <div class="row">
+                        <div class="col-6 p-md-2 h5 text-center">
+                            <span class="">Total Anticipos</span>
+                        </div>                        
+                        <div class="col-6 h2 p-1 text-center">$ #{ADController.totalAnticipos}</div>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <h:panelGroup layout="block" 
+                                  rendered="#{!(empty ADController.anticipoInsert)}"
+                                  styleClass="input-group mb-2">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text"><i class="fas fa-money-bill-wave"></i></div>
+                        </div>
+                        <h:inputText  styleClass="form-control" 
+                                      value="#{ADController.anticipoInsert.anticipo}"
+                                      a:placeholder="Ingrese Monto"/>             
+                    </h:panelGroup>
+                    <p:commandLink rendered="#{(empty ADController.anticipoInsert) and (ADController.operacionSelected.estado == 1)}"
+                                   actionListener="#{ADController.prepareAnticipo}"
+                                   update="pnlListAnticipos"
+                                   styleClass="d-block text-center pb-2">
+                        <u><h:outputText value="+ Nuevo"/></u>
+                    </p:commandLink>
+
+                    <div style="min-height: 100px; max-height: 300px; overflow-y: auto;">
+                        <h:panelGroup rendered="#{ADController.operacionSelected.anticipoList.size() == 0}"
+                                      style="height: 100%; padding-top: 10px"
+                                      layout="block">
+                            <p class="h4 text-muted text-center">
+                                <h:outputText value="No hay registros"/>     
+                            </p>
+                        </h:panelGroup>
+                        <c:set var="cn" value="1" scope="request"/>
+                        <h:dataTable    rendered="#{ADController.operacionSelected.anticipoList.size()>0}"
+                                        var="t"
+                                        styleClass="table pth-0"
+                                        value="#{ADController.operacionSelected.anticipoList}">
+
+                            <h:column>
+                                <f:facet name="header">#</f:facet>
+                                <h:outputText value="#{cn}"/>
+                            </h:column>
+                            <h:column> 
+                                <f:facet name="header">Monto</f:facet>
+                                <h:outputText value="#{t.anticipo}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Hora</f:facet>
+                                <c:choose>
+                                    <c:when test="#{t.tipoanticipo == 2}">
+                                        Recargo
+                                    </c:when>
+                                    <c:when test="#{t.tipoanticipo == 1}">
+                                        <h:outputText value="#{t.hora.time}">
+                                            <f:convertDateTime dateStyle="full" pattern="HH:mm:ss"/>
+                                        </h:outputText>                                                        
+                                    </c:when>
+                                </c:choose>
+                            </h:column>                            
+                            <c:set var="cn" value="#{cn+1}"/>
+                        </h:dataTable>                        
+                    </div>
+                    <div class="modal-footer modal-footer-custom1">
+                        <a href="#" class="btn-ct btn-ct-secondary" data-dismiss="modal">Salir</a>
+                        <p:commandLink value="#{bundle.Save}"
+                                       actionListener="#{ADController.createAnticipo}"
+                                       update=":pnlMessageJSF,:listActivities"
+                                       rendered="#{!(empty ADController.anticipoInsert)}"
+                                       a:data-dismiss="modal"
+                                       styleClass="btn-ct btn-ct-success"/>
+                    </div>
+                </div>                
+            </h:form>
+        </div>
+    </div>
+</ui:composition>

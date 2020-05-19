@@ -1,0 +1,184 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:composition template="/template1.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value=":.: Inicio"></h:outputText>
+        </ui:define>
+
+        <ui:define name="encabezado">
+            <h:outputText value="Panel Principal"></h:outputText>
+        </ui:define>
+
+        <ui:define name="contenido">
+            <ui:include src="banner.xhtml"/>
+            <div class="card">
+                <h:panelGroup styleClass="card-body" id="pnlPrincipal">
+                    <h:panelGroup layout="block"
+                                  id="createDailyActivity"
+                                  rendered="#{!ADController.activityStatus}"
+                                  styleClass="text-center pt-md-3 pb-md-3">
+                        <h:form id="createNewActivity"
+                                rendered="#{!ADController.activityStatus}">
+                            <p:commandLink styleClass="pt-md-4 pb-md-4"
+                                           actionListener="#{ADController.createActivity}"
+                                           update="pnlPrincipal,:pnlMessageJSF">
+                                <i class="fas fa-plus"></i>
+                                <br/>
+                                <u>Iniciar actividad</u>                           
+                            </p:commandLink>                                                    
+                        </h:form>
+                    </h:panelGroup>
+                    <!--Panel Principal List Operaciones-->
+                    <h:panelGroup layout="block"
+                                  rendered="#{ADController.activityStatus}"
+                                  id="listActivities">
+                        <div class="row border-bottom pb-lg-3 mb-md-1 mb-lg-3 ">
+                            <h4 class="text-center h1 text-muted d-block" style="width: 100%;"><i class="fas fa-cubes"></i></h4>
+                            <h:form class="text-center col-12"
+                                    rendered="#{ADController.todayAD == true}">
+                                <p:commandLink styleClass="text-center pl-md-3 pr-md-3 d-md-inline d-block"
+                                               rendered="#{ADController.actividad.estado == 1}"
+                                               actionListener="#{ADController.prepareOperation}"
+                                               update=":pnlListAsignaciones,:detailsAsignacion"
+                                               a:data-toggle="modal" 
+                                               a:data-target="#nuevaOpeUnidadModal">
+                                    <u>Nuevo Registro</u>
+                                </p:commandLink>
+                                <h:link outcome="ADList" styleClass="text-center pl-md-3 pr-md-3 d-md-inline d-block">
+                                    <u>Registros Actividades</u>
+                                </h:link>                             
+                            </h:form>
+                            <h:form rendered="#{ADController.todayAD == false}" class="text-center col-12">
+                                <p:commandLink styleClass="text-center pl-md-3 pr-md-3 d-md-inline d-block"
+                                               actionListener="#{ADController.goBackADToday}"
+                                               update=":pnlPrincipal">
+                                    <u>Regresar a Actual</u>
+                                </p:commandLink>
+                            </h:form>
+                        </div>                        
+                        <!--COMIENZA LA ITERACION-->
+                        <c:set var="contador" value="1"/>
+                        <c:forEach var="i" items="#{ADController.listOperaciones}">
+                            <c:if test="#{contador == 1}">
+                                <h:outputText escape="false" value="&lt;div class='row' &gt;" />
+                            </c:if>
+                            <!--INIT-->
+
+                            <div class="col-md-6 col-lg-3">
+                                <div class="card-custom border mt-2">
+                                    <div class="header p-2 text-purple" style="background-color: #f5f6f7;">
+                                        <i class="fas fa-bus"></i><span> <b><h:outputText value="EQ#{i.placa.numerounidad}"/> </b>| <h:outputText value="AB#{i.placa.placa}"/></span>
+                                        <c:choose>
+                                            <c:when test="#{i.estado == 1}">
+                                                <span class="circle activeOpe" style="float: right; margin: 5px 0px;"></span>
+                                            </c:when>
+                                            <c:when test="#{i.estado == 2}">
+                                                <span class="circle activeEnd" style="float: right; margin: 5px 0px;"></span>
+                                            </c:when>
+                                        </c:choose>
+                                    </div>
+                                    <div class="row border-bottom">
+                                        <div class="col-md-6 text-center">
+                                            <c:choose>
+                                                <c:when test="#{i.estado == 1}">
+                                                    <span class="d-block text-muted">Estado <b class="text-purple">Activo</b></span>
+                                                </c:when>
+                                                <c:when test="#{i.estado == 2}">
+                                                    <span class="d-block text-muted">Estado <b class="text-dark">Finalizado</b></span>
+                                                </c:when>
+                                            </c:choose>
+                                        </div>
+                                        <div class="col-md-6 h2 text-right text-muted">
+                                            <h:outputText value="#{i.viajesrealizados}/11"/>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 text-center" style="height: 100px; overflow: hidden;">
+                                            <div class="row pl-2">
+                                                <div class="col-8 text-left">
+                                                    <small>Motorista</small><br/>
+                                                    <h:outputText styleClass="text-muted" value="#{i.idconductor.nombres} #{i.idconductor.apellidos}"/><br/>
+                                                </div>
+                                                <div class="col-4 h5 p-md-2 text-muted">
+                                                    <h:outputText value="$ #{i.pagoconductor}"/> 
+                                                </div>
+                                            </div>
+                                            <div class="row pl-2">
+                                                <div class="col-8 text-left">
+                                                    <small>Auxiliar</small><br/>
+                                                    <h:outputText styleClass="text-muted" value="#{i.idauxiliar.nombres} #{i.idauxiliar.apellidos}"/><br/>
+                                                </div>
+                                                <div class="col-4 h5 p-md-2 text-muted">
+                                                    <h:outputText value="$ #{i.pagoauxiliar}"/>
+                                                </div>
+                                            </div>                                                
+                                        </div>
+                                    </div>
+                                    <div class="row pt-3">
+                                        <div class="col-12 text-center">
+                                            <div class="row">
+                                                <div class="col-12 text-purple">
+                                                    <span><b>Total Ingreso</b></span><br/>
+                                                    <h:outputText styleClass="h4" value="$ #{i.ingreso}"/><br/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>                                        
+                                    <div style="background-color: #f5f6f7;" class="border-top">
+                                        <div class="row">
+                                            <p:commandLink value="#{bundle.Advance}"
+                                                           a:data-toggle="modal" 
+                                                           a:data-target="#modalListAnticipos"
+                                                           styleClass="d-block col-md-6 text-center text-primary"
+                                                           actionListener="#{ADController.showAdvance(i)}"
+                                                           update=":pnlListAnticipos"/>
+
+                                            <p:commandLink value="#{bundle.EndProcess}"
+                                                           actionListener="#{ADController.showDetailsEnd(i)}"
+                                                           styleClass="d-block col-md-6 text-center text-danger"
+                                                           rendered="#{i.estado == 1}"
+                                                           update=":formDetallesFinalizar"
+                                                           a:data-toggle="modal" 
+                                                           a:data-target="#modalDetallesFinalizar"/>
+
+                                            <p:commandLink value="#{bundle.Details}"
+                                                           actionListener="#{ADController.showDetalis(i)}"
+                                                           styleClass="d-block col-md-6 text-center text-danger"
+                                                           rendered="#{i.estado == 2}"
+                                                           update=":formDetallesFinalizar"
+                                                           a:data-toggle="modal" 
+                                                           a:data-target="#modalDetallesFinalizar"/>                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>                            
+
+                            <!--END-->
+                            <c:set var="contador" value="#{contador + 1}"/>
+                            <c:if test="#{contador > 4}">
+                                <h:outputText escape="false" value="&lt;/div&gt;" />
+                                <c:set var="contador" value="1"/>
+                            </c:if>
+                        </c:forEach>
+                    </h:panelGroup>
+                </h:panelGroup>
+            </div>  
+            <ui:include src="CreateOperatividad.xhtml"/>
+            <ui:include src="ConfirmNewViaje.xhtml"/>
+            <ui:include src="ListAnticipos.xhtml"/>
+            <ui:include src="DetallesFinalizar.xhtml"/>
+        </ui:define>
+        <ui:define name="scriptsSpecifided">
+            <h:outputScript library="js" name="adsRegistros.js"/>
+        </ui:define>        
+    </ui:composition>
+</html>

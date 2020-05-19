@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <ui:composition template="/template1.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value=":.: Registros"></h:outputText>
+        </ui:define>
+
+        <ui:define name="encabezado">
+            <h:outputText value="Registros Actividad Diarias"></h:outputText>
+        </ui:define>
+
+        <ui:define name="contenido">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card col-12">
+                    </div>
+                </div>
+            </div>
+            <div class="card-header">
+                <div class="form-group col-12 col-lg-6 col-md-6">
+                    <input 
+                        type="text" 
+                        class="form-control float-left" 
+                        id="myInput2" 
+                        placeholder="Buscar Actividad"/>            
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="col-md-12 table-responsive">
+                    <h:form id="listFormEmployees">
+                        <p:dataTable id="lstEmployees"
+                                     value="#{ADRegistros.listData}"
+                                     var="item"
+                                     selectionMode="single"
+                                     tableStyleClass="table"
+                                     rowKey="#{item.id}"
+                                     emptyMessage="Aun no hay registros"
+                                     >
+                            <p:ajax event="rowSelect"/>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Estado"/>
+                                </f:facet>
+                                <h:outputText value="#{item.tipoestado}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Viajes"/>
+                                </f:facet>
+                                <h:outputText value="#{item.totalviajes}"/>
+                            </p:column>                            
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Ingreso total"/>
+                                </f:facet>
+                                <h:outputText value="#{item.ingresototal}"/>
+                            </p:column>                                      
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Fecha"/>
+                                </f:facet>
+                                <h:outputText value="#{item.fechareg}"/>
+                            </p:column>                                                                  
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Unidades Activas"/>
+                                </f:facet>
+                                <h:outputText value="#{item.uniactivas}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Total Pagos"/>
+                                </f:facet>
+                                <h:outputText value="#{item.totalpagos}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Opcion"/>
+                                </f:facet>
+                                <h:commandButton value="Revisar" 
+                                                 styleClass="btn-ct btn-ct-success"
+                                                 action="#{ADController.ADSelecionado(item)}"/>
+                            </p:column>                            
+                        </p:dataTable>                            
+                    </h:form>                    
+                </div>
+            </div>
+        </ui:define>
+        <ui:define name="scriptsSpecifided">
+            <h:outputScript library="js" name="adsRegistros.js"/>
+        </ui:define>         
+    </ui:composition>
+</html>
+

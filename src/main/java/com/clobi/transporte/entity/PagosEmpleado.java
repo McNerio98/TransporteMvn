@@ -58,7 +58,7 @@ public class PagosEmpleado implements Serializable {
     @NotNull
     @Column(name = "fechapago")
     private double fechapago;
-    @JoinColumn(name = "idactividad", referencedColumnName = "idactividad")
+    @JoinColumn(name = "idactividad", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private ActividadDiaria idactividad;
     @JoinColumn(name = "idempleado", referencedColumnName = "dui")

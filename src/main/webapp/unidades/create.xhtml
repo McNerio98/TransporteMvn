@@ -1,0 +1,174 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+
+
+    <ui:composition template="/template1.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="Unidades"></h:outputText>
+        </ui:define>
+
+
+        <ui:define name="stylesSpecifided">
+            <h:outputStylesheet library="css" name="datepicker.css"/>
+            <h:outputStylesheet library="css" name="unidades.css"/>
+        </ui:define>
+
+        <ui:define name="encabezado">
+
+        </ui:define>
+
+        <ui:define name="actual">
+            <h:link outcome="unidades" value="Unidades"/>
+            / Registro
+        </ui:define>
+
+        <ui:define name="contenido">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card col-12">
+                        <div class="card-header">
+                            <p class="float-left text-muted titleCnk">
+                                #{bundle.UnidadesTile}
+                            </p>
+                        </div>
+                        <div class="card-body">
+                            <h:head></h:head>
+                            <h:form id="form" enctype="multipart/form-data">
+                                <span class="text-muted" style="margin: 10px">#{bundle.UnidadesIG}</span>
+                                <div style="margin-bottom: 10px" class="dropdown-divider"></div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <h:inputText value="#{unidadesController.unidades.numerounidad}" 
+                                                     maxlength="3" 
+                                                     required="true" 
+                                                     styleClass="form-control form-control-sm" 
+                                                     a:placeholder="Numero de Unidad"
+                                                     />
+                                    </div>
+                                    <div class="form-group col-md-8">
+                                        <div class="input-group  mb-2">
+                                            <div class="input-group-prepend ">
+                                                <div class="text-muted input-group-text form-control-sm">AB</div>
+                                            </div>
+                                            <h:inputText value="#{unidadesController.unidades.placa}" 
+                                                         maxlength="5" 
+                                                         required="true" 
+                                                         styleClass="form-control form-control-sm" 
+                                                         a:placeholder="Numero de placa"
+                                                         disabled="#{!(empty unidadesController.unidades.placa)}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="text-muted" style="margin: 10px">
+                                    #{bundle.UnidadesDTC}
+                                </span>
+                                <div style="margin-bottom: 10px" class="dropdown-divider"></div>
+
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <h:inputText value="#{unidadesController.unidades.marca}" 
+                                                     maxlength="9" 
+                                                     required="true" 
+                                                     styleClass="form-control form-control-sm" 
+                                                     a:placeholder="Marca de la unidad"
+                                                     disabled="#{!(empty unidadesController.unidades.marca)}"/>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <h:inputText value="#{unidadesController.unidades.modelo}" 
+                                                     maxlength="9" 
+                                                     required="true" 
+                                                     styleClass="form-control form-control-sm" 
+                                                     a:placeholder="Modelo"
+                                                     disabled="#{!(empty unidadesController.unidades.modelo)}"/>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <h:inputText value="#{unidadesController.unidades.yeAr}" 
+                                                     maxlength="9" 
+                                                     required="true" 
+                                                     styleClass="form-control form-control-sm" 
+                                                     a:placeholder="Año de la unidad "
+                                                     disabled="#{!(empty unidadesController.unidades.yeAr)}"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <h:inputText value="#{unidadesController.unidades.motor}" 
+                                                     maxlength="9" 
+                                                     required="true" 
+                                                     styleClass="form-control form-control-sm" 
+                                                     a:placeholder="Numero de Motor"
+                                                     disabled="#{!(empty unidadesController.unidades.motor)}"/>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <h:inputText value="#{unidadesController.unidades.chasis}" 
+                                                     maxlength="9" 
+                                                     required="true" 
+                                                     styleClass="form-control form-control-sm" 
+                                                     a:placeholder="Numero de Chasis"
+                                                     disabled="#{!(empty unidadesController.unidades.chasis)}"/>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <div id="datepicker-group" class="input-group date" data-date-format="dd-mm-yyyy">
+                                            <h:inputText styleClass="form-control form-control-sm"
+                                                         value="#{unidadesController.dateInput}"
+                                                         a:placeholder="DD-MM-YYYY" id="auxDate2">
+                                            </h:inputText>
+                                            <input type="hidden" value="" id="dateFechaFinal" name="dateFechaFinal"/>
+                                            <span class="input-group-addon"></span>
+                                        </div>  
+                                    </div>
+                                </div>
+
+                                <span class="text-muted" style="margin: 10px">
+                                    #{bundle.UnidadesDR}
+                                </span>
+                                <div style="margin-bottom: 10px" class="dropdown-divider"></div>
+
+                                <h:outputLabel class="label" for="upload">
+                                    <i class="fas fa-upload"></i>
+                                    #{bundle.UnidadesSA}
+                                </h:outputLabel>  
+                                <h:inputFile
+                                    class="inputfile"
+                                    value="#{unidadesController.file}" 
+                                    a:multiple="true" 
+                                    id="upload"/>
+                                <small  class="form-text text-muted">#{bundle.UnidadesInstruction}</small>
+                                
+                                <div id="list" style="height: 250px" class="container overflow-auto row jumbotron"></div>
+
+                                <h:commandButton class="btn btn-primary" action="#{unidadesController.create()}"  value="#{bundle.Save}"/>
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+
+                </div>
+            </div>
+
+
+
+        </ui:define>
+        <ui:define name="scriptsSpecifided">
+            <h:outputScript library="js" name="unidades.js"/>
+        </ui:define>
+
+
+
+    </ui:composition>
+
+
+
+</html>
+
